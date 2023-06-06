@@ -6,5 +6,8 @@ import Profile from "./home/profile/Profile";
 import Message from "./home/message/Message";
 import UserForm from "./admin/users/UserForm";
 import Users from "./admin/users/Users";
-
-export { Login, Signup, NotFound, Posts, Profile, Message, UserForm, Users };
+import PostForm from "./admin/posts/PostForm";
+import Posts from "./admin/posts/Posts";
+import MessageForm from "./admin/Message/MessageForm";
+import Message from "./admin/Message/Message";
+export { Login, Signup, NotFound, Posts, Profile, Message, UserForm, Users ,PostForm,Posts,MessageForm,Message };
