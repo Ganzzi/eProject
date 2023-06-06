@@ -1,9 +1,9 @@
 1.  `git clone https://github.com/Ganzzi/e-Project.git `
 2.  `cd e-Project`
-3.  `cd client `
+3.  `cd react `
 4.  `npm install `
 5.  `npm run dev `
-6.  open new terminal in server folder
+6.  open new terminal
 7.  `npm install `
 8.  `composer install `
 9.  `composer update `
