@@ -8,6 +8,10 @@ import {
     Message,
     Users,
     UserForm,
+    AdminPosts,
+    AdminPostForm,
+    AdminMessage,
+    AdminMessageForm,
 } from "./components";
 import { Dashboard, GuestPage, HomePage } from "./pages";
 
@@ -67,6 +71,30 @@ const router = createBrowserRouter([
             {
                 path: "/admin/users/:id",
                 element: <UserForm key={"userUpdate"} />,
+            },
+            {
+                path: "/admin/posts",
+                element: <AdminPosts />,
+            },
+            {
+                path: "/admin/posts/new",
+                element: <AdminPostForm key={"postCreate"} />,
+            },
+            {
+                path: "/admin/posts/:id",
+                element: <AdminPostForm key={"postUpdate"} />,
+            },
+            {
+                path: "/admin/message",
+                element: <AdminMessage />,
+            },
+            {
+                path: "/admin/message/new",
+                element: <AdminMessageForm key={"messageCreate"} />,
+            },
+            {
+                path: "/admin/message/:id",
+                element: <AdminMessageForm key={"messageUpdate"} />,
             },
         ],
     },
