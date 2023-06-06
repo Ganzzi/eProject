@@ -1,0 +1,21 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Open Sans", sans-serif;
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+  color: #212121;
+  background-color: #f6f6f6;
+}
+
+html,
+body,
+#root,
+#dashboardLayout,
+#guestLayout,
+#homeLayout {
+  min-height: 100vh;
+}

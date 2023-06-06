@@ -1,0 +1,42 @@
+.login-signup-form {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .form {
+    width: 360px;
+    position: relative;
+    z-index: 1;
+    background: #ffffff;
+    max-width: 360px;
+    padding: 34px;
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1);
+
+    .title {
+      font-size: 20px;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .message {
+      margin: 15px 0 0;
+      color: #b3b3b3;
+      font-size: 16px;
+      text-align: center;
+
+      a {
+        color: #5b08a7;
+        text-decoration: none;
+      }
+    }
+  }
+
+  .animated {
+    &.fadeInDown {
+      animation-name: fadeInDown;
+      animation-duration: 0.3s;
+      animation-fill-mode: both;
+    }
+  }
+}
