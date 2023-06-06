@@ -1,6 +1,6 @@
 1.  `git clone https://github.com/Ganzzi/e-Project.git `
-2.  `cd e-Project`
-3.  `cd client `
+2.  `cd e-Project/react`
+3.  change .env.example to .env
 4.  `npm install `
 5.  `npm run dev `
 6.  open new terminal in server folder
@@ -16,5 +16,5 @@
 15. `php artisan migrate:reset `
 16. `php artisan migrate --force `
 17. `php artisan db:seed`
-18. login with user role: - email: user@mail.com - password: user123
+18. login with user role: - email: user1@mail.com - password: user123
 19. login with admin role: - email: admin@mail.com - password: admin123
