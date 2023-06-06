@@ -39,7 +39,6 @@ class ChatRoomController extends Controller
                     'paticipator_id' => $user->id,
                     'name' => $user->name,
                     'image' => $user->image,
-                    'last_online' => $user->last_online->toISOString(),
                     'join_at' => $user->pivot->join_at->toISOString(),
                 ];
             }),
@@ -61,19 +60,19 @@ class ChatRoomController extends Controller
     }
 
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, ChatRoom $chatRoom)
-    {
-        //
-    }
+    // /**
+    //  * Update the specified resource in storage.
+    //  */
+    // public function update(Request $request, ChatRoom $chatRoom)
+    // {
+    //     //
+    // }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(ChatRoom $chatRoom)
-    {
-        //
-    }
+    // /**
+    //  * Remove the specified resource from storage.
+    //  */
+    // public function destroy(ChatRoom $chatRoom)
+    // {
+    //     //
+    // }
 }
