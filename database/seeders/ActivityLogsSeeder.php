@@ -14,16 +14,16 @@ class ActivityLogsSeeder extends Seeder
     public function run(): void
     {
         ActivityLog::create([
-            'User_Id' => 1,
-            'Type' => 'Login',
-            'Describe' => 'User logged in',
+            'user_id' => 1,
+            'type' => 'Login',
+            'describe' => 'User logged in',
             // Add more columns and values as needed...
         ]);
 
         ActivityLog::create([
-            'User_Id' => 2,
-            'Type' => 'Post',
-            'Describe' => 'User created a new post',
+            'user_id' => 2,
+            'type' => 'Post',
+            'describe' => 'User created a new post',
             // Add more columns and values as needed...
         ]);
     }

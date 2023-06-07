@@ -14,18 +14,18 @@ class NotificationsSeeder extends Seeder
     public function run(): void
     {
         Notification::create([
-            'Receiver_Id' => 1,
-            'Type' => 'Message',
-            'Text' => 'You have a new message',
-            'Seen' => false,
+            'receiver_id' => 1,
+            'type' => 'Message',
+            'text' => 'You have a new message',
+            'seen' => false,
             // Add more columns and values as needed...
         ]);
 
         Notification::create([
-            'Receiver_Id' => 2,
-            'Type' => 'Follow',
-            'Text' => 'You have a new follower',
-            'Seen' => false,
+            'receiver_id' => 2,
+            'type' => 'Follow',
+            'text' => 'You have a new follower',
+            'seen' => false,
             // Add more columns and values as needed...
         ]);
     }

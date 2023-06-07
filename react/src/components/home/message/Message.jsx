@@ -1,6 +1,7 @@
 import React from "react";
 
-const Message = () => {
+const Message = () =>
+{
     return (
         <div
             className="d-flex flex-row"

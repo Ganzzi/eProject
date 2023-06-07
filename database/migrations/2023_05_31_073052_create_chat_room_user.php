@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('chat_room_user', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('user_id')->on('users');
             $table->unsignedBigInteger('chat_room_id');
-            $table->foreign('chat_room_id')->references('Chat_Room_ID')->on('chat_rooms');
+            $table->foreign('chat_room_id')->references('chat_room_id')->on('chat_rooms');
             $table->datetime('join_at');
             $table->timestamps();
         });

@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('like_comments', function (Blueprint $table) {
-            $table->unsignedBigInteger('Comment_Id');
-            $table->foreign('Comment_Id')->references('Comment_Id')->on('comments');
-            $table->unsignedBigInteger('Liker_Id');
-            $table->foreign('Liker_Id')->references('id')->on('users');
+            $table->unsignedBigInteger('comment_id');
+            $table->foreign('comment_id')->references('comment_id')->on('comments');
+            $table->unsignedBigInteger('liker_id');
+            $table->foreign('liker_id')->references('user_id')->on('users');
             $table->timestamps();
 
-            $table->primary(['Comment_Id', 'Liker_Id']);
+            $table->primary(['comment_id', 'liker_id']);
         });
     }
 
