@@ -1,13 +1,6 @@
 import { createContext, useContext, useState } from "react";
 
-const StateContext = createContext({
-    currentUser: null,
-    token: null,
-    notification: null,
-    setUser: () => {},
-    setToken: () => {},
-    setNotification: () => {},
-});
+const StateContext = createContext({});
 
 export const ContextProvider = ({ children }) => {
     const [user, setUser] = useState({
