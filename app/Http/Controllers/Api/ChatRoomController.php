@@ -28,11 +28,14 @@ class ChatRoomController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validated();
-        $data['text'] = bcrypt($data['text']);
-        $Message = chatroom::create($data);
+        $userId1 = $request->user_id;
+        $userId2 = $request->user_id2;
+        $chatroom = new Chatroom;
+        $chatroom->save();
 
-        return response(new chatRoomResource($chatRoom), 201);
+        $chatroom->users()->attach([$userId1, $userId2]);
+        return response(['message' => 'chat room create successfully']);
+
     }
 
     /**
