@@ -55,7 +55,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return new PostResource($user);
+        return new PostResource($post);
     }
 
     /**
@@ -81,11 +81,11 @@ class PostController extends Controller
             $imageFilename = $post->image;
         }
 
-        // thêm 1 phần tử mới vào mảng $prod
+        
         $prod['image'] = $imageFilename;
         $prod['slug'] = \Str::slug($request->name);
         //dd($prod);
-        $product->update($post);
+        $post->update($post);
         return redirect()->route('admin.posts.posts');
     }
 

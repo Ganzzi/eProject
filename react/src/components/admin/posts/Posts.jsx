@@ -1,35 +1,35 @@
-import React from "react";
-
-const Posts = () => {
-    return <div>Posts</div>;
-};
+import React, { useEffect } from "react";
+import { useState } from "react";
+import { useStateContext } from "../../../contexts/ContextProvider";
+import axiosClient from "../../../axios-client";
+import { Link } from "react-router-dom";
 
 export default function Posts () {
-    const [posts, setPosts] = useState([]);
+    const [posts, setPost] = useState([]);
     const [loading, setLoading] = useState(false);
     const { setNotification } = useStateContext();
 
     useEffect(() => {
-        getPosts();
+        getPost();
     }, []);
 
     const onDeleteClick = (post) => {
-        if (!window.confirm("Are you sure you want to delete this user?")) {
+        if (!window.confirm("Are you sure you want to delete this post?")) {
             return;
         }
         axiosClient.delete(`/posts/${post.id}`).then(() => {
             setNotification("post was successfully deleted");
-            getPosts();
+            getPost();
         });
     };
 
-    const getPosts = () => {
+    const getPost = () => {
         setLoading(true);
         axiosClient
             .get("/posts")
             .then(({ data }) => {
                 setLoading(false);
-                setPosts(data.data);
+                setPost(data.data);
                 console.log(data);
             })
             .catch(() => {
@@ -47,7 +47,7 @@ export default function Posts () {
                 }}
             >
                 <h1>Posts</h1>
-                <Link className="btn-add" to="/admin/users/new">
+                <Link className="btn-add" to="/admin/posts/new">
                     Add new
                 </Link>
             </div>
@@ -60,13 +60,13 @@ export default function Posts () {
                             <th>image</th>
                             <th>Create at</th>
                             <th>Update at</th>
-                            <th>User image</th>
+                            
                         </tr>
                     </thead>
                     {loading && (
                         <tbody>
                             <tr>
-                                <td colSpan="6" className="text-center">
+                                <td colSpan="5" className="text-center">
                                     Loading...
                                 </td>
                             </tr>
@@ -74,14 +74,14 @@ export default function Posts () {
                     )}
                     {!loading && (
                         <tbody>
-                            {users.map((u) => (
+                            {posts.map((u) => (
                                 <tr key={u.id}>
                                     <td>{u.id}</td>
                                     <td>{u.description}</td>
                                     <td>{u.image}</td>
                                     <td>{u.created_at}</td>
                                     <td>{u.update_at}</td>
-                                    <td>{u.userimage}</td>
+                                   
                                     <td>
                                         <Link
                                             className="btn-edit"

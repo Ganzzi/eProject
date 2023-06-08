@@ -15,21 +15,23 @@ class ChatRoomController extends Controller
      
     public function index()
     {
-        return MessageResource::collection(Message::query()->orderBy('id', 'desc')->paginate(10));
+        $chatrooms = ChatRoom::all();
+
+        return response()->json($chatrooms, 200);
     }
 
     /**
      * Store a newly created resource in storage.
-     * * @param \App\Http\Requests\StoreUserRequest $request
+     * * @param \App\Http\Requests\StorechatRoomRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $data = $request->validated();
         $data['text'] = bcrypt($data['text']);
-        $Message = Mesage::create($data);
+        $Message = chatroom::create($data);
 
-        return response(new UserResource($Message), 201);
+        return response(new chatRoomResource($chatRoom), 201);
     }
 
     /**
@@ -47,7 +49,6 @@ class ChatRoomController extends Controller
                     'paticipator_id' => $user->id,
                     'name' => $user->name,
                     'image' => $user->image,
-                    'last_online' => $user->last_online->toISOString(),
                     'join_at' => $user->pivot->join_at->toISOString(),
                 ];
             }),
@@ -77,9 +78,9 @@ class ChatRoomController extends Controller
     //     //
     // }
 
-    // /**
-    //  * Remove the specified resource from storage.
-    //  */
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy(ChatRoom $chatRoom)
     {
         $chatRoom->delete();

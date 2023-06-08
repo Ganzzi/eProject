@@ -28,25 +28,19 @@ export default function Homescreen() {
     };
 
     return (
-        <div
-            id="homeLayout"
-            className="d-flex flex-1 flex-col"
-            style={{
-                display: "flex",
-                flexDirection: "column",
-            }}
-        >
+        <div id="homeLayout" className="container-fluid">
             <div
-                className="d-flex w-full flex-col justify-between"
+                className="py-3 text-black row"
                 style={{
-                    justifyContent: "space-between",
+                    height: "9vh",
                 }}
             >
-                <div>spaceshare</div>
-                <div>
-                    {user.name}
+                <div className="col-2 d-flex justify-content-center">
+                    spaceshare
+                </div>
+                <div className="col-10 d-flex justify-content-end align-items-center">
+                    <p>{user.name}</p>
                     <a
-                        href="#"
                         className="btn-logout btn btn-primary"
                         onClick={onLogout}
                     >

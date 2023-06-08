@@ -1,9 +1,7 @@
-import React from "react";
-
-const PostForm = () => {
-    return <div>PostForm</div>;
-};
-
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axiosClient from "../../../axios-client.js";
+import { useStateContext } from "../../../contexts/ContextProvider.jsx";
 
 export default function PostForm() {
 const navigate = useNavigate();
@@ -14,7 +12,7 @@ const [post, setPost] = useState({
     image: "",
     create_at: "",
    update_at: "",
-   userimage:"",
+ 
 });
 const [errors, setErrors] = useState(null);
 const [loading, setLoading] = useState(false);
@@ -27,7 +25,7 @@ if (id) {
             .get(`/posts/${id}`)
             .then(({ data }) => {
                 setLoading(false);
-                setUser(data);
+                setPost(data);
             })
             .catch(() => {
                 setLoading(false);
@@ -37,7 +35,7 @@ if (id) {
 
 const onSubmit = (ev) => {
     ev.preventDefault();
-    if (user.id) {
+    if (post.id) {
         axiosClient
             .put(`/posts/${post.id}`, post)
             .then(() => {
@@ -69,7 +67,7 @@ const onSubmit = (ev) => {
 return (
     <>
         {post.id && <h1>Update post: {post.description}</h1>}
-        {!user.id && <h1>New post</h1>}
+        {!post.id && <h1>New post</h1>}
         <div className="card animated fadeInDown">
             {loading && <div className="text-center">Loading...</div>}
             {errors && (
@@ -91,7 +89,7 @@ return (
                     <input
                         value={post.image}
                         onChange={(ev) =>
-                            setUser({ ...post, image: ev.target.value })
+                            setPost({ ...post, image: ev.target.value })
                         }
                         placeholder="image"
                     />
@@ -109,13 +107,7 @@ return (
                         }
                         placeholder="update_at"
                     />
-                    <input
-                        value={post.userimage}
-                        onChange={(ev) =>
-                            setPost({ ...post, userimage: ev.target.value })
-                        }
-                        placeholder="userimage"
-                    />
+                  
                     
                     <button className="btn">Save</button>
                 </form>

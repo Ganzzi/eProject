@@ -1,11 +1,11 @@
-import React from "react";
-
-const Message = () => {
-    return <div>Message</div>;
-};
+import React, { useEffect } from "react";
+import { useState } from "react";
+import { useStateContext } from "../../../contexts/ContextProvider";
+import axiosClient from "../../../axios-client";
+import { Link } from "react-router-dom";
 
 export default function Message(){
-    const [Message, setMessage] = useState([]);
+    const [message, setMessage] = useState([]);
     const [loading, setLoading] = useState(false);
     const { setNotification } = useStateContext();
 
@@ -13,20 +13,20 @@ export default function Message(){
         getMessage();
     }, []);
 
-    const onDeleteClick = (Message) => {
-        if (!window.confirm("Are you sure you want to delete this user?")) {
+    const onDeleteClick = (message) => {
+        if (!window.confirm("Are you sure you want to delete this Message?")) {
             return;
         }
-        axiosClient.delete(`/Message/${Messages.id}`).then(() => {
-            setNotification("User was successfully deleted");
-            getUsers();
+        axiosClient.delete(`/messages/${message.id}`).then(() => {
+            setNotification("Message was successfully deleted");
+            getMessage();
         });
     };
 
-    const getUsers = () => {
+    const getMessage = () => {
         setLoading(true);
         axiosClient
-            .get("/Message")
+            .get("/messages")
             .then(({ data }) => {
                 setLoading(false);
                 setMessage(data.data);
@@ -47,7 +47,7 @@ export default function Message(){
                 }}
             >
                 <h1>Message</h1>
-                <Link className="btn-add" to="/admin/users/new">
+                <Link className="btn-add" to="/admin/message/new">
                     Add new
                 </Link>
             </div>
@@ -59,7 +59,7 @@ export default function Message(){
                             <th>paticipant</th>
                             <th>text</th>
                             <th>Create at</th>
-                            <th>sender id</th>
+                          
                         </tr>
                     </thead>
                     {loading && (
@@ -73,24 +73,24 @@ export default function Message(){
                     )}
                     {!loading && (
                         <tbody>
-                            {users.map((u) => (
+                            {message.map((u) => (
                                 <tr key={u.id}>
                                     <td>{u.id}</td>
                                     <td>{u.paticipant}</td>
                                     <td>{u.text}</td>
                                     <td>{u.created_at}</td>
-                                    <td>{u.csender_id}</td>
+                                    
                                     <td>
                                         <Link
                                             className="btn-edit"
-                                            to={"/admin/Message/" + u.id}
+                                            to={"/admin/messages/" + u.id}
                                         >
                                             Edit
                                         </Link>
                                         &nbsp;
                                         <button
                                             className="btn-delete"
-                                            onClick={(ev) => onDeleteClick(u)}
+                                            onClick={(ev) => onDeleteClick(ev)}
                                         >
                                             Delete
                                         </button>
