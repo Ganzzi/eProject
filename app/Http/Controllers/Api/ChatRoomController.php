@@ -11,18 +11,28 @@ class ChatRoomController extends Controller
 {
     /**
      * Display a listing of the resource.
+     * * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
+     
     public function index()
     {
-        //
+        $chatrooms = ChatRoom::all();
+
+        return response()->json($chatrooms, 200);
     }
 
     /**
      * Store a newly created resource in storage.
+     * * @param \App\Http\Requests\StorechatRoomRequest $request
+     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validated();
+        $data['text'] = bcrypt($data['text']);
+        $Message = chatroom::create($data);
+
+        return response(new chatRoomResource($chatRoom), 201);
     }
 
     /**
@@ -84,11 +94,13 @@ class ChatRoomController extends Controller
     //     //
     // }
 
-    // /**
-    //  * Remove the specified resource from storage.
-    //  */
-    // public function destroy(ChatRoom $chatRoom)
-    // {
-    //     //
-    // }
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(ChatRoom $chatRoom)
+    {
+        $chatRoom->delete();
+
+        return response("", 204);
+    }
 }

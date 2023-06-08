@@ -5,7 +5,7 @@
 5.  `npm run dev `
 6.  open new terminal
 7.  `npm install `
-8.  `composer install `
+8.  `composer install`
 9.  `composer update `
 10. rename .env.example to .env
 11. `php artisan key:generate `
