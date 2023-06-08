@@ -14,20 +14,20 @@ class PostsSeeder extends Seeder
     public function run(): void
     {
         Post::create([
-            'Creator_Id' => 1,
-            'Description' => 'My first post',
-            'Image' => 'image1.jpg',
-            'UserImage' => 'user1.jpg',
-            'Field' => 'Technology',
+            'creator_id' => 1,
+            'description' => 'My first post',
+            'image' => 'image1.jpg',
+            'user_image' => 'user1.jpg',
+            'field' => 'Technology',
             // Add more columns and values as needed...
         ]);
 
         Post::create([
-            'Creator_Id' => 2,
-            'Description' => 'Check out this amazing photo',
-            'Image' => 'image2.jpg',
-            'UserImage' => 'user2.jpg',
-            'Field' => 'Photography',
+            'creator_id' => 2,
+            'description' => 'Check out this amazing photo',
+            'image' => 'image2.jpg',
+            'user_image' => 'user2.jpg',
+            'field' => 'Photography',
             // Add more columns and values as needed...
         ]);
     }

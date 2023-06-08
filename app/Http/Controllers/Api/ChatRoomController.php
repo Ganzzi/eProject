@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Chat;
 use App\Models\ChatRoom;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -41,6 +42,8 @@ class ChatRoomController extends Controller
     {
         $chatRoom->load('users', 'chats.likes');
 
+        $lastMessage = $chatRoom->chats()->orderByDesc('created_at')->first();
+
         return response()->json([
             'chat_room_id' => $chatRoom->id,
             'created_at' => $chatRoom->created_at->toISOString(),
@@ -66,6 +69,19 @@ class ChatRoomController extends Controller
                     })
                 ];
             }),
+            
+            'last_message' => $lastMessage ? [
+                'chat_id' => $lastMessage->id,
+                'created_at' => $lastMessage->created_at->toISOString(),
+                'text' => $lastMessage->text,
+                'sender_id' => $lastMessage->sender_id,
+                'likes' => $lastMessage->likes->map(function ($like) {
+                    return [
+                        'liker' => $like->user->name,
+                        'created_at' => $like->created_at->toISOString(),
+                    ];
+                })
+            ] : null,
         ]);
     }
 

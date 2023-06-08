@@ -14,16 +14,16 @@ class CommentsSeeder extends Seeder
     public function run(): void
     {
         Comment::create([
-            'Commentor_Id' => 1,
-            'Post_Id' => 1,
-            'Reply-To' => null,
+            'commentor_id' => 1,
+            'post_id' => 1,
+            'reply_to' => null,
             // Add more columns and values as needed...
         ]);
 
         Comment::create([
-            'Commentor_Id' => 2,
-            'Post_Id' => 2,
-            'Reply-To' => null,
+            'commentor_id' => 2,
+            'post_id' => 2,
+            'reply_to' => null,
             // Add more columns and values as needed...
         ]);
     }

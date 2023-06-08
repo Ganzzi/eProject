@@ -1,11 +1,32 @@
 import React from "react";
 
+<<<<<<< HEAD
+const Message = () =>
+{
+    return (
+        <div
+            className="d-flex flex-row"
+            style={{
+                backgroundColor: "red",
+                width: "100%",
+                flex: 1,
+            }}
+        >
+            <div
+                style={{
+                    flex: 1,
+                }}
+            >
+                chat rooms
+            </div>
+=======
 const Message = () => {
     const roomCount = 24;
     const rooms = Array.from(
         { length: roomCount },
         (_, index) => `Room ${index}`
     );
+>>>>>>> 9bc2eff412cc10ea55315305b2bd4e6f591397dc
 
     const selectedRoom = "Room 0";
 

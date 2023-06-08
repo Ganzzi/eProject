@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('comments', function (Blueprint $table) {
-            $table->id('Comment_Id');
-            $table->unsignedBigInteger('Commentor_Id');
-            $table->foreign('Commentor_Id')->references('id')->on('users');
-            $table->unsignedBigInteger('Post_Id');
-            $table->foreign('Post_Id')->references('Post_Id')->on('posts');
-            $table->unsignedBigInteger('Reply-To')->nullable();
+            $table->id('comment_id');
+            $table->unsignedBigInteger('commentor_id');
+            $table->foreign('commentor_id')->references('user_id')->on('users');
+            $table->unsignedBigInteger('post_id');
+            $table->foreign('post_id')->references('post_id')->on('posts');
+            $table->unsignedBigInteger('reply_to')->nullable();
             $table->timestamps();
         });
     }
