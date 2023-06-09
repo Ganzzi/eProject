@@ -14,10 +14,10 @@ const [post, setPost] = useState({
     id: null,
     creator_id:null,
     description: "",
-    field:"",
     image: "",
-    post_id:"",
     userimage:"",
+    field:"",
+    create_at:"",
    update_at: "",
  
 });
@@ -95,13 +95,7 @@ return (
                         }
                         placeholder="description"
                     />
-                     <input
-                        value={post.field}
-                        onChange={(ev) =>
-                            setPost({ ...post, field: ev.target.value })
-                        }
-                        placeholder="field"
-                    />
+                     
                     <input
                         value={post.image}
                         onChange={(ev) =>
@@ -118,7 +112,22 @@ return (
                         type="file" id="file-input" name="ImageStyle"
                         placeholder="userimage"
                     />
-                   
+                    <input
+                        value={post.field}
+                        onChange={(ev) =>
+                            setPost({ ...post, field: ev.target.value })
+                        }
+                        placeholder="field"
+                    />
+                   <input
+                        value={post.create_at}
+                        onChange={(ev) =>
+                            setPost({ ...post, create_at: ev.target.value })
+                           
+                        }
+                        placeholder="create_at"
+                       
+                    />
                     <input
                         value={post.update_at}
                         onChange={(ev) =>

@@ -60,11 +60,10 @@ export default function Posts () {
                             <th>ID</th>
                             <th>Creator_id</th>
                             <th>Description</th>
-                            <th>Field</th>
                             <th>image</th>
-                            <th>Post_Id</th>
                             <td>UserImage</td>
-                            
+                            <th>Field</th>
+                            <th>create at</th>
                             <th>Update at</th>
                             
                         </tr>
@@ -81,28 +80,27 @@ export default function Posts () {
                     {!loading && (
                         <tbody>
                             {posts.map((p) => (
-                                <tr key={p.Post_Id}>
-                                    <td>{p.Post_Id}</td>
-                                    <td>{p.Creator_Id}</td>
-                                    <td>{p.Description}</td>
-                                    <td>{p.Field}</td>
-                                    <td>{p.Image}</td>
-                                    <td>{p.Post_Id}</td>
-                                    <td>{p.UserImage}</td>
-                                   
+                                <tr key={p.post_id}>
+                                    <td>{p.post_id}</td>
+                                    <td>{p.creator_id}</td>
+                                    <td>{p.description}</td>
+                                    <td>{p.image}</td>
+                                    <td>{p.user_image}</td>
+                                    <td>{p.field}</td>
+                                    <td>{p.created_at}</td>
                                     <td>{p.updated_at}</td>
                                    
                                     <td>
                                         <Link
                                             className="btn-edit"
-                                            to={"/admin/posts/" + p.Post_Id}
+                                            to={"/admin/posts/" + p.post_id}
                                         >
                                             Edit
                                         </Link>
                                         &nbsp;
                                         <button
                                             className="btn-delete"
-                                            onClick={() => onDeleteClick(p.Post_Id)}
+                                            onClick={() => onDeleteClick(p.post_id)}
                                         >
                                             Delete
                                         </button>

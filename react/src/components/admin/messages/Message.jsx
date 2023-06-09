@@ -17,7 +17,7 @@ export default function Message(){
         if (!window.confirm("Are you sure you want to delete this Message?")) {
             return;
         }
-        axiosClient.delete(`/messages/${message.id}`).then(() => {
+        axiosClient.delete(`/chatrooms/${message.id}`).then(() => {
             setNotification("Message was successfully deleted");
             getMessage();
         });
@@ -26,11 +26,11 @@ export default function Message(){
     const getMessage = () => {
         setLoading(true);
         axiosClient
-            .get("/message")
+            .get("/chatrooms")
             .then(({ data }) => {
                 setLoading(false);
                 console.log(data);
-                // setMessage(data);
+                setMessage(data);
             })
             .catch(() => {
                 setLoading(false);
@@ -47,7 +47,7 @@ export default function Message(){
                 }}
             >
                 <h1>Message</h1>
-                <Link className="btn-add" to="/admin/message/new">
+                <Link className="btn-add" to="/admin/chatrooms/new">
                     Add new
                 </Link>
             </div>
@@ -55,12 +55,11 @@ export default function Message(){
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
+                           
                             <th>chat_room_id</th>
-                            <th>text</th>
-                            <th>Sender_id</th>
-                            <th>Create at</th>
-                            <th>Update_at</th>
+                           
+                            <th>Created at</th>
+                            <th>Updated at</th>
                           
                         </tr>
                     </thead>
@@ -77,17 +76,16 @@ export default function Message(){
                         <tbody>
                             {message.map((m) => (
                                 <tr key={m.id}>
-                                    <td>{m.Message_Id}</td>
+                                   
                                     <td>{m.chat_room_id}</td>
-                                    <td>{m.text}</td>
-                                    <td>{m.Sender_id}</td>
+                                    
                                     <td>{m.created_at}</td>
                                     <td>{m.updated_at}</td>
                                     
                                     <td>
                                         <Link
                                             className="btn-edit"
-                                            to={"/admin/messages/" + m.id}
+                                            to={"/admin/chatrooms/" + m.id}
                                         >
                                             Edit
                                         </Link>

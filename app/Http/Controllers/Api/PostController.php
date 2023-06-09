@@ -15,7 +15,6 @@ class PostController extends Controller
     public function index()
     {
         return Post::all();
-        return PostResource::collection(Post::query()->oderBy('id','desc')->paginate(10));
     }
 
     /**
@@ -67,27 +66,27 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        $post = $request->all();
-
-        if ($request->hasFile('photo')) {
-            $file = $request->file('photo');
-            $ext = $file->getClientOriginalExtension();
-            if ($ext != 'jpg' && $ext != 'jpeg' && $ext != 'png') {
-                $error = 1;
-                return view('admin.posts.posts', compact(error));
-            }
-            $imageFilename = $file->getClientOriginalName();
-            $file->move('images', $imageFilename);
-        } else {
-            $imageFilename = $post->image;
-        }
-
+        $post= Post::find($id);
+        $post->description = $request->input('description');
+        $post->field = $request->input('field');
+       
         
-        $prod['image'] = $imageFilename;
-        $prod['slug'] = \Str::slug($request->name);
-        //dd($prod);
-        $post->update($post);
-        return redirect()->route('admin.posts.posts');
+        
+        if($request->hasFile('image'))
+        {
+            $destination = 'Admin/posts/' . $post->image;
+            if(File::exists($post))
+            {
+                File::delete($post);
+            }
+            $file = $request->file('image');
+            $extension = $file->getClientOriginalExtension();
+            $filename = time(). '.' . $extension;
+            $file->move('Admin/posts/', $filename);
+            $post->image = $filename;
+        }
+        $post->update();
+        return redirect()->route('posts');
     }
 
     /**

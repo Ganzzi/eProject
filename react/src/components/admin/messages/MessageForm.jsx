@@ -10,21 +10,14 @@ export default function MessageForm(){
         chat_room_id: "",
         text: "",
         sender_id:null,
-        create_at: "",
-        update_at:"",
+        created_at: "",
+        updated_at:"",
     
     });
     const [errors, setErrors] = useState(null);
     const [loading, setLoading] = useState(false);
     const { setNotification } = useStateContext();
-    const [date, time] = str.split("T");
-
-    // Assuming 03 is the month and 01 is the day – otherwise, those could be swapped
-    const [year, month, day] = date.split("-")
-
-    // Added slashes and the space before the time
-    return `${day}/${month}/${year} ${time}`
-
+    
     if (id) {
         useEffect(() => {
             setLoading(true);
@@ -47,7 +40,7 @@ export default function MessageForm(){
                 .put(`/messages/${message.id}`, Message)
                 .then(() => {
                     setNotification("Message was successfully updated");
-                    navigate("/admin/messages");
+                    navigate("/admin/message");
                 })
                 .catch((err) => {
                     const response = err.response;
@@ -57,10 +50,10 @@ export default function MessageForm(){
                 });
         } else {
             axiosClient
-                .post("/messages", message)
+                .post("/message", message)
                 .then(() => {
                     setNotification("Message was successfully created");
-                    navigate("/admin/messages");
+                    navigate("/admin/message");
                 })
                 .catch((err) => {
                     const response = err.response;
