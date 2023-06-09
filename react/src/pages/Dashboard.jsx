@@ -28,7 +28,8 @@ export default function Dashboard() {
     return (
         <div id="dashboardLayout">
             <aside>
-                <Link to={"/admin/users"}>user</Link>
+                <Link to={"/admin/users"}>user</Link> <Link to={"/admin/message"}>Message</Link>
+                <Link to={"/admin/posts"}>Posts</Link>
             </aside>
             <div className="content">
                 <header>

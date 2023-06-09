@@ -13,7 +13,7 @@ export default function Homescreen() {
 
     useEffect(() => {
         axiosClient.get("/user").then(({ data }) => {
-            console.log(data);
+            // console.log(data);
             setUser(data);
         });
     }, []);
@@ -28,25 +28,24 @@ export default function Homescreen() {
     };
 
     return (
-        <div
-            id="homeLayout"
-            className="d-flex flex-1 flex-col"
-            style={{
-                display: "flex",
-                flexDirection: "column",
-            }}
-        >
+        <div id="homeLayout" className="container-fluid" style={{backgroundColor:"lightblue"}}>
             <div
-                className="d-flex w-full flex-col justify-between"
+                className="py-3 text-black row"
                 style={{
-                    justifyContent: "space-between",
+                    height: "9vh",
+                    backgroundColor:"pink",
                 }}
             >
-                <div>spaceshare</div>
-                <div>
-                    {user.name}
+                <div className="col-2 d-flex justify-content-center"
+                style={{}
+                }>
+                    spaceshare
+
+                </div>
+                
+                <div className="col-10 d-flex justify-content-end align-items-center">
+                    <p>{user.name}</p>
                     <a
-                        href="#"
                         className="btn-logout btn btn-primary"
                         onClick={onLogout}
                     >

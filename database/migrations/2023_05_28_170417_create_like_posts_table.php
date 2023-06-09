@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('like_posts', function (Blueprint $table) {
-            $table->unsignedBigInteger('Liker_Id');
-            $table->foreign('Liker_Id')->references('id')->on('users');
-            $table->unsignedBigInteger('Post_Id');
-            $table->foreign('Post_Id')->references('Post_Id')->on('posts');
+            $table->unsignedBigInteger('liker_id');
+            $table->foreign('liker_id')->references('user_id')->on('users');
+            $table->unsignedBigInteger('post_id');
+            $table->foreign('post_id')->references('post_id')->on('posts');
             $table->timestamps();
 
-            $table->primary(['Liker_Id', 'Post_Id']);
+            $table->primary(['liker_id', 'post_id']);
         });
     }
 

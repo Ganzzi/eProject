@@ -14,14 +14,14 @@ class LikeChatsSeeder extends Seeder
     public function run(): void
     {
         LikeChat::create([
-            'Liker_Id' => 1,
-            'Chat_Id' => 1,
+            'liker_id' => 1,
+            'chat_id' => 1,
             // Add more columns and values as needed...
         ]);
 
         LikeChat::create([
-            'Liker_Id' => 2,
-            'Chat_Id' => 2,
+            'liker_id' => 2,
+            'chat_id' => 2,
             // Add more columns and values as needed...
         ]);
     }

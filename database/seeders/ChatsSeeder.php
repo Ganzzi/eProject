@@ -14,16 +14,18 @@ class ChatsSeeder extends Seeder
     public function run(): void
     {
         Chat::create([
-            'Chat_Room_ID' => 1,
-            'Text' => 'Hello',
-            'Sender_Id' => 1,
+            'chat_id' => 1,
+            'chat_room_id' => 1,
+            'text' => 'Hello',
+            'sender_id' => 1,
             // Add more columns and values as needed...
         ]);
 
         Chat::create([
-            'Chat_Room_ID' => 2,
-            'Text' => 'Hi there',
-            'Sender_Id' => 2,
+            'chat_id' => 2,
+            'chat_room_id' => 2,
+            'text' => 'Hi there',
+            'sender_id' => 2,
             // Add more columns and values as needed...
         ]);
     }

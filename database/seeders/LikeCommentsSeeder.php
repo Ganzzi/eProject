@@ -14,14 +14,14 @@ class LikeCommentsSeeder extends Seeder
     public function run(): void
     {
         LikeComment::create([
-            'Liker_Id' => 1,
-            'Comment_Id' => 1,
+            'liker_id' => 1,
+            'comment_id' => 1,
             // Add more columns and values as needed...
         ]);
 
         LikeComment::create([
-            'Liker_Id' => 2,
-            'Comment_Id' => 2,
+            'liker_id' => 2,
+            'comment_id' => 2,
             // Add more columns and values as needed...
         ]);
     }

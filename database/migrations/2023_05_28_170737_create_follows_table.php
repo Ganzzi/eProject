@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('follows', function (Blueprint $table) {
 
-            $table->unsignedBigInteger('Follower_Id');
-            $table->foreign('Follower_Id')->references('id')->on('users');
-            $table->unsignedBigInteger('Following_Id');
-            $table->foreign('Following_Id')->references('id')->on('users');
-            $table->datetime('Follow-At');
+            $table->unsignedBigInteger('follower_id');
+            $table->foreign('follower_id')->references('user_id')->on('users');
+            $table->unsignedBigInteger('following_id');
+            $table->foreign('following_id')->references('user_id')->on('users');
+            $table->datetime('follow_at');
             $table->timestamps();
 
-            $table->primary(['Follower_Id', 'Following_Id']);
+            $table->primary(['follower_id', 'following_id']);
         });
     }
 

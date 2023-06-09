@@ -14,16 +14,16 @@ class FollowsSeeder extends Seeder
     public function run(): void
     {
         Follow::create([
-            'Follower_Id' => 1,
-            'Following_Id' => 2,
-            'Follow-At' => now(),
+            'follower_id' => 1,
+            'following_id' => 2,
+            'follow_at' => now(),
             // Add more columns and values as needed...
         ]);
 
         Follow::create([
-            'Follower_Id' => 2,
-            'Following_Id' => 1,
-            'Follow-At' => now(),
+            'follower_id' => 2,
+            'following_id' => 1,
+            'follow_at' => now(),
             // Add more columns and values as needed...
         ]);
     }
