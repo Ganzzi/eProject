@@ -13,7 +13,7 @@ export default function GuestLayout ()
             return <Navigate to={"/admin"} />;
         } else
         {
-            return <Navigate to={"/messages"} />;
+            return <Navigate to={"/posts"} />;
         }
     }
     return (

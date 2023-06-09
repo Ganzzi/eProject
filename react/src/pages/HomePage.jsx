@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Outlet, Navigate } from "react-router-dom";
+import { Outlet, Navigate, Link } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client";
 
 export default function Homescreen() {
+
     const { user, token, setUser, setToken } = useStateContext();
 
     if (!token) {
@@ -25,26 +26,31 @@ export default function Homescreen() {
             setUser({});
             setToken(null);
         });
-    };
-
-    return (
-        <div id="homeLayout" className="container-fluid" style={{backgroundColor:"lightblue"}}>
+    }; return (
+        <div id="homeLayout" className="container-fluid" style={{ backgroundColor: "lightblue" }}>
             <div
-                className="py-3 text-black row"
+                className="py-3 text-black row sticky-top"
                 style={{
                     height: "9vh",
-                    backgroundColor:"pink",
+                    backgroundColor: "pink",
                 }}
             >
                 <div className="col-2 d-flex justify-content-center"
-                style={{}
-                }>
-                    spaceshare
+              
+                    style={{}
+                    }>
+                        <Link to={"/posts"}>spaceshare</Link>
+                    
 
                 </div>
-                
-                <div className="col-10 d-flex justify-content-end align-items-center">
-                    <p>{user.name}</p>
+
+                <div className="col-6  d-flex justify-content-center ">
+                    <input type="text" />
+                </div>
+
+                <div className="col-4 d-flex justify-content-end align-items-center">
+                <Link to={"/messages"}>tin nhan</Link>
+                <Link to={"/profile"}>{user.name}</Link>
                     <a
                         className="btn-logout btn btn-primary"
                         onClick={onLogout}
@@ -53,6 +59,9 @@ export default function Homescreen() {
                     </a>
                 </div>
             </div>
+
+
+
             <Outlet />
         </div>
     );
