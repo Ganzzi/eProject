@@ -22,7 +22,7 @@ class Auth extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'Role-ID' => 1
+            'role_id' => 1
         ]);
 
         $token = $user->createToken('main')->plainTextToken;

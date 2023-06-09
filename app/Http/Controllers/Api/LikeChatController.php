@@ -13,7 +13,9 @@ class LikeChatController extends Controller
      */
     public function index()
     {
-        //
+        $likeChats = LikeChat::all();
+
+        return response()->json($likeChats);
     }
 
     /**
