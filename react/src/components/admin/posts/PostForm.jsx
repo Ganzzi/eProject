@@ -3,20 +3,29 @@ import { useEffect, useState } from "react";
 import axiosClient from "../../../axios-client.js";
 import { useStateContext } from "../../../contexts/ContextProvider.jsx";
 
+
+
+
 export default function PostForm() {
 const navigate = useNavigate();
+
 let { id } = useParams();
 const [post, setPost] = useState({
     id: null,
+    creator_id:null,
     description: "",
+    field:"",
     image: "",
-    create_at: "",
+    post_id:"",
+    userimage:"",
    update_at: "",
  
 });
 const [errors, setErrors] = useState(null);
 const [loading, setLoading] = useState(false);
 const { setNotification } = useStateContext();
+
+
 
 if (id) {
     useEffect(() => {
@@ -86,29 +95,41 @@ return (
                         }
                         placeholder="description"
                     />
+                     <input
+                        value={post.field}
+                        onChange={(ev) =>
+                            setPost({ ...post, field: ev.target.value })
+                        }
+                        placeholder="field"
+                    />
                     <input
                         value={post.image}
                         onChange={(ev) =>
                             setPost({ ...post, image: ev.target.value })
                         }
+                        type="file" id="file-input" name="ImageStyle"
                         placeholder="image"
                     />
-                    <input
-                        value={post.create_at}
+                     <input
+                        value={post.userimage}
                         onChange={(ev) =>
-                            setPost({ ...post, create_at: ev.target.value })
+                            setPost({ ...post, userimage: ev.target.value })
                         }
-                        placeholder="create_at"
+                        type="file" id="file-input" name="ImageStyle"
+                        placeholder="userimage"
                     />
+                   
                     <input
                         value={post.update_at}
                         onChange={(ev) =>
                             setPost({ ...post, update_at: ev.target.value })
+                           
                         }
                         placeholder="update_at"
+                       
                     />
-                  
-                    
+           
+        
                     <button className="btn">Save</button>
                 </form>
             )}

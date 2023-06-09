@@ -20,14 +20,14 @@ class PostController extends Controller
 
         // $likes = $posts->likes();
         // $comments = $posts->comments();
-        $likes = 'like';
-        $comments = 'cmt';
+        // $likes = 'like';
+        // $comments = 'cmt';
 
-        return response()->json([
-            'post' => $posts,
-            'like' => $likes,
-            'cmt' => $comments,
-        ]);
+        // return response()->json([
+        //     'post' => $posts,
+        //     'like' => $likes,
+        //     'cmt' => $comments,
+        // ]);
     }
 
     /**
