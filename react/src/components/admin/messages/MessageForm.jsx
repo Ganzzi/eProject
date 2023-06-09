@@ -5,16 +5,25 @@ import { useStateContext } from "../../../contexts/ContextProvider.jsx";
 export default function MessageForm(){ 
     const navigate = useNavigate();
     let { id } = useParams();
-    const [Message, setMessage] = useState({
+    const [message, setMessage] = useState({
         id: null,
-        paticipant: "",
+        chat_room_id: "",
         text: "",
+        sender_id:null,
         create_at: "",
+        update_at:"",
     
     });
     const [errors, setErrors] = useState(null);
     const [loading, setLoading] = useState(false);
     const { setNotification } = useStateContext();
+    const [date, time] = str.split("T");
+
+    // Assuming 03 is the month and 01 is the day – otherwise, those could be swapped
+    const [year, month, day] = date.split("-")
+
+    // Added slashes and the space before the time
+    return `${day}/${month}/${year} ${time}`
 
     if (id) {
         useEffect(() => {
@@ -33,9 +42,9 @@ export default function MessageForm(){
 
     const onSubmit = (ev) => {
         ev.preventDefault();
-        if (Message.id) {
+        if (message.id) {
             axiosClient
-                .put(`/messages/${Message.id}`, Message)
+                .put(`/messages/${message.id}`, Message)
                 .then(() => {
                     setNotification("Message was successfully updated");
                     navigate("/admin/messages");
@@ -48,7 +57,7 @@ export default function MessageForm(){
                 });
         } else {
             axiosClient
-                .post("/messages", Message)
+                .post("/messages", message)
                 .then(() => {
                     setNotification("Message was successfully created");
                     navigate("/admin/messages");
@@ -61,6 +70,59 @@ export default function MessageForm(){
                 });
         }
     };
+    return (
+        <>
+            {message.id && <h1>Update text: {message.text}</h1>}
+            {!message.id && <h1>New Message</h1>}
+            <div className="card animated fadeInDown">
+                {loading && <div className="text-center">Loading...</div>}
+                {errors && (
+                    <div className="alert">
+                        {Object.keys(errors).map((key) => (
+                            <p key={key}>{errors[key][0]}</p>
+                        ))}
+                    </div>
+                )}
+                {!loading && (
+                    <form onSubmit={onSubmit}>
+                          <input
+                            value={message.text}
+                            onChange={(ev) =>
+                                setMessage({ ...message, text: ev.target.value })
+                            }
+                            placeholder="text"
+                        />
+                        <input
+                            value={message.Sender_id}
+                            onChange={(ev) =>
+                                setMessage({ ...message, Sender_id: ev.target.value })
+                            }
+                            placeholder="Sender_id"
+                        />
+                         <input
+                            value={message.created_at}
+                            onChange={(ev) =>
+                                setMessage({ ...message, created_at: ev.target.value })
+                            }
+                            placeholder="Created_at"
+                        />
+                            <input
+                            value={message.updated_at}
+                            onChange={(ev) =>
+                                setMessage({ ...message, updated_at: ev.target.value })
+                            }
+                            placeholder="updated_at"
+                        />
+                       
+                      
+                        
+                        <button className="btn">Save</button>
+                    </form>
+                )}
+            </div>
+        </>
+    );
+                        }
 
-}
+
 
