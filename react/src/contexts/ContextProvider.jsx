@@ -4,7 +4,7 @@ const StateContext = createContext({});
 
 export const ContextProvider = ({ children }) => {
     const [user, setUser] = useState({
-        Role_Id: 2,
+        role_id: 2,
         bio: "",
         created_at: "",
         email: "",

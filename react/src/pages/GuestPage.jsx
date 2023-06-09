@@ -6,7 +6,7 @@ export default function GuestLayout() {
     const { user, token } = useStateContext();
 
     if (token) {
-        if (user.Role_Id == 1) {
+        if (user.role_id == 1) {
             return <Navigate to={"/admin"} />;
         } else {
             return <Navigate to={"/posts"} />;
