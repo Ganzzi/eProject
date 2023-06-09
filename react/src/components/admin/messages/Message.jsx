@@ -26,11 +26,11 @@ export default function Message(){
     const getMessage = () => {
         setLoading(true);
         axiosClient
-            .get("/messages")
+            .get("/message")
             .then(({ data }) => {
                 setLoading(false);
-                setMessage(data.data);
                 console.log(data);
+                // setMessage(data);
             })
             .catch(() => {
                 setLoading(false);
@@ -56,16 +56,18 @@ export default function Message(){
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>paticipant</th>
+                            <th>chat_room_id</th>
                             <th>text</th>
+                            <th>Sender_id</th>
                             <th>Create at</th>
+                            <th>Update_at</th>
                           
                         </tr>
                     </thead>
                     {loading && (
                         <tbody>
                             <tr>
-                                <td colSpan="5" className="text-center">
+                                <td colSpan="7" className="text-center">
                                     Loading...
                                 </td>
                             </tr>
@@ -73,24 +75,26 @@ export default function Message(){
                     )}
                     {!loading && (
                         <tbody>
-                            {message.map((u) => (
-                                <tr key={u.id}>
-                                    <td>{u.id}</td>
-                                    <td>{u.paticipant}</td>
-                                    <td>{u.text}</td>
-                                    <td>{u.created_at}</td>
+                            {message.map((m) => (
+                                <tr key={m.id}>
+                                    <td>{m.Message_Id}</td>
+                                    <td>{m.chat_room_id}</td>
+                                    <td>{m.text}</td>
+                                    <td>{m.Sender_id}</td>
+                                    <td>{m.created_at}</td>
+                                    <td>{m.updated_at}</td>
                                     
                                     <td>
                                         <Link
                                             className="btn-edit"
-                                            to={"/admin/messages/" + u.id}
+                                            to={"/admin/messages/" + m.id}
                                         >
                                             Edit
                                         </Link>
                                         &nbsp;
                                         <button
                                             className="btn-delete"
-                                            onClick={(ev) => onDeleteClick(ev)}
+                                            onClick={(ev) => onDeleteClick(m.Message_Id)}
                                         >
                                             Delete
                                         </button>
