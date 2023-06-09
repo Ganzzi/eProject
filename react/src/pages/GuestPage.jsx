@@ -9,7 +9,7 @@ export default function GuestLayout() {
         if (user.role_id == 1) {
             return <Navigate to={"/admin"} />;
         } else {
-            return <Navigate to={"/posts"} />;
+            return <Navigate to={"/messages"} />;
         }
     }
     return (

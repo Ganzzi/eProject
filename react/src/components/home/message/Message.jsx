@@ -1,6 +1,7 @@
 import React from "react";
 
-const Message = () => {
+const Message = () =>
+{
     const roomCount = 24;
     const rooms = Array.from(
         { length: roomCount },
@@ -18,9 +19,8 @@ const Message = () => {
                     {rooms.map((room, index) => (
                         <li
                             key={index}
-                            className={`list-group-item ${
-                                room === selectedRoom ? "active" : ""
-                            }`}
+                            className={`list-group-item ${room === selectedRoom ? "active" : ""
+                                }`}
                         >
                             {room}
                         </li>
@@ -29,7 +29,11 @@ const Message = () => {
             </aside>
 
             {/* Chats */}
-            <main className="chats"></main>
+            <main className="chats">
+                <div>
+                    hi
+                </div>
+            </main>
         </div>
     );
 };

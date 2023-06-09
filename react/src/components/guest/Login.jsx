@@ -4,13 +4,15 @@ import { createRef } from "react";
 import { useStateContext } from "../../contexts/ContextProvider.jsx";
 import { useState } from "react";
 
-export default function Login() {
+export default function Login ()
+{
     const emailRef = createRef();
     const passwordRef = createRef();
     const { setUser, setToken, setRole } = useStateContext();
     const [message, setMessage] = useState(null);
 
-    const onSubmit = (ev) => {
+    const onSubmit = (ev) =>
+    {
         ev.preventDefault();
 
         const payload = {
@@ -22,13 +24,17 @@ export default function Login() {
 
         axiosClient
             .post("/login", payload)
-            .then(({ data }) => {
+            .then(({ data }) =>
+            {
+                console.log(data.user);
                 setUser(data.user);
                 setToken(data.token);
             })
-            .catch((err) => {
+            .catch((err) =>
+            {
                 const response = err.response;
-                if (response && response.status === 422) {
+                if (response && response.status === 422)
+                {
                     setMessage(response.data.message);
                 }
             });
