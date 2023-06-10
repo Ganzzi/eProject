@@ -16,9 +16,9 @@ class ChatRoomController extends Controller
      
     public function index()
     {
-        $chatrooms = ChatRoom::all();
+        $chatRooms = ChatRoom::all();
 
-        return response()->json($chatrooms, 200);
+        return response()->json($chatRooms, 200);
     }
 
     /**
@@ -28,31 +28,53 @@ class ChatRoomController extends Controller
      */
     public function store(Request $request)
     {
-        $userId1 = $request->user_id;
-        $userId2 = $request->user_id2;
-        $chatroom = new Chatroom;
-        $chatroom->save();
+        $validatedData = $request->validate([
+            'user_id' => 'required',
+            'user_id2' => 'required'
+        ]);
+        
+        $userId1 = $validatedData['user_id'];
+        $userId2 = $validatedData['user_id2'];
+        
+        $chatRoom = ChatRoom::create();
 
-        $chatroom->users()->attach([$userId1, $userId2]);
-        return response(['message' => 'chat room create successfully']);
+        // return response(['message' => 'Chat room created successfully', 'id: ' => $userId1 . $userId2]);
 
+        
+        $chatRoom->users()->attach([
+            $userId1 => ['join_at' => now()],
+            $userId2 => ['join_at' => now()]
+        ]);
+        
+        return response(['message' => 'Chat room created successfully']);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(ChatRoom $chatRoom)
+    public function show( ChatRoom $chatRoom)
     {
-        $chatRoom->load('users', 'chats.likes');
+        $chatRoomId = 1; // ID của chat room bạn muốn tìm
 
+    $chatRoom = ChatRoom::where('chat_room_id', $chatRoomId)->firstOrFail();
+        // $cr = $chatRoom->findOrFail();
+    
+        
+
+        // $user = $chatRoom->users();
+
+        
+        $ui=$chatRoom->load('users', 'chats');
+        return response(['mess' => $ui]);
+        
         $lastMessage = $chatRoom->chats()->orderByDesc('created_at')->first();
 
         return response()->json([
-            'chat_room_id' => $chatRoom->id,
+            'chat_room_id' => $chatRoom->chat_room_id,
             'created_at' => $chatRoom->created_at->toISOString(),
             'participants' => $chatRoom->users->map(function ($user) {
                 return [
-                    'paticipator_id' => $user->id,
+                    'paticipator_id' => $user->user_id,
                     'name' => $user->name,
                     'image' => $user->image,
                     'join_at' => $user->pivot->join_at->toISOString(),
@@ -60,7 +82,7 @@ class ChatRoomController extends Controller
             }),
             'chats' => $chatRoom->chats->map(function ($chat) {
                 return [
-                    'chat_id' => $chat->id,
+                    'chat_id' => $chat->chat_id,
                     'created_at' => $chat->created_at->toISOString(),
                     'text' => $chat->text,
                     'sender_id' => $chat->sender_id,

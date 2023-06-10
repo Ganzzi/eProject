@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Post;
 use App\Http\Controllers\Controller;
+use App\Models\LikePost;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -14,8 +15,19 @@ class PostController extends Controller
      */
     public function index()
     {
-        return Post::all();
-        return PostResource::collection(Post::query()->oderBy('id','desc')->paginate(10));
+        /** @var \App\Models\Post $posts */
+        $posts = Post::all();
+
+        // $likes = $posts->likes();
+        // $comments = $posts->comments();
+        // $likes = 'like';
+        // $comments = 'cmt';
+
+        // return response()->json([
+        //     'post' => $posts,
+        //     'like' => $likes,
+        //     'cmt' => $comments,
+        // ]);
     }
 
     /**
