@@ -29,27 +29,6 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $post = $request->all();
-
-        if ($request->hasFile('photo')) {
-            $file = $request->file('photo');
-            $ext = $file->getClientOriginalExtension();
-            if ($ext != 'jpg' && $ext != 'jpeg' && $ext != 'png') {
-                $error = 1;
-                return view('admin.posts.posts', compact(error));
-            }
-            $imageFilename = $file->getClientOriginalName();
-            $file->move('images', $imageFilename);
-        } else {
-            $imageFilename = null;
-        }
-
-
-        $post['image'] = $imageFilename;
-        $post['slug'] = \Str::slug($request->name);
-
-        Post::create($post);
-        return redirect()->route('admin.posts.posts');
     }
 
     /**
@@ -59,7 +38,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return new PostResource($post);
+        // lam lai
     }
 
     /**
@@ -70,27 +49,6 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        $post = $request->all();
-
-        if ($request->hasFile('photo')) {
-            $file = $request->file('photo');
-            $ext = $file->getClientOriginalExtension();
-            if ($ext != 'jpg' && $ext != 'jpeg' && $ext != 'png') {
-                $error = 1;
-                return view('admin.posts.posts', compact(error));
-            }
-            $imageFilename = $file->getClientOriginalName();
-            $file->move('images', $imageFilename);
-        } else {
-            $imageFilename = $post->image;
-        }
-
-
-        $prod['image'] = $imageFilename;
-        $prod['slug'] = \Str::slug($request->name);
-        //dd($prod);
-        $post->update($post);
-        return redirect()->route('admin.posts.posts');
     }
 
     /**
@@ -100,6 +58,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        // lam lai
         $post->delete();
 
         return response("", 204);
