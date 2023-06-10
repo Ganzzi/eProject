@@ -4,6 +4,8 @@ import { Outlet, Navigate, Link } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client";
 
+
+
 export default function Homescreen() {
 
     const { user, token, setUser, setToken } = useStateContext();
@@ -36,21 +38,27 @@ export default function Homescreen() {
                 }}
             >
                 <div className="col-2 d-flex justify-content-center"
-              
-                    style={{}
+
+                    style={{
+                        fontFamily: "Papyrus",
+                        fontSize: "30px",
+                    }
                     }>
-                        <Link to={"/posts"}>spaceshare</Link>
-                    
+                    <Link to={"/posts"}>spaceshare</Link>
+
 
                 </div>
 
-                <div className="col-6  d-flex justify-content-center ">
-                    <input type="text" />
+                <div className="col-6  d-flex justify-content-center">
+                    <form action="" id="search-box">
+                        <input type="text" id="search-text" placeholder="search.." />
+                        
+                    </form>
                 </div>
 
                 <div className="col-4 d-flex justify-content-end align-items-center">
-                <Link to={"/messages"}>tin nhan</Link>
-                <Link to={"/profile"}>{user.name}</Link>
+                    <Link to={"/messages"}>tin nhan</Link>
+                    <Link to={"/profile"}>{user.name}</Link>
                     <a
                         className="btn-logout btn btn-primary"
                         onClick={onLogout}
