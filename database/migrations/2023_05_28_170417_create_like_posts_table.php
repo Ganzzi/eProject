@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('like_posts', function (Blueprint $table) {
             $table->unsignedBigInteger('liker_id');
-            $table->foreign('liker_id')->references('user_id')->on('users');
+            $table->foreign('liker_id')->references('id')->on('users');
             $table->unsignedBigInteger('post_id');
-            $table->foreign('post_id')->references('post_id')->on('posts');
+            $table->foreign('post_id')->references('id')->on('posts');
             $table->timestamps();
 
             $table->primary(['liker_id', 'post_id']);

@@ -15,19 +15,10 @@ class PostController extends Controller
      */
     public function index()
     {
-        /** @var \App\Models\Post $posts */
-        $posts = Post::all();
 
-        // $likes = $posts->likes();
-        // $comments = $posts->comments();
-        // $likes = 'like';
-        // $comments = 'cmt';
+        $posts = Post::with('likes', 'comments.likes')->get();
 
-        // return response()->json([
-        //     'post' => $posts,
-        //     'like' => $likes,
-        //     'cmt' => $comments,
-        // ]);
+        return response()->json(['data' => $posts]);
     }
 
     /**
@@ -53,10 +44,10 @@ class PostController extends Controller
             $imageFilename = null;
         }
 
-        
+
         $post['image'] = $imageFilename;
         $post['slug'] = \Str::slug($request->name);
-        
+
         Post::create($post);
         return redirect()->route('admin.posts.posts');
     }
@@ -94,7 +85,7 @@ class PostController extends Controller
             $imageFilename = $post->image;
         }
 
-        
+
         $prod['image'] = $imageFilename;
         $prod['slug'] = \Str::slug($request->name);
         //dd($prod);

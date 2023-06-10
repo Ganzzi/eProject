@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('chats', function (Blueprint $table) {
-            $table->id('chat_id');
+            $table->id();
             $table->unsignedBigInteger('chat_room_id');
-            $table->foreign('chat_room_id')->references('chat_room_id')->on('chat_rooms');
+            $table->foreign('chat_room_id')->references('id')->on('chat_rooms');
             $table->string('text');
             $table->unsignedBigInteger('sender_id');
-            $table->foreign('sender_id')->references('user_id')->on('users');
+            $table->foreign('sender_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

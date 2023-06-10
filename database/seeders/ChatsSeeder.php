@@ -14,7 +14,6 @@ class ChatsSeeder extends Seeder
     public function run(): void
     {
         Chat::create([
-            'chat_id' => 1,
             'chat_room_id' => 1,
             'text' => 'Hello',
             'sender_id' => 1,
@@ -22,7 +21,6 @@ class ChatsSeeder extends Seeder
         ]);
 
         Chat::create([
-            'chat_id' => 2,
             'chat_room_id' => 2,
             'text' => 'Hi there',
             'sender_id' => 2,
