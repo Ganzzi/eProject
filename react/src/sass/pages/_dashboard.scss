@@ -8,12 +8,15 @@
 
     a {
       display: block;
-      padding: 0.75rem 1rem;
+      padding: 1rem 1rem;
       border-radius: 6px;
       color: white;
       text-decoration: none;
       transition: all 0.2s;
-
+     font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+     font-size: 24px;
+     font-style: italic;
+     text-align: center;
       &hover {
         background-color: rgba(0, 0, 0, 0.2);
       }
@@ -32,12 +35,16 @@
 
   main {
     padding: 2rem;
+    
   }
 
   .content {
     flex: 1;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    
   }
 }
+
 
 // aside {
 //   width: 240px;

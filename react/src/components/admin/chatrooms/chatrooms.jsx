@@ -46,15 +46,19 @@ export default function ChatRooms(){
                     alignItems: "center",
                 }}
             >
-                <h1>chatrooms</h1>
-                <Link className="btn-add" to="/admin/chatrooms/new">
+                <h1 style={{fontFamily:"fantasy",
+           justifycontent: "space-between",
+            }}>chatrooms</h1>
+                {/* <Link className="btn-add" to="/admin/chatrooms/new">
                     Add new
-                </Link>
+                </Link> */}
             </div>
             <div className="card animated fadeInDown">
                 <table>
                     <thead>
-                        <tr>
+                        <tr  style={{
+                            fontFamily:"cursive",textAlign:"center",padding:"40px",
+                        }}>
                            
                             <th>Id</th>
                             <th>Chats</th>
@@ -85,12 +89,12 @@ export default function ChatRooms(){
                                     <td>{m.updated_at}</td>
                                     
                                     <td>
-                                        <Link
+                                        {/* <Link
                                             className="btn-edit"
                                             to={"/admin/chatrooms/" + m.id}
                                         >
                                             Edit
-                                        </Link>
+                                        </Link> */}
                                         &nbsp;
                                         <button
                                             className="btn-delete"

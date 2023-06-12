@@ -89,12 +89,19 @@ return (
             )}
             {!loading && (
                 <form onSubmit={onSubmit}>
-                    <input
+                    <input 
                         value={post.description}
                         onChange={(ev) =>
                             setPost({ ...post, description: ev.target.value })
                         }
                         placeholder="description"
+                    />
+                      <input
+                        value={post.field}
+                        onChange={(ev) =>
+                            setPost({ ...post, field: ev.target.value })
+                        }
+                        placeholder="field"
                     />
                      
                     <input
@@ -105,26 +112,11 @@ return (
                         type="file" id="file-input" name="ImageStyle"
                         placeholder="image"
                     />
-                     <input
-                        value={post.userimage}
-                        onChange={(ev) =>
-                            setPost({ ...post, userimage: ev.target.value })
-                        }
-                        type="file" id="file-input" name="ImageStyle"
-                       
-                        placeholder="userimage"
-                    />
-                    <input
-                        value={post.field}
-                        onChange={(ev) =>
-                            setPost({ ...post, field: ev.target.value })
-                        }
-                        placeholder="field"
-                    />
-                  <input type="datetime-local" id="birthdaytime" name="birthdaytime"
-                           placeholder="created_at"/>
+                    
+                    
+               
   
-  <input type="datetime-local" id="birthdaytime" name="birthdaytime"
+                 <input type="datetime-local" id="birthdaytime" name="birthdaytime"
                            placeholder="updated_at"/>
   
            

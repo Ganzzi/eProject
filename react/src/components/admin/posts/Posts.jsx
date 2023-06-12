@@ -46,7 +46,9 @@ export default function Posts() {
                     alignItems: "center",
                 }}
             >
-                <h1>Posts</h1>
+                <h1 style={{fontFamily:"fantasy",
+           justifycontent: "space-between",
+            }}>Posts</h1>
                 <Link className="btn-add" to="/admin/posts/new">
                     Add new
                 </Link>
@@ -54,10 +56,14 @@ export default function Posts() {
             <div className="card animated fadeInDown">
                 <table>
                     <thead>
-                        <tr>
+                        <tr  style={{
+                            fontFamily:"cursive",textAlign:"center",padding:"40px",
+                        }}>
                             <th>ID</th>
                             <th>Creator</th>
                             <th>Description</th>
+                            <th>Field</th>
+                            <th>Comment</th>
                             <th>image</th>
                             <th>Update at</th>
                             <th>Action</th>
@@ -75,15 +81,26 @@ export default function Posts() {
                     {!loading && (
                         <tbody>
                             {posts.map((p) => (
-                                <tr key={p.Post_Id}>
-                                    <td>{p.Post_Id}</td>
-                                    <td>{p.Creator_Id}</td>
-                                    <td>{p.Description}</td>
-                                    <td>{p.Field}</td>
-                                    <td>{p.Image}</td>
-                                    <td>{p.Post_Id}</td>
-                                    <td>{p.UserImage}</td>
+                                <tr key={p.id}>
+                                    <td>{p.id}</td>
+                                    <td>{p.creator_id}</td>
+                                
+                                    <td>{p.description}</td>
+                                    <td>{p.field}</td>
                                    
+                                    <td>{p.comments.length}</td>
+
+                                    <td>
+                                        <img
+                                            src={
+                                                "http://127.0.0.1:8000/api/images/" +
+                                                p.image
+                                            }
+                                            width={50}
+                                            height={50}
+                                            alt=""
+                                        />
+                                    </td>
                                     <td>{p.updated_at}</td>
                                     <td>
                                         <Link

@@ -27,9 +27,10 @@ class PostController extends Controller
      * @param \App\Http\Requests\StorePostRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-    }
+    // public function store(Request $request)
+    // {
+      
+    // }
 
     /**
      * Display the specified resource.
@@ -38,7 +39,31 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        // lam lai
+        $post = Post::with('comments.likes')->find($post);
+        return response()->json(['data' => $post]);
+
+       
+
+        return response()->json([
+            
+            'posts' => $post->posts->map(function ($post) {
+                return [
+                    'post_id' => $post->id,
+                    'creator_id'=>$post->creator_id,
+                    'description' => $post->description,
+                    'field' => $post->field,
+                    'comments' => $post->comments,
+                    'image' => $post->image,
+                    'updated_at' => $post->updated_at->toISOString(),
+                    'likes' => $post->likes->map(function ($like) {
+                        return [
+                            'liker' => $like->liker_id,
+                            'updated_at' => $like->updated_at->toISOString(),
+                        ];
+                    })
+                ];
+            }),
+        ]);
     }
 
     /**
@@ -52,6 +77,9 @@ class PostController extends Controller
         $data = $request->validate([
             'description' => 'required|string|max:100',
             'field' => 'required',
+            'comments'=>"required",
+            'image'=>'required',
+            'updated_at'=>'required|datetime',
         ]);
 
         $_post = Post::find($post);
@@ -66,9 +94,25 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        // lam lai
+        // Find the post by ID
+        $post = Post::find($post);
+
+        if (!$post) {
+            return response()->json(['success' => false, 'post' => ' post not found'], 404);
+        }
+
+        
+        $post->post()->detach();
+
+        // Delete chats and associated like chats
+        $post->post()->each(function ($post) {
+            $post->likePost()->delete();
+            $post->delete();
+        });
+
+        // Delete the post
         $post->delete();
 
-        return response("", 204);
+        return response()->json(['success' => true, 'post' => 'post deleted successfully']);
     }
-}
+    }

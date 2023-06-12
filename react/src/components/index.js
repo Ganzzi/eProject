@@ -9,7 +9,7 @@ import Users from "./admin/users/Users";
 import AdminPostForm from "./admin/posts/PostForm";
 import AdminPosts from "./admin/posts/Posts";
 import Adminchatrooms from "./admin/chatrooms/ChatRooms";
-import AdminchatroomForm from "./admin/chatrooms/ChatRoomForm";
+// import AdminchatroomForm from "./admin/chatrooms/ChatRoomForm";
 
 
 
@@ -25,5 +25,5 @@ export {
   AdminPosts,
   AdminPostForm,
   Adminchatrooms,
-  AdminchatroomForm,
+  // AdminchatroomForm,
 };

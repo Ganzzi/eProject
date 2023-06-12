@@ -47,7 +47,7 @@ class ChatRoomController extends Controller
     public function show($chatRoom)
     {
         $room = ChatRoom::with('chats.likes')->find($chatRoom);
-        // return response()->json(['data' => $room]);
+        return response()->json(['data' => $room]);
 
         $lastMessage = $room->chats()->orderByDesc('created_at')->first();
 
@@ -96,10 +96,10 @@ class ChatRoomController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateChatRoomRequest $request, ChatRoom $chatRoom)
-    {
-        //
-    }
+    // public function update(UpdateChatRoomRequest $request, ChatRoom $chatRoom)
+    // {
+    //     //
+    // }
 
     /**
      * Remove the specified resource from storage.
