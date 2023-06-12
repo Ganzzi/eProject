@@ -8,8 +8,8 @@ import UserForm from "./admin/users/UserForm";
 import Users from "./admin/users/Users";
 import AdminPostForm from "./admin/posts/PostForm";
 import AdminPosts from "./admin/posts/Posts";
-import AdminMessage from "./admin/messages/Message";
-import AdminMessageForm from "./admin/messages/MessageForm";
+import Adminchatrooms from "./admin/chatrooms/chatrooms";
+import AdminchatroomForm from "./admin/chatrooms/chatroomForm";
 
 export {
   Login,
@@ -22,6 +22,6 @@ export {
   UserForm,
   AdminPosts,
   AdminPostForm,
-  AdminMessage,
-  AdminMessageForm,
+  Adminchatrooms,
+  AdminchatroomForm,
 };

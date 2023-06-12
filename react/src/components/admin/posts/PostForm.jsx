@@ -9,6 +9,7 @@ import { useStateContext } from "../../../contexts/ContextProvider.jsx";
 export default function PostForm() {
 const navigate = useNavigate();
 
+
 let { id } = useParams();
 const [post, setPost] = useState({
     id: null,
@@ -110,6 +111,7 @@ return (
                             setPost({ ...post, userimage: ev.target.value })
                         }
                         type="file" id="file-input" name="ImageStyle"
+                       
                         placeholder="userimage"
                     />
                     <input
@@ -119,24 +121,12 @@ return (
                         }
                         placeholder="field"
                     />
-                   <input
-                        value={post.create_at}
-                        onChange={(ev) =>
-                            setPost({ ...post, create_at: ev.target.value })
-                           
-                        }
-                        placeholder="create_at"
-                       
-                    />
-                    <input
-                        value={post.update_at}
-                        onChange={(ev) =>
-                            setPost({ ...post, update_at: ev.target.value })
-                           
-                        }
-                        placeholder="update_at"
-                       
-                    />
+                  <input type="datetime-local" id="birthdaytime" name="birthdaytime"
+                           placeholder="created_at"/>
+  
+  <input type="datetime-local" id="birthdaytime" name="birthdaytime"
+                           placeholder="updated_at"/>
+  
            
         
                     <button className="btn">Save</button>

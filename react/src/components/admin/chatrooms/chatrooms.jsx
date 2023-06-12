@@ -4,33 +4,33 @@ import { useStateContext } from "../../../contexts/ContextProvider";
 import axiosClient from "../../../axios-client";
 import { Link } from "react-router-dom";
 
-export default function Message(){
-    const [message, setMessage] = useState([]);
+export default function chatrooms(){
+    const [chatrooms, setChatroom] = useState([]);
     const [loading, setLoading] = useState(false);
     const { setNotification } = useStateContext();
 
     useEffect(() => {
-        getMessage();
+        getChatroom();
     }, []);
 
-    const onDeleteClick = (message) => {
-        if (!window.confirm("Are you sure you want to delete this Message?")) {
+    const onDeleteClick = (chatrooms) => {
+        if (!window.confirm("Are you sure you want to delete this chatrooms?")) {
             return;
         }
-        axiosClient.delete(`/chatrooms/${message.id}`).then(() => {
-            setNotification("Message was successfully deleted");
-            getMessage();
+        axiosClient.delete(`/chatrooms/${chatrooms.id}`).then(() => {
+            setNotification("chatrooms was successfully deleted");
+            getChatroom();
         });
     };
 
-    const getMessage = () => {
+    const getChatroom = () => {
         setLoading(true);
         axiosClient
             .get("/chatrooms")
             .then(({ data }) => {
                 setLoading(false);
                 console.log(data);
-                setMessage(data);
+              setChatrooms(data);
             })
             .catch(() => {
                 setLoading(false);
@@ -46,7 +46,7 @@ export default function Message(){
                     alignItems: "center",
                 }}
             >
-                <h1>Message</h1>
+                <h1>chatrooms</h1>
                 <Link className="btn-add" to="/admin/chatrooms/new">
                     Add new
                 </Link>
@@ -57,7 +57,8 @@ export default function Message(){
                         <tr>
                            
                             <th>chat_room_id</th>
-                           
+                           <th>text</th>
+                           <th>sender id</th>
                             <th>Created at</th>
                             <th>Updated at</th>
                           
@@ -74,11 +75,12 @@ export default function Message(){
                     )}
                     {!loading && (
                         <tbody>
-                            {message.map((m) => (
+                            {chatrooms.map((m) => (
                                 <tr key={m.id}>
                                    
                                     <td>{m.chat_room_id}</td>
-                                    
+                                    <td>{m.text}</td>
+                                    <td>{m.sender_id}</td>
                                     <td>{m.created_at}</td>
                                     <td>{m.updated_at}</td>
                                     
@@ -92,7 +94,7 @@ export default function Message(){
                                         &nbsp;
                                         <button
                                             className="btn-delete"
-                                            onClick={(ev) => onDeleteClick(m.Message_Id)}
+                                            onClick={() => onDeleteClick(m.chatrooms_Id)}
                                         >
                                             Delete
                                         </button>

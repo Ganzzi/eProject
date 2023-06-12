@@ -53,7 +53,7 @@ class ChatRoomController extends Controller
             'participants' => $chatRoom->users->map(function ($user) {
                 return [
                     'paticipator_id' => $user->id,
-                    'name' => $user->name,
+                    'name' => $user->name, 
                     'image' => $user->image,
                     'join_at' => $user->pivot->join_at->toISOString(),
                 ];
@@ -102,8 +102,19 @@ class ChatRoomController extends Controller
      */
     public function destroy(ChatRoom $chatRoom)
     {
-        $chatRoom->delete();
+       $room = chatRoom::find($chatRoom);
+       if(!$room){
+        return response()->json(['success'=>false,'message'=>'chat room not found'],404);
 
-        return response("", 204);
-    }
+       }
+       //detach users from the chat room
+       $room->users()->detach();
+       //delete chats and associlated like chats
+       $room->chats()->each(function($chat){
+        $chat->likeChats()->delete();
+        $chat->delete();
+       });
+       $room->delete();
+       return response()->json(['success'=> true, 'message'=>'chat room deleted successfully']);
+}
 }
