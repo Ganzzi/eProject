@@ -4,10 +4,8 @@ import { useStateContext } from "../../../contexts/ContextProvider";
 import axiosClient from "../../../axios-client";
 import { Link } from "react-router-dom";
 
-export default function Posts () {
-    const [posts, setPost] = useState([
-        
-    ]);
+export default function Posts() {
+    const [posts, setPost] = useState([]);
     const [loading, setLoading] = useState(false);
     const { setNotification } = useStateContext();
 
@@ -58,15 +56,11 @@ export default function Posts () {
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Creator_id</th>
+                            <th>Creator</th>
                             <th>Description</th>
-                            <th>Field</th>
                             <th>image</th>
-                            <th>Post_Id</th>
-                            <td>UserImage</td>
-                            
                             <th>Update at</th>
-                            
+                            <th>Action</th>
                         </tr>
                     </thead>
                     {loading && (
@@ -91,11 +85,10 @@ export default function Posts () {
                                     <td>{p.UserImage}</td>
                                    
                                     <td>{p.updated_at}</td>
-                                   
                                     <td>
                                         <Link
                                             className="btn-edit"
-                                            to={"/admin/posts/" + p.Post_Id}
+                                            to={"/admin/posts/" + p.post_id}
                                         >
                                             Edit
                                         </Link>
@@ -116,5 +109,3 @@ export default function Posts () {
         </div>
     );
 }
-
-

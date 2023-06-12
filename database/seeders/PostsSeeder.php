@@ -16,19 +16,15 @@ class PostsSeeder extends Seeder
         Post::create([
             'creator_id' => 1,
             'description' => 'My first post',
-            'image' => 'image1.jpg',
-            'user_image' => 'user1.jpg',
-            'field' => 'Technology',
-            // Add more columns and values as needed...
+            'image' => 'SORmHJeqvaJn2j1xUZhTK6w7V4zsNovsdb11tMyE.png',
+            'field' => 'Tech',
         ]);
 
         Post::create([
             'creator_id' => 2,
             'description' => 'Check out this amazing photo',
-            'image' => 'image2.jpg',
-            'user_image' => 'user2.jpg',
-            'field' => 'Photography',
-            // Add more columns and values as needed...
+            'image' => 'SORmHJeqvaJn2j1xUZhTK6w7V4zsNovsdb11tMyE.png',
+            'field' => 'Bio',
         ]);
     }
 }

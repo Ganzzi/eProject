@@ -1,38 +1,34 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState ,} from "react";
+
+import { useStateContext } from "../../../contexts/ContextProvider.jsx"
 import axiosClient from "../../../axios-client.js";
-import { useStateContext } from "../../../contexts/ContextProvider.jsx";
-export default function MessageForm(){ 
+
+export default function ChatRoomForm(){ 
     const navigate = useNavigate();
     let { id } = useParams();
-    const [message, setMessage] = useState({
+    
+    const [chatrooms, setchatrooms] = useState({
         id: null,
         chat_room_id: "",
         text: "",
         sender_id:null,
-        create_at: "",
-        update_at:"",
+        created_at: "",
+        updated_at:"",
     
     });
     const [errors, setErrors] = useState(null);
     const [loading, setLoading] = useState(false);
     const { setNotification } = useStateContext();
-    const [date, time] = str.split("T");
-
-    // Assuming 03 is the month and 01 is the day – otherwise, those could be swapped
-    const [year, month, day] = date.split("-")
-
-    // Added slashes and the space before the time
-    return `${day}/${month}/${year} ${time}`
-
+    
     if (id) {
         useEffect(() => {
             setLoading(true);
             axiosClient
-                .get(`/messages/${id}`)
+                .get(`/chatrooms/${id}`)
                 .then(({ data }) => {
                     setLoading(false);
-                    setMessage(data);
+                    setchatrooms(data);
                 })
                 .catch(() => {
                     setLoading(false);
@@ -42,12 +38,12 @@ export default function MessageForm(){
 
     const onSubmit = (ev) => {
         ev.preventDefault();
-        if (message.id) {
+        if (chatrooms.id) {
             axiosClient
-                .put(`/messages/${message.id}`, Message)
+                .put(`/chatrooms/${chatrooms.id}`, chatrooms)
                 .then(() => {
-                    setNotification("Message was successfully updated");
-                    navigate("/admin/messages");
+                    setNotification("chatrooms was successfully updated");
+                    navigate("/admin/chatrooms");
                 })
                 .catch((err) => {
                     const response = err.response;
@@ -57,10 +53,10 @@ export default function MessageForm(){
                 });
         } else {
             axiosClient
-                .post("/messages", message)
+                .post("/chatrooms", chatrooms)
                 .then(() => {
-                    setNotification("Message was successfully created");
-                    navigate("/admin/messages");
+                    setNotification("chatrooms was successfully created");
+                    navigate("/admin/chatrooms");
                 })
                 .catch((err) => {
                     const response = err.response;
@@ -72,8 +68,8 @@ export default function MessageForm(){
     };
     return (
         <>
-            {message.id && <h1>Update text: {message.text}</h1>}
-            {!message.id && <h1>New Message</h1>}
+            {chatrooms.id && <h1>Update text: {chatrooms.text}</h1>}
+            {!chatrooms.id && <h1>New chatrooms</h1>}
             <div className="card animated fadeInDown">
                 {loading && <div className="text-center">Loading...</div>}
                 {errors && (
@@ -86,33 +82,19 @@ export default function MessageForm(){
                 {!loading && (
                     <form onSubmit={onSubmit}>
                           <input
-                            value={message.text}
+                            value={chatrooms.text}
                             onChange={(ev) =>
-                                setMessage({ ...message, text: ev.target.value })
+                                setchatrooms({ ...chatrooms, text: ev.target.value })
                             }
                             placeholder="text"
                         />
-                        <input
-                            value={message.Sender_id}
-                            onChange={(ev) =>
-                                setMessage({ ...message, Sender_id: ev.target.value })
-                            }
-                            placeholder="Sender_id"
-                        />
-                         <input
-                            value={message.created_at}
-                            onChange={(ev) =>
-                                setMessage({ ...message, created_at: ev.target.value })
-                            }
-                            placeholder="Created_at"
-                        />
-                            <input
-                            value={message.updated_at}
-                            onChange={(ev) =>
-                                setMessage({ ...message, updated_at: ev.target.value })
-                            }
-                            placeholder="updated_at"
-                        />
+                     
+                         <input type="datetime-local" id="birthdaytime" name="birthdaytime"
+                           placeholder="created_at"/>
+  
+                          <input type="datetime-local" id="birthdaytime" name="birthdaytime"
+                           placeholder="updated_at"/>
+  
                        
                       
                         

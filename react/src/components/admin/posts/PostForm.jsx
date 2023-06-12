@@ -9,15 +9,16 @@ import { useStateContext } from "../../../contexts/ContextProvider.jsx";
 export default function PostForm() {
 const navigate = useNavigate();
 
+
 let { id } = useParams();
 const [post, setPost] = useState({
     id: null,
     creator_id:null,
     description: "",
-    field:"",
     image: "",
-    post_id:"",
     userimage:"",
+    field:"",
+    create_at:"",
    update_at: "",
  
 });
@@ -95,13 +96,7 @@ return (
                         }
                         placeholder="description"
                     />
-                     <input
-                        value={post.field}
-                        onChange={(ev) =>
-                            setPost({ ...post, field: ev.target.value })
-                        }
-                        placeholder="field"
-                    />
+                     
                     <input
                         value={post.image}
                         onChange={(ev) =>
@@ -116,18 +111,22 @@ return (
                             setPost({ ...post, userimage: ev.target.value })
                         }
                         type="file" id="file-input" name="ImageStyle"
+                       
                         placeholder="userimage"
                     />
-                   
                     <input
-                        value={post.update_at}
+                        value={post.field}
                         onChange={(ev) =>
-                            setPost({ ...post, update_at: ev.target.value })
-                           
+                            setPost({ ...post, field: ev.target.value })
                         }
-                        placeholder="update_at"
-                       
+                        placeholder="field"
                     />
+                  <input type="datetime-local" id="birthdaytime" name="birthdaytime"
+                           placeholder="created_at"/>
+  
+  <input type="datetime-local" id="birthdaytime" name="birthdaytime"
+                           placeholder="updated_at"/>
+  
            
         
                     <button className="btn">Save</button>
