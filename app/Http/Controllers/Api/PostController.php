@@ -49,6 +49,14 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+        $data = $request->validate([
+            'description' => 'required|string|max:100',
+            'field' => 'required',
+        ]);
+
+        $_post = Post::find($post);
+
+        $_post->update($data);
     }
 
     /**

@@ -4,9 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\ChatRoom;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreChatRoomRequest;
-use App\Http\Requests\UpdateChatRoomRequest;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class ChatRoomController extends Controller
@@ -61,7 +58,7 @@ class ChatRoomController extends Controller
             'participants' => $room->users->map(function ($user) {
                 return [
                     'paticipator_id' => $user->id,
-                    'name' => $user->name,
+                    'name' => $user->name, 
                     'image' => $user->image,
                     'join_at' => $user->pivot->join_at->toISOString(),
                 ];
