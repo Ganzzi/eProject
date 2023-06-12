@@ -12,13 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('like_chats', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('liker_id');
             $table->foreign('liker_id')->references('id')->on('users');
             $table->unsignedBigInteger('chat_id');
             $table->foreign('chat_id')->references('id')->on('chats');
             $table->timestamps();
 
-            $table->primary(['liker_id', 'chat_id']);
+            // $table->primary(['liker_id', 'chat_id']);
         });
     }
 

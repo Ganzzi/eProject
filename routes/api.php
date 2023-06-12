@@ -61,3 +61,16 @@ Route::get('/images/{filename}', function ($filename) {
 
     return response($file)->header('Content-Type', $type);
 });
+
+Route::get('/videos/{filename}', function ($filename) {
+    $path = storage_path('app/public/videos/' . $filename);
+
+    if (!file_exists($path)) {
+        abort(404);
+    }
+
+    $file = file_get_contents($path);
+    $type = mime_content_type($path);
+
+    return response($file)->header('Content-Type', $type);
+});
