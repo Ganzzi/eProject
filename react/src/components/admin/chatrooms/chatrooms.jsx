@@ -4,8 +4,8 @@ import { useStateContext } from "../../../contexts/ContextProvider";
 import axiosClient from "../../../axios-client";
 import { Link } from "react-router-dom";
 
-export default function chatrooms(){
-    const [chatrooms, setChatroom] = useState([]);
+export default function ChatRooms(){
+    const [chatrooms, setChatrooms] = useState([]);
     const [loading, setLoading] = useState(false);
     const { setNotification } = useStateContext();
 
@@ -30,7 +30,7 @@ export default function chatrooms(){
             .then(({ data }) => {
                 setLoading(false);
                 console.log(data);
-              setChatrooms(data);
+                setChatrooms(data);
             })
             .catch(() => {
                 setLoading(false);
@@ -56,12 +56,12 @@ export default function chatrooms(){
                     <thead>
                         <tr>
                            
-                            <th>chat_room_id</th>
-                           <th>text</th>
-                           <th>sender id</th>
+                            <th>Id</th>
+                            <th>Chats</th>
+                            <th>Users</th>
                             <th>Created at</th>
                             <th>Updated at</th>
-                          
+                            <th>Action</th>
                         </tr>
                     </thead>
                     {loading && (
@@ -78,9 +78,9 @@ export default function chatrooms(){
                             {chatrooms.map((m) => (
                                 <tr key={m.id}>
                                    
-                                    <td>{m.chat_room_id}</td>
-                                    <td>{m.text}</td>
-                                    <td>{m.sender_id}</td>
+                                    <td>{m.id}</td>
+                                    <td>{m.chats.length}</td>
+                                    <td>{m.users.length}</td>
                                     <td>{m.created_at}</td>
                                     <td>{m.updated_at}</td>
                                     

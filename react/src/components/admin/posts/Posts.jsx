@@ -4,10 +4,8 @@ import { useStateContext } from "../../../contexts/ContextProvider";
 import axiosClient from "../../../axios-client";
 import { Link } from "react-router-dom";
 
-export default function Posts () {
-    const [posts, setPost] = useState([
-        
-    ]);
+export default function Posts() {
+    const [posts, setPost] = useState([]);
     const [loading, setLoading] = useState(false);
     const { setNotification } = useStateContext();
 
@@ -58,14 +56,11 @@ export default function Posts () {
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Creator_id</th>
+                            <th>Creator</th>
                             <th>Description</th>
                             <th>image</th>
-                            <td>UserImage</td>
-                            <th>Field</th>
-                            <th>create at</th>
                             <th>Update at</th>
-                            
+                            <th>Action</th>
                         </tr>
                     </thead>
                     {loading && (
@@ -80,16 +75,16 @@ export default function Posts () {
                     {!loading && (
                         <tbody>
                             {posts.map((p) => (
-                                <tr key={p.post_id}>
-                                    <td>{p.post_id}</td>
-                                    <td>{p.creator_id}</td>
-                                    <td>{p.description}</td>
-                                    <td>{p.image}</td>
-                                    <td>{p.user_image}</td>
-                                    <td>{p.field}</td>
-                                    <td>{p.created_at}</td>
-                                    <td>{p.updated_at}</td>
+                                <tr key={p.Post_Id}>
+                                    <td>{p.Post_Id}</td>
+                                    <td>{p.Creator_Id}</td>
+                                    <td>{p.Description}</td>
+                                    <td>{p.Field}</td>
+                                    <td>{p.Image}</td>
+                                    <td>{p.Post_Id}</td>
+                                    <td>{p.UserImage}</td>
                                    
+                                    <td>{p.updated_at}</td>
                                     <td>
                                         <Link
                                             className="btn-edit"
@@ -100,7 +95,7 @@ export default function Posts () {
                                         &nbsp;
                                         <button
                                             className="btn-delete"
-                                            onClick={() => onDeleteClick(p.post_id)}
+                                            onClick={() => onDeleteClick(p.Post_Id)}
                                         >
                                             Delete
                                         </button>
@@ -114,5 +109,3 @@ export default function Posts () {
         </div>
     );
 }
-
-

@@ -15,138 +15,60 @@ class PostController extends Controller
      */
     public function index()
     {
-        /** @var \App\Models\Post $posts */
-        $posts =Post::all();
 
-        // $likes = $posts->likes();
-        // $comments = $posts->comments();
-        // $likes = 'like';
-        // $comments = 'cmt';
+        $posts = Post::with('likes', 'comments.likes')->get();
 
-        // return response()->json([
-        //     'posts' => $postss,
-        //     'like' => $likes,
-        //     'cmt' => $comments,
-        // ]);
-        return Post::all();
+        return response()->json($posts);
     }
 
     /**
      * Store a newly created resource in storage.
      * 
-     * @param \App\Http\Requests\StorepostRequest $request
+     * @param \App\Http\Requests\StorePostRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $posts = $request->all();
-
-        if ($request->hasFile('photo')) {
-            $file = $request->file('photo');
-            $ext = $file->getClientOriginalExtension();
-            if ($ext != 'jpg' && $ext != 'jpeg' && $ext != 'png') {
-                $error = 1;
-                return view('admin/posts', compact(error));
-            }
-            $imageFilename = $file->getClientOriginalName();
-            $file->move('images', $imageFilename);
-        } else {
-            $imageFilename = null;
-        }
-
-        // thêm 1 phần tử mới vào mảng $prod
-        $posts['image'] = $imageFilename;
-        $posts['slug'] = \Str::slug($request->name);
-        
-        Post::create($posts);
-        return redirect()->route('admin/posts');
     }
 
     /**
      * Display the specified resource.
-     *  @param \App\Models\Post $posts
+     *  @param \App\Models\Post $post
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $posts)
+    public function show(Post $post)
     {
-        $chatRoom->load('posts');
-        return response()->json([
+        // lam lai
+    }
 
-            'posts' => $posts->posts->map(function ($posts) {
-                return [
-                    'creator_id' => $posts->id,
-                    'description' => $posts->description,
-                    'image' => $posts->image,
-                    'userimage' => $posts->userimage,
-                    'field' => $posts->field,
-                    'created_at' => $chat->created_at->toISOString(),
-                    'updated_at' => $chat->updated_at->toISOString(),
-                   
-                    
-                ];
-    }),
-]);
-    }
-    public function edit(Post $posts)
-    {
-        $posts = Post::all();
-       return Post::all();
-        
-    }
     /**
      * Update the specified resource in storage.
      * * @param \App\Http\Requests\UpdateUserRequest $request
-     * @param \App\Models\Post                     $posts
+     * @param \App\Models\Post                     $post
      * @return \Illuminate\Http\Response
-     * @param  Illuminate\Support\Facades\Storage;
-
      */
-    public function update(Request $request, Post $postss)
+    public function update(Request $request, Post $post)
     {
-        $posts = $request->all();
+        $data = $request->validate([
+            'description' => 'required|string|max:100',
+            'field' => 'required',
+        ]);
 
-        if ($request->hasFile('photo')) {
-            $file = $request->file('photo');
-            $ext = $file->getClientOriginalExtension();
-            if ($ext != 'jpg' && $ext != 'jpeg' && $ext != 'png') {
-                $error = 1;
-                return view('Admin/posts', compact(error));
-            }
-            $imageFilename = $file->getClientOriginalName();
-            $file->move('images', $imageFilename);
-        } else {
-            $imageFilename = $posts->image;
-        }
+        $_post = Post::find($post);
 
-        // thêm 1 phần tử mới vào mảng 
-        $posts['image'] = $imageFilename;
-        $posts['slug'] = \Str::slug($request->name);
-    
-        $posts->update($posts);
-        return redirect()->route('admin/posts');
-        
+        $_post->update($data);
     }
 
     /**
      * Remove the specified resource from storage.
-     * @param \App\Models\Post $posts
+     * @param \App\Models\Post $post
      * @return \Illuminate\Http\Response
-     * @param  Illuminate\Support\Facades\Storage;
-
      */
-    public function destroy(Post $posts)
+    public function destroy(Post $post)
     {
-       //delete
-       $posts = Post::find($posts);
-       
+        // lam lai
+        $post->delete();
 
-    // Delete the image from storage
-    Storage::delete($posts->image);
-
-    // Delete the posts from the database
-    $posts->delete();
-
-    
-    return response()->json(['success'=> true, 'posts'=>'Post deleted successfully']);
-}
+        return response("", 204);
+    }
 }

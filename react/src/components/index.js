@@ -8,8 +8,10 @@ import UserForm from "./admin/users/UserForm";
 import Users from "./admin/users/Users";
 import AdminPostForm from "./admin/posts/PostForm";
 import AdminPosts from "./admin/posts/Posts";
-import Adminchatrooms from "./admin/chatrooms/chatrooms";
-import AdminchatroomForm from "./admin/chatrooms/chatroomForm";
+import Adminchatrooms from "./admin/chatrooms/ChatRooms";
+import AdminchatroomForm from "./admin/chatrooms/ChatRoomForm";
+
+
 
 export {
   Login,

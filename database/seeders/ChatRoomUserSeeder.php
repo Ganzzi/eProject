@@ -24,7 +24,16 @@ class ChatRoomUserSeeder extends Seeder
                 'chat_room_id' => 1,
                 'join_at' => now(),
             ],
-            // Add more rows as needed...
+            [
+                'user_id' => 1,
+                'chat_room_id' => 2,
+                'join_at' => now(),
+            ],
+            [
+                'user_id' => 2,
+                'chat_room_id' => 2,
+                'join_at' => now(),
+            ],
         ]);
     }
 }

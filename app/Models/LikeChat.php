@@ -11,7 +11,7 @@ class LikeChat extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'Liker_id');
+        return $this->belongsTo(User::class);
     }
 
     public function chat()

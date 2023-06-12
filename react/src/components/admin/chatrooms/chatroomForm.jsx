@@ -4,7 +4,7 @@ import { useEffect, useState ,} from "react";
 import { useStateContext } from "../../../contexts/ContextProvider.jsx"
 import axiosClient from "../../../axios-client.js";
 
-export default function chatroomForm(){ 
+export default function ChatRoomForm(){ 
     const navigate = useNavigate();
     let { id } = useParams();
     
