@@ -16,6 +16,37 @@ class ChatRoomController extends Controller
     {
         $chatrooms = ChatRoom::with('users', 'chats.likes')->get();
 
+        return response()->json(
+            $chatrooms->map(function ($room) {
+                $lastMessage = $room->chats()->orderByDesc('created_at')->first();
+
+                return [
+                    'id' =>  $room->id,
+                    'participants' => $room->users->map(function ($user) {
+                        return [
+                            'paticipator_id' => $user->id,
+                            'name' => $user->name,
+                            'image' => $user->image,
+                            'created_at' => $user->pivot->created_at,
+                        ];
+                    }),
+                    'last_message' => $lastMessage ? [
+                        'chat_id' => $lastMessage->id,
+                        'created_at' => $lastMessage->created_at->toISOString(),
+                        'text' => $lastMessage->text,
+                        'sender_id' => $lastMessage->sender_id,
+                        'likes' => $lastMessage->likes->map(function ($like) {
+                            $username = User::find($like->liker_id)->name;
+                            return [
+                                'liker' => $username,
+                            ];
+                        })
+                    ] : null,
+                ];
+            })
+
+        );
+
         return response()->json($chatrooms);
     }
 
@@ -48,10 +79,6 @@ class ChatRoomController extends Controller
     public function show($chatRoom)
     {
         $room = ChatRoom::with('users', 'chats.likes')->find($chatRoom);
-        // return response()->json(['data' => $room]);
-
-        $lastMessage = $room->chats()->orderByDesc('created_at')->first();
-
 
         return response()->json([
             'chat_room_id' => $room->id,
@@ -61,7 +88,6 @@ class ChatRoomController extends Controller
                     'paticipator_id' => $user->id,
                     'name' => $user->name,
                     'image' => $user->image,
-                    'created_at' => $user->pivot->created_at,
                 ];
             }),
             'chats' => $room->chats->map(function ($chat) {
@@ -77,55 +103,7 @@ class ChatRoomController extends Controller
                         ];
                     })
                 ];
-            }),
-
-            'last_message' => $lastMessage ? [
-                'chat_id' => $lastMessage->id,
-                'created_at' => $lastMessage->created_at->toISOString(),
-                'text' => $lastMessage->text,
-                'sender_id' => $lastMessage->sender_id,
-                'likes' => $lastMessage->likes->map(function ($like) {
-                    $username = User::find($like->liker_id)->name;
-                    return [
-                        'liker' => $username,
-                    ];
-                })
-            ] : null,
+            })
         ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    // public function update(UpdateChatRoomRequest $request, ChatRoom $chatRoom)
-    // {
-    //     //
-    // }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($chatRoom)
-    {
-        // Find the chat room by ID
-        $room = ChatRoom::find($chatRoom);
-
-        if (!$room) {
-            return response()->json(['success' => false, 'message' => 'Chat room not found'], 404);
-        }
-
-        // Detach users from the chat room
-        $room->users()->detach();
-
-        // Delete chats and associated like chats
-        $room->chats()->each(function ($chat) {
-            $chat->likeChats()->delete();
-            $chat->delete();
-        });
-
-        // Delete the chat room
-        $room->delete();
-
-        return response()->json(['success' => true, 'message' => 'Chat room deleted successfully']);
     }
 }

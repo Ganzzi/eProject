@@ -12,6 +12,13 @@ use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\LikeCommentController;
 use App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Api\UserController;
+
+use App\Http\Controllers\Admin\ChatRoomController as AdminChatRoomController;
+use App\Http\Controllers\Admin\UserController  as AdminUserController;
+use App\Http\Controllers\Admin\PostController  as AdminPostController;
+
+
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -42,11 +49,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/notifications', NotificationController::class);
     Route::apiResource('/posts', PostController::class);
     Route::apiResource('/users', UserController::class);
+
+    Route::apiResource('/admin/users', AdminUserController::class);
+    Route::apiResource('/admin/chatrooms', AdminChatRoomController::class);
+    Route::apiResource('/admin/posts', AdminPostController::class);
 });
 
 Route::post("/signup", [Auth::class, 'signup']);
 Route::post("/login", [Auth::class, 'login']);
-Route::post('/recover-password', [UserController::class, 'sendResetPassword'])->name('password.email');
+Route::post("/reset-password", [Auth::class, 'submitForgetPassword']);
+Route::post("/verify-code", [Auth::class, 'submitResetPassword']);
+// Route::post('/recover-password', [UserController::class, 'sendResetPassword'])->name('password.email');
 
 Route::get('/images/{filename}', function ($filename) {
 
