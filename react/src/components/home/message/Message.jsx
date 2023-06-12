@@ -1,20 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axiosClient from "../../../axios-client";
+import { useStateContext } from "../../../contexts/ContextProvider";
 
 const receivedMessages = [
-    { text: 'Xin chào!', sender: 'receiver' },
-    { text: 'Chào bạn!', sender: 'receiver' },
-    { text: 'Bạn đang làm gì?', sender: 'receiver' },
+    { text: "Xin chào!", sender: "receiver" },
+    { text: "Chào bạn!", sender: "receiver" },
+    { text: "Bạn đang làm gì?", sender: "receiver" },
 ];
 
-const Message = () =>
-{
-    const roomCount = 24;
-    const rooms = Array.from(
-        { length: roomCount },
-        (_, index) => `Room ${index}`
-    );
+const Message = () => {
+    const { user } = useStateContext();
 
-    const selectedRoom = "Room 0";
+    const [chatrooms, setChatrooms] = useState([]);
+    const [selectedRoom, setSelectedRoom] = useState(0);
+
+    useEffect(() => {
+        getChatroom();
+    }, []);
+
+    const getChatroom = () => {
+        axiosClient
+            .get("/chatrooms")
+            .then(({ data }) => {
+                console.log(data);
+                setChatrooms(data);
+            })
+            .catch(() => {});
+    };
 
     return (
         <div className="main-content d-flex">
@@ -22,13 +34,18 @@ const Message = () =>
             <aside className="sidebar bg-light">
                 <h2>Rooms</h2>
                 <ul className="list-group">
-                    {rooms.map((room, index) => (
+                    {chatrooms.map((room, index) => (
                         <li
                             key={index}
-                            className={`list-group-item ${room === selectedRoom ? "active" : ""
-                                }`}
+                            className={`list-group-item ${
+                                room === selectedRoom ? "active" : ""
+                            }`}
                         >
-                            {room}
+                            {room.users.map((u) => {
+                                if (user.id != u.id) {
+                                    return <div className="">{u.name}</div>;
+                                }
+                            })}
                         </li>
                     ))}
                 </ul>
@@ -37,7 +54,7 @@ const Message = () =>
             {/* Chats */}
             <main className="chats">
                 <div>
-                    {receivedMessages.map((item, index) => (
+                    {chatrooms[selectedRoom]?.chats.map((item, index) => (
                         <div>
                             <div>{item.text}</div>
                             <div>{index}</div>
@@ -51,16 +68,6 @@ const Message = () =>
 };
 
 export default Message;
-
-
-
-
-
-
-
-
-
-
 
 // import React, { useState, useEffect } from 'react';
 // import { Grid, Paper, Typography, Box, TextField, IconButton } from '@material-ui/core';
@@ -264,9 +271,3 @@ export default Message;
 // };
 
 // export default App;
-
-
-
-
-
-

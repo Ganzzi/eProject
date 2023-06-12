@@ -5,6 +5,7 @@ import {
     Signup,
     Posts,
     Profile,
+    Message,
     Users,
     UserForm,
     AdminPosts,
@@ -42,8 +43,8 @@ const router = createBrowserRouter([
                 element: <Posts />,
             },
             {
-                path: "/chatrooms",
-                element: <chatrooms />,
+                path: "/messages",
+                element: <Message />,
             },
             {
                 path: "/profile",

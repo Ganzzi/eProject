@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\ChatRoom;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ChatRoomController extends Controller
@@ -46,7 +47,7 @@ class ChatRoomController extends Controller
      */
     public function show($chatRoom)
     {
-        $room = ChatRoom::with('chats.likes')->find($chatRoom);
+        $room = ChatRoom::with('users', 'chats.likes')->find($chatRoom);
         // return response()->json(['data' => $room]);
 
         $lastMessage = $room->chats()->orderByDesc('created_at')->first();
@@ -58,9 +59,9 @@ class ChatRoomController extends Controller
             'participants' => $room->users->map(function ($user) {
                 return [
                     'paticipator_id' => $user->id,
-                    'name' => $user->name, 
+                    'name' => $user->name,
                     'image' => $user->image,
-                    'join_at' => $user->pivot->join_at->toISOString(),
+                    'created_at' => $user->pivot->created_at,
                 ];
             }),
             'chats' => $room->chats->map(function ($chat) {
@@ -96,10 +97,10 @@ class ChatRoomController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateChatRoomRequest $request, ChatRoom $chatRoom)
-    {
-        //
-    }
+    // public function update(UpdateChatRoomRequest $request, ChatRoom $chatRoom)
+    // {
+    //     //
+    // }
 
     /**
      * Remove the specified resource from storage.
