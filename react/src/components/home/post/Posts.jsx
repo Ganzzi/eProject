@@ -1,17 +1,46 @@
 import React, { useEffect, useState } from "react";
 import axiosClient from "../../../axios-client";
 import { useStateContext } from "../../../contexts/ContextProvider";
+import { BorderAll } from "@material-ui/icons";
 
 const Posts = () => {
   const [posts, setPosts] = useState([])
   const { user, token, setUser, setToken } = useStateContext();
+  const [postText, setPostText] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleTextChange = (event) => {
+    setPostText(event.target.value);
+  };
+
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+
+  const handlePostSubmit = (event) => {
+    event.preventDefault();
+    if (postText.trim() !== '') {
+      // Thực hiện xử lý post bài viết tại đây
+      console.log('Post Text:', postText);
+      console.log('Selected File:', selectedFile);
+      // Gửi dữ liệu postText và selectedFile đến server để xử lý
+      // Ví dụ: fetch('/post', { method: 'POST', body: formData })
+      //   .then(response => response.json())
+      //   .then(data => console.log(data))
+      //   .catch(error => console.error(error));
+
+      setPostText('');
+      setSelectedFile(null);
+    }
+  };
+
 
   console.log();
 
   useEffect(() => {
     axiosClient.get("/posts").then(({ data }) => {
       console.log(data);
-      setPosts(data);
+      setPosts(data.data);
     });
   }, []);
   return (
@@ -21,12 +50,12 @@ const Posts = () => {
       }}
       className="row">
       <div
-        // style={{
-        //   height: 400,
-        //   width: 200,
-        //   backgroundColor: "red",
-        // }}
-        className="col-3 justify-content-center d-flex"
+        className="col-2 justify-content-center d-flex"
+        style={{
+          backgroundColor:"aliceblue",
+          height: 5000,
+       
+        }}
       >
         <img
           src="https://i0.wp.com/thatnhucuocsong.com.vn/wp-content/uploads/2022/04/Anh-avatar-dep-anh-dai-dien-FB-Tiktok-Zalo.jpg?ssl=1"
@@ -40,25 +69,53 @@ const Posts = () => {
       </div>
 
 
-      <div
-        // style={{
-        //       display: 'flex',
-        //       flex: 1,
-        //       flexDirection: 'column',
-        //     }}
-        className="col-6"
-      >
+      <div className="col-7" >
         <div className="posts" style={{
           display: 'flex',
           backgroundColor: 'aliceblue',
-          width: '100%',
-
-
+          borderRadius:"10px",
+          width:"none",
         }}>
-          <form action="" className="post_box">
-            <input type="text" className="post_text"
-              placeholder="What are you thinking ?" />
+          
+          <form  className="col-12"style={{
+            display: "flex",
+            flexDirection: "col",
+            alignItems: "flex-start",
+            marginBottom: "30px"
+          }}>
+            <img
+          src="https://i0.wp.com/thatnhucuocsong.com.vn/wp-content/uploads/2022/04/Anh-avatar-dep-anh-dai-dien-FB-Tiktok-Zalo.jpg?ssl=1"
+          alt=""
+          style={{
+            width: 40,
+            height: 40
+          }} />
+        <p>{user.name}</p>
+            <textarea 
+              style={{
+                display: "flex",
+                width: '100%',
+                height: "100px",
+                padding: "10px",
+                fontSize: '20px',
+                border: '1px solid #ccc',
+                borderRadius: "4px",
+                resize: "none",
+
+              }}
+              placeholder="What's on your mind?"
+              value={postText}
+
+            />
+            <button style={{
+              padding: "10px 20px",
+              backgroundColor: "purple",
+              color: "#fff",
+              border: "none",
+              cursor: "pointer",
+            }} type="submit">Post</button>
           </form>
+
         </div>
         <div className="col"
         >
@@ -80,15 +137,16 @@ const Posts = () => {
       </div>
 
       <div
-        // style={{
-        //       display: 'flex',
-        //       flex: 1,
-        //       flexDirection: 'column',
-        //       backgroundColor:"blueviolet"
-        //     }}
-        className="col-3"
-      >
-        list fr
+        className="col-3 justify-content-center align-items-start d-flex row">  
+        <div className="col-12 row">
+          <div className="col-12" >
+            <h2>Follower</h2>
+          </div>
+          <div className="col-12" >
+            <h2>Following</h2>
+          </div>
+        </div>
+       
       </div>
 
 
@@ -97,4 +155,3 @@ const Posts = () => {
 };
 
 export default Posts;
-

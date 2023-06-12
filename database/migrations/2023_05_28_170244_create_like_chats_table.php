@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('like_chats', function (Blueprint $table) {
             $table->unsignedBigInteger('liker_id');
-            $table->foreign('liker_id')->references('user_id')->on('users');
+            $table->foreign('liker_id')->references('id')->on('users');
             $table->unsignedBigInteger('chat_id');
-            $table->foreign('chat_id')->references('chat_id')->on('chats');
+            $table->foreign('chat_id')->references('id')->on('chats');
             $table->timestamps();
 
             $table->primary(['liker_id', 'chat_id']);

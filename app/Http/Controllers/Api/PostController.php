@@ -15,19 +15,10 @@ class PostController extends Controller
      */
     public function index()
     {
-        /** @var \App\Models\Post $posts */
-        $posts = Post::all();
 
-        // $likes = $posts->likes();
-        // $comments = $posts->comments();
-        // $likes = 'like';
-        // $comments = 'cmt';
+        $posts = Post::with('likes', 'comments.likes')->get();
 
-        // return response()->json([
-        //     'post' => $posts,
-        //     'like' => $likes,
-        //     'cmt' => $comments,
-        // ]);
+        return response()->json(['data' => $posts]);
     }
 
     /**
@@ -38,27 +29,6 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $post = $request->all();
-
-        if ($request->hasFile('photo')) {
-            $file = $request->file('photo');
-            $ext = $file->getClientOriginalExtension();
-            if ($ext != 'jpg' && $ext != 'jpeg' && $ext != 'png') {
-                $error = 1;
-                return view('admin.posts.posts', compact(error));
-            }
-            $imageFilename = $file->getClientOriginalName();
-            $file->move('images', $imageFilename);
-        } else {
-            $imageFilename = null;
-        }
-
-        
-        $post['image'] = $imageFilename;
-        $post['slug'] = \Str::slug($request->name);
-        
-        Post::create($post);
-        return redirect()->route('admin.posts.posts');
     }
 
     /**
@@ -68,7 +38,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return new PostResource($post);
+        // lam lai
     }
 
     /**
@@ -79,27 +49,6 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        $post = $request->all();
-
-        if ($request->hasFile('photo')) {
-            $file = $request->file('photo');
-            $ext = $file->getClientOriginalExtension();
-            if ($ext != 'jpg' && $ext != 'jpeg' && $ext != 'png') {
-                $error = 1;
-                return view('admin.posts.posts', compact(error));
-            }
-            $imageFilename = $file->getClientOriginalName();
-            $file->move('images', $imageFilename);
-        } else {
-            $imageFilename = $post->image;
-        }
-
-        
-        $prod['image'] = $imageFilename;
-        $prod['slug'] = \Str::slug($request->name);
-        //dd($prod);
-        $post->update($post);
-        return redirect()->route('admin.posts.posts');
     }
 
     /**
@@ -109,6 +58,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        // lam lai
         $post->delete();
 
         return response("", 204);
