@@ -26,7 +26,7 @@ class LikeChatController extends Controller
 
         if ($existingLike) {
             // Nếu đã like rồi, xóa like
-            $existingLike->delete();
+            $existingLike->forceDelete();
             return response()->json(['message' => 'Unliked the chat.']);
         } else {
             // Nếu chưa like, tạo mới like

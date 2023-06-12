@@ -54,6 +54,9 @@ class ChatRoomController extends Controller
 
         $lastMessage = $room->chats()->orderByDesc('created_at')->first();
 
+        // Lấy tất cả các tin nhắn reply của tin nhắn gốc
+        $replyToId = $lastMessage->id; // Thay thế $lastMessage->id bằng ID của tin nhắn gốc cụ thể
+        $replies = Chat::where('reply_to', $replyToId)->get();
 
         return response()->json([
             'chat_room_id' => $room->id,
@@ -66,6 +69,7 @@ class ChatRoomController extends Controller
                     'join_at' => $user->pivot->join_at->toISOString(),
                 ];
             }),
+
             'chats' => $room->chats->map(function ($chat) {
                 return [
                     'chat_id' => $chat->id,
@@ -76,6 +80,21 @@ class ChatRoomController extends Controller
                         return [
                             'liker' => $like->liker_id,
                             'created_at' => $like->created_at->toISOString(),
+                        ];
+                    })
+                ];
+            }),
+
+            'replies' => $replies->map(function ($reply) {
+                return [
+                    'reply_id' => $reply->id,
+                    'created_at' => $reply->created_at->toISOString(),
+                    'text' => $reply->text,
+                    'sender_id' => $reply->sender_id,
+                    'likes' => $reply->likes->map(function ($like) {
+                        $username = User::find($like->liker_id)->name;
+                        return [
+                            'liker' => $username,
                         ];
                     })
                 ];
