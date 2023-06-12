@@ -17,7 +17,7 @@ export default function ChatRooms(){
         if (!window.confirm("Are you sure you want to delete this chatrooms?")) {
             return;
         }
-        axiosClient.delete(`/chatrooms/${chatrooms.id}`).then(() => {
+        axiosClient.delete(`/admin/chatrooms/${chatrooms.id}`).then(() => {
             setNotification("chatrooms was successfully deleted");
             getChatroom();
         });
@@ -26,7 +26,7 @@ export default function ChatRooms(){
     const getChatroom = () => {
         setLoading(true);
         axiosClient
-            .get("/chatrooms")
+            .get("/admin/chatrooms")
             .then(({ data }) => {
                 setLoading(false);
                 console.log(data);

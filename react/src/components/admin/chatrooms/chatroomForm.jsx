@@ -22,7 +22,7 @@ export default function ChatRoomForm(){
         useEffect(() => {
             setLoading(true);
             axiosClient
-                .get(`/chatrooms/${id}`)
+                .get(`/admin/chatrooms/${id}`)
                 .then(({ data }) => {
                     setLoading(false);
                     console.log(data);
@@ -38,7 +38,7 @@ export default function ChatRoomForm(){
         ev.preventDefault();
         if (chatrooms.id) {
             axiosClient
-                .put(`/chatrooms/${chatrooms.id}`, chatrooms)
+                .put(`/admin/chatrooms/${chatrooms.id}`, chatrooms)
                 .then(() => {
                     setNotification("chatrooms was successfully updated");
                     navigate("/admin/chatrooms");
@@ -51,7 +51,7 @@ export default function ChatRoomForm(){
                 });
         } else {
             axiosClient
-                .post("/chatrooms", chatrooms)
+                .post("/admin/chatrooms", chatrooms)
                 .then(() => {
                     setNotification("chatrooms was successfully created");
                     navigate("/admin/chatrooms");

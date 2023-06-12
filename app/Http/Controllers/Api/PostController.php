@@ -46,7 +46,7 @@ class PostController extends Controller
 
         return response()->json([
             
-            'posts' => $post->posts->map(function ($post) {
+            'posts' => $post->admin->posts->map(function ($post) {
                 return [
                     'post_id' => $post->id,
                     'creator_id'=>$post->creator_id,

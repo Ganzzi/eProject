@@ -17,7 +17,7 @@ export default function Posts() {
         if (!window.confirm("Are you sure you want to delete this post?")) {
             return;
         }
-        axiosClient.delete(`/posts/${post_id}`).then(() => {
+        axiosClient.delete(`/admin/posts/${post_id}`).then(() => {
             setNotification("post was successfully deleted");
             getPost();
         });
@@ -26,7 +26,7 @@ export default function Posts() {
     const getPost = () => {
         setLoading(true);
         axiosClient
-            .get("/posts")
+            .get("/admin/posts")
             .then(({ data }) => {
                 setLoading(false);
                 console.log(data);

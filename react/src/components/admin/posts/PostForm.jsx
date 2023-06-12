@@ -32,7 +32,7 @@ if (id) {
     useEffect(() => {
         setLoading(true);
         axiosClient
-            .get(`/posts/${id}`)
+            .get(`/admin/posts/${id}`)
             .then(({ data }) => {
                 setLoading(false);
                 setPost(data);
@@ -47,7 +47,7 @@ const onSubmit = (ev) => {
     ev.preventDefault();
     if (post.id) {
         axiosClient
-            .put(`/posts/${post.id}`, post)
+            .put(`/admin/posts/${post.id}`, post)
             .then(() => {
                 setNotification("post was successfully updated");
                 navigate("/admin/posts");
@@ -60,7 +60,7 @@ const onSubmit = (ev) => {
             });
     } else {
         axiosClient
-            .post("/posts", post)
+            .post("/admin/posts", post)
             .then(() => {
                 setNotification("post was successfully created");
                 navigate("/admin/posts");
