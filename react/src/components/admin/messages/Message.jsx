@@ -4,7 +4,7 @@ import { useStateContext } from "../../../contexts/ContextProvider";
 import axiosClient from "../../../axios-client";
 import { Link } from "react-router-dom";
 
-export default function Message(){
+export default function Message() {
     const [message, setMessage] = useState([]);
     const [loading, setLoading] = useState(false);
     const { setNotification } = useStateContext();
@@ -26,11 +26,11 @@ export default function Message(){
     const getMessage = () => {
         setLoading(true);
         axiosClient
-            .get("/message")
+            .get("/chatrooms")
             .then(({ data }) => {
                 setLoading(false);
                 console.log(data);
-                // setMessage(data);
+                setMessage(data);
             })
             .catch(() => {
                 setLoading(false);
@@ -46,7 +46,7 @@ export default function Message(){
                     alignItems: "center",
                 }}
             >
-                <h1>Message</h1>
+                <h1>Message Room</h1>
                 <Link className="btn-add" to="/admin/message/new">
                     Add new
                 </Link>
@@ -56,12 +56,11 @@ export default function Message(){
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>chat_room_id</th>
-                            <th>text</th>
-                            <th>Sender_id</th>
+                            <th>Users</th>
+                            <th>Messages</th>
                             <th>Create at</th>
                             <th>Update_at</th>
-                          
+                            <th>Action</th>
                         </tr>
                     </thead>
                     {loading && (
@@ -77,13 +76,19 @@ export default function Message(){
                         <tbody>
                             {message.map((m) => (
                                 <tr key={m.id}>
-                                    <td>{m.Message_Id}</td>
-                                    <td>{m.chat_room_id}</td>
-                                    <td>{m.text}</td>
-                                    <td>{m.Sender_id}</td>
+                                    <td>{m.id}</td>
+                                    <td>
+                                        {m.users.map((user) => (
+                                            <p>{user.email}</p>
+                                        ))}
+                                    </td>
+                                    <td>
+                                        {m.chats.map((chat) => (
+                                            <p>{chat.text}</p>
+                                        ))}
+                                    </td>
                                     <td>{m.created_at}</td>
                                     <td>{m.updated_at}</td>
-                                    
                                     <td>
                                         <Link
                                             className="btn-edit"
@@ -94,7 +99,9 @@ export default function Message(){
                                         &nbsp;
                                         <button
                                             className="btn-delete"
-                                            onClick={(ev) => onDeleteClick(m.Message_Id)}
+                                            onClick={(ev) =>
+                                                onDeleteClick(m.Message_Id)
+                                            }
                                         >
                                             Delete
                                         </button>

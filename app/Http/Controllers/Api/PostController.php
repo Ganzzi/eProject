@@ -18,7 +18,7 @@ class PostController extends Controller
 
         $posts = Post::with('likes', 'comments.likes')->get();
 
-        return response()->json(['data' => $posts]);
+        return response()->json($posts);
     }
 
     /**

@@ -30,7 +30,8 @@ class SignupRequest extends FormRequest
                 'required',
                 'confirmed',
                 Password::min(8)->letters()
-            ]
+            ],
+            'image' => 'image',
         ];
     }
 

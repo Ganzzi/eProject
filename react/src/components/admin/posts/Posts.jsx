@@ -4,10 +4,8 @@ import { useStateContext } from "../../../contexts/ContextProvider";
 import axiosClient from "../../../axios-client";
 import { Link } from "react-router-dom";
 
-export default function Posts () {
-    const [posts, setPost] = useState([
-        
-    ]);
+export default function Posts() {
+    const [posts, setPost] = useState([]);
     const [loading, setLoading] = useState(false);
     const { setNotification } = useStateContext();
 
@@ -58,15 +56,12 @@ export default function Posts () {
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Creator_id</th>
+                            <th>Creator</th>
                             <th>Description</th>
                             <th>Field</th>
                             <th>image</th>
-                            <th>Post_Id</th>
-                            <td>UserImage</td>
-                            
                             <th>Update at</th>
-                            
+                            <th>Action</th>
                         </tr>
                     </thead>
                     {loading && (
@@ -81,17 +76,23 @@ export default function Posts () {
                     {!loading && (
                         <tbody>
                             {posts.map((p) => (
-                                <tr key={p.Post_Id}>
-                                    <td>{p.Post_Id}</td>
-                                    <td>{p.Creator_Id}</td>
-                                    <td>{p.Description}</td>
-                                    <td>{p.Field}</td>
-                                    <td>{p.Image}</td>
-                                    <td>{p.Post_Id}</td>
-                                    <td>{p.UserImage}</td>
-                                   
+                                <tr key={p.id}>
+                                    <td>{p.id}</td>
+                                    <td>{p.creator_id}</td>
+                                    <td>{p.description}</td>
+                                    <td>{p.field}</td>
+                                    <td>
+                                        <img
+                                            src={
+                                                "http://127.0.0.1:8000/api/images/" +
+                                                p.image
+                                            }
+                                            alt=""
+                                            width={50}
+                                            height={50}
+                                        />
+                                    </td>
                                     <td>{p.updated_at}</td>
-                                   
                                     <td>
                                         <Link
                                             className="btn-edit"
@@ -102,7 +103,9 @@ export default function Posts () {
                                         &nbsp;
                                         <button
                                             className="btn-delete"
-                                            onClick={() => onDeleteClick(p.Post_Id)}
+                                            onClick={() =>
+                                                onDeleteClick(p.Post_Id)
+                                            }
                                         >
                                             Delete
                                         </button>
@@ -116,5 +119,3 @@ export default function Posts () {
         </div>
     );
 }
-
-

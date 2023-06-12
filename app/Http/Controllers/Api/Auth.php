@@ -16,22 +16,34 @@ class Auth extends Controller
     public function signup(SignupRequest $request)
     {
         $data = $request->validated();
-        /** @var \App\Models\User $user */
+
+        // Check if an image was uploaded
+        // if ($request->hasFile('image')) {
+        // Get the uploaded file from the request
+        $uploadedFile = $request->file('image');
+
+        // Store the uploaded file in a public storage disk
+        $filePath = $uploadedFile->store('public/images');
+        // } else {
+        //     $filePath = null;
+        // }
+
+        // Create the user
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'role_id' => 1
+            'role_id' => 1,
+            'image' => basename($filePath)
         ]);
 
+        // Generate token for the user
         $token = $user->createToken('main')->plainTextToken;
 
-        return response([
+        return response()->json([
             'user' => $user,
             'token' => $token,
         ]);
-
-        // return response(compact('user', 'token'));
     }
 
     public function login(LoginRequest $request)

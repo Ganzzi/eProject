@@ -8,6 +8,7 @@ export default function Signup() {
     const emailRef = useRef();
     const passwordRef = useRef();
     const passwordConfirmationRef = useRef();
+    const [image, setImage] = useState(null);
     const [error, setError] = useState(null);
 
     const { setUser, setToken } = useStateContext();
@@ -15,15 +16,25 @@ export default function Signup() {
     const onSubmit = (e) => {
         e.preventDefault();
 
-        const payload = {
-            name: nameRef.current.value,
-            email: emailRef.current.value,
-            password: passwordRef.current.value,
-            password_confirmation: passwordConfirmationRef.current.value,
-        };
+        // const payload = {
+        //     name: nameRef.current.value,
+        //     email: emailRef.current.value,
+        //     password: passwordRef.current.value,
+        //     password_confirmation: passwordConfirmationRef.current.value,
+        // };
+
+        const formData = new FormData();
+        formData.append("image", image);
+        formData.append("name", nameRef.current.value);
+        formData.append("email", emailRef.current.value);
+        formData.append("password", passwordRef.current.value);
+        formData.append(
+            "password_confirmation",
+            passwordConfirmationRef.current.value
+        );
 
         axiosClient
-            .post("/signup", payload)
+            .post("/signup", formData)
             .then(({ data }) => {
                 setToken(data.token);
                 setUser(data.user);
@@ -61,6 +72,11 @@ export default function Signup() {
                         ref={passwordConfirmationRef}
                         type="password"
                         placeholder="Confirm Password"
+                    />
+                    <input
+                        type="file"
+                        onChange={(ev) => setImage(ev.target.files[0])}
+                        placeholder="image"
                     />
                     <button className="btn btn-block" type="submit">
                         Signup

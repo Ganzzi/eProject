@@ -18,7 +18,7 @@ class ChatRoomController extends Controller
     {
         $chatrooms = ChatRoom::with('users', 'chats.likes')->get();
 
-        return response()->json(['data' => $chatrooms]);
+        return response()->json($chatrooms);
     }
 
     /**

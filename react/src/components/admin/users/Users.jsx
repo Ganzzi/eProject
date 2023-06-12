@@ -28,8 +28,8 @@ export default function Users() {
             .get("/users")
             .then(({ data }) => {
                 setLoading(false);
+                console.log(data.data);
                 setUsers(data.data);
-                console.log(data);
             })
             .catch(() => {
                 setLoading(false);
@@ -55,8 +55,11 @@ export default function Users() {
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>Image</th>
                             <th>Name</th>
                             <th>Email</th>
+                            <th>Gender</th>
+                            <th>Bio</th>
                             <th>Create Date</th>
                             <th>Actions</th>
                         </tr>
@@ -75,8 +78,21 @@ export default function Users() {
                             {users.map((u) => (
                                 <tr key={u.id}>
                                     <td>{u.id}</td>
+                                    <td>
+                                        <img
+                                            src={
+                                                "http://127.0.0.1:8000/api/images/" +
+                                                u.image
+                                            }
+                                            width={50}
+                                            height={50}
+                                            alt=""
+                                        />
+                                    </td>
                                     <td>{u.name}</td>
                                     <td>{u.email}</td>
+                                    <td>{u.gender}</td>
+                                    <td>{u.bio}</td>
                                     <td>{u.created_at}</td>
                                     <td>
                                         <Link

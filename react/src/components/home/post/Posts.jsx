@@ -11,7 +11,7 @@ const Posts = () => {
     useEffect(() => {
         axiosClient.get("/posts").then(({ data }) => {
             console.log(data);
-            setPosts(data.post);
+            setPosts(data);
         });
     }, []);
     return (
