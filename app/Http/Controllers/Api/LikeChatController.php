@@ -38,18 +38,4 @@ class LikeChatController extends Controller
             return response()->json(['message' => 'Liked the chat.']);
         }
     }
-
-    /**
-     * Remove the specified resource from storage.
-     * @param \App\Models\LikeChat $likeChat
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($likeChat)
-    {
-        $_likechat = LikeChat::find($likeChat);
-
-        $_likechat->delete();
-
-        return response()->json(['message' => 'Deleted the like.']);
-    }
 }

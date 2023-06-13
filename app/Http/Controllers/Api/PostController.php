@@ -111,7 +111,6 @@ class PostController extends Controller
     {
         $data = $request->validate([
             'description' => 'required|string|max:100',
-            'field' => 'required',
         ]);
         // return response()->json([$post]);
 

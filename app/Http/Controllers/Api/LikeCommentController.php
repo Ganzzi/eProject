@@ -38,16 +38,4 @@ class LikeCommentController extends Controller
             return response()->json(['message' => 'Liked the comment.']);
         }
     }
-
-    /**
-     * Remove the specified resource from storage.
-     * @param \App\Models\LikeComment $likeComment
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(LikeComment $likeComment)
-    {
-        $likeComment->delete();
-
-        return response()->json(['message' => 'Comment like removed successfully']);
-    }
 }

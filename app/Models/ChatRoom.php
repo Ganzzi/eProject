@@ -11,7 +11,7 @@ class ChatRoom extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'chat_room_user', 'chat_room_id', 'user_id')
+        return $this->belongsToMany(User::class)->withPivot('join_at')
             ->withTimestamps();
     }
 

@@ -37,16 +37,4 @@ class LikePostController extends Controller
             return response()->json(['message' => 'Post liked successfully']);
         }
     }
-
-    /**
-     * Remove the specified resource from storage.
-     * @param \App\Models\LikePost $likePost
-     * @return \Illuminate\Http\Response
-     */
-    // public function destroy(LikePost $likePost)
-    // {
-    //     $likePost->delete();
-
-    //     return response()->json(['message' => 'Post like removed successfully'], 200);
-    // }
 }

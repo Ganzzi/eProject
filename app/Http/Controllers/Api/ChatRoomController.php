@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Chat;
 use App\Models\ChatRoom;
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -36,7 +37,7 @@ class ChatRoomController extends Controller
                             'paticipator_id' => $user->id,
                             'name' => $user->name,
                             'image' => $user->image,
-                            'created_at' => $user->pivot->created_at,
+                            'join_at' => $user->pivot->join_at,
                         ];
                     }),
                     'last_message' => $lastMessage ? [
@@ -87,6 +88,8 @@ class ChatRoomController extends Controller
     {
         $room = ChatRoom::with('users', 'chats.likes')->find($chatRoom);
 
+        // return response($room);
+
         return response()->json([
             'chat_room_id' => $room->id,
             'created_at' => $room->created_at->toISOString(),
@@ -99,6 +102,7 @@ class ChatRoomController extends Controller
             }),
 
             'chats' => $room->chats->map(function ($chat) {
+
                 return [
                     'chat_id' => $chat->id,
                     'created_at' => $chat->created_at->toISOString(),
