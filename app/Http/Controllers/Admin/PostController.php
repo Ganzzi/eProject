@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Post;
 use App\Http\Controllers\Controller;
 use App\Models\LikePost;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -15,9 +16,29 @@ class PostController extends Controller
      */
     public function index()
     {
+
         $posts = Post::with('likes', 'comments.likes')->get();
 
-        return response()->json($posts);
+        return response()->json($posts->map(function ($_post) {
+
+            $user = User::find($_post->creator_id);
+
+            $creator_name = $user->name;
+            $creator_image = $user->image;
+
+            return [
+                "id" => $_post->id,
+                "creator_id" => $_post->creator_id,
+                "description" => $_post->description,
+                "image" => $_post->image,
+                "created_at" => $_post->created_at,
+                "updated_at" => $_post->updated_at,
+                'creator_name' => $creator_name,
+                'creator_image' => $creator_image,
+                "likes" => $_post->likes,
+                "comments" => $_post->comments,
+            ];
+        }));
     }
 
     /**
@@ -28,9 +49,26 @@ class PostController extends Controller
     public function show(Post $post)
     {
         // return response('hi');
-        $_post = Post::with('likes', 'comments.likes')->find($post);
+        $_post = Post::with('likes', 'comments.likes')->find($post)->first();
+        // return response($_post);
 
-        return response()->json($_post);
+        $user = User::find($_post->creator_id);
+
+        $creator_name = $user->name;
+        $creator_image = $user->image;
+
+        return response()->json([
+            "id" => $_post->id,
+            "creator_id" => $_post->creator_id,
+            "description" => $_post->description,
+            "image" => $_post->image,
+            "created_at" => $_post->created_at,
+            "updated_at" => $_post->updated_at,
+            'creator_name' => $creator_name,
+            'creator_image' => $creator_image,
+            "likes" => $_post->likes,
+            "comments" => $_post->comments,
+        ]);
     }
 
     /**
@@ -54,7 +92,7 @@ class PostController extends Controller
 
         $post->save();
 
-        return response('success');
+        return response('Test success success');
     }
 
     /**

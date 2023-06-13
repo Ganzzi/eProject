@@ -6,15 +6,24 @@ use App\Models\ChatRoom;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ChatRoomController extends Controller
 {
     /**
      * Display a listing of the resource.
+     * * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index()
     {
-        $chatrooms = ChatRoom::with('users', 'chats.likes')->get();
+        $user_id = Auth::user()->id;
+
+        // find all chatrooms belong to a user
+        $chatrooms = ChatRoom::whereHas('users', function ($query) use ($user_id) {
+            $query->where('id', $user_id);
+        })
+            ->with('users', 'chats.likes')
+            ->get();
 
         return response()->json(
             $chatrooms->map(function ($room) {
@@ -46,8 +55,6 @@ class ChatRoomController extends Controller
             })
 
         );
-
-        return response()->json($chatrooms);
     }
 
     /**
@@ -90,12 +97,14 @@ class ChatRoomController extends Controller
                     'image' => $user->image,
                 ];
             }),
+
             'chats' => $room->chats->map(function ($chat) {
                 return [
                     'chat_id' => $chat->id,
                     'created_at' => $chat->created_at->toISOString(),
                     'text' => $chat->text,
                     'sender_id' => $chat->sender_id,
+                    'reply_to' => $chat->reply_to,
                     'likes' => $chat->likes->map(function ($like) {
                         return [
                             'liker' => $like->liker_id,
@@ -103,7 +112,7 @@ class ChatRoomController extends Controller
                         ];
                     })
                 ];
-            })
+            }),
         ]);
     }
 }
