@@ -47,7 +47,7 @@ const onSubmit = (ev) => {
     ev.preventDefault();
     if (post.id) {
         axiosClient
-            .put(`/admin/posts/${post.id}`, post)
+            .get(`/admin/posts/${post.id}`, post)
             .then(() => {
                 setNotification("post was successfully updated");
                 navigate("/admin/posts");
@@ -60,7 +60,7 @@ const onSubmit = (ev) => {
             });
     } else {
         axiosClient
-            .post("/admin/posts", post)
+            .get("/admin/posts", post)
             .then(() => {
                 setNotification("post was successfully created");
                 navigate("/admin/posts");

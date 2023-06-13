@@ -49,7 +49,7 @@ export default function UserForm() {
                 });
         } else {
             axiosClient
-                .post("/admin/users", user)
+                .get("/admin/users", user)
                 .then(() => {
                     setNotification("User was successfully created");
                     navigate("/admin/users");

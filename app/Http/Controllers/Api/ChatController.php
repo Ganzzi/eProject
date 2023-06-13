@@ -14,43 +14,6 @@ class ChatController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the request data
-        // $validatedData = $request->validate([
-        //     'chat_room_id' => 'required|numeric',
-        //     'text' => 'required|string|max:255',
-        //     'sender_id' => 'required|numeric',
-        // ]);
-
-        // // Create a new chat instance
-        // $chat = new Chat;
-        // $chat->chat_room_id = $validatedData['chat_room_id'];
-        // $chat->text = $validatedData['text'];
-        // $chat->sender_id = $validatedData['sender_id'];
-
-        // // Save the chat to the database
-        // $chat->save();
-
-        // // Return a response or redirect as needed
-        // return response()->json(['message' => 'Chat stored successfully']);
-
-
-
-
-
-        // $validatedData = $request->validate([
-        //     'chat_room_id' => 'required|numeric',
-        //     'text' => 'required|string|max:255',
-        // ]);
-
-        // $chat = new Chat;
-        // $chat->chat_room_id = $validatedData['chat_room_id'];
-        // $chat->text = $validatedData['text'];
-        // $chat->sender_id = Auth::id(); // Set the sender ID using the authenticated user
-
-        // $chat->save();
-
-
-
         $validatedData = $request->validate([
             'chat_room_id' => 'required|numeric',
             'text' => 'required|string',

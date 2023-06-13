@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Http\Controllers\Controller;
 use App\Models\LikePost;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -105,7 +106,7 @@ class PostController extends Controller
         $post->post()->detach();
 
         // Delete chats and associated like chats
-        $post->post()->each(function ($post) {
+        $post->admin->post()->each(function ($post) {
             $post->likePost()->delete();
             $post->delete();
         });
@@ -115,4 +116,4 @@ class PostController extends Controller
 
         return response()->json(['success' => true, 'post' => 'post deleted successfully']);
     }
-    }
+}

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Chat;
 use App\Models\ChatRoom;
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -52,10 +53,6 @@ class ChatRoomController extends Controller
 
         $lastMessage = $room->chats()->orderByDesc('created_at')->first();
 
-        // Lấy tất cả các tin nhắn reply của tin nhắn gốc
-        $replyToId = $lastMessage->id; // Thay thế $lastMessage->id bằng ID của tin nhắn gốc cụ thể
-        $replies = Chat::where('reply_to', $replyToId)->get();
-
         return response()->json([
             'chat_room_id' => $room->id,
             'created_at' => $room->created_at->toISOString(),
@@ -69,30 +66,21 @@ class ChatRoomController extends Controller
             }),
 
             'chats' => $room->chats->map(function ($chat) {
+                $replyToMessage = null;
+                if ($chat->reply_to) {
+                    $replyToMessage = Chat::find($chat->reply_to);
+                }
+                
                 return [
                     'chat_id' => $chat->id,
                     'created_at' => $chat->created_at->toISOString(),
+                    'reply_to' => $replyToMessage ? $replyToMessage->text : null,
                     'text' => $chat->text,
                     'sender_id' => $chat->sender_id,
                     'likes' => $chat->likes->map(function ($like) {
                         return [
                             'liker' => $like->liker_id,
                             'created_at' => $like->created_at->toISOString(),
-                        ];
-                    })
-                ];
-            }),
-
-            'replies' => $replies->map(function ($reply) {
-                return [
-                    'reply_id' => $reply->id,
-                    'created_at' => $reply->created_at->toISOString(),
-                    'text' => $reply->text,
-                    'sender_id' => $reply->sender_id,
-                    'likes' => $reply->likes->map(function ($like) {
-                        $username = User::find($like->liker_id)->name;
-                        return [
-                            'liker' => $username,
                         ];
                     })
                 ];

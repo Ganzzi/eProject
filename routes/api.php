@@ -40,8 +40,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/likeposts', LikePostController::class);
     Route::apiResource('/likecomments', LikeCommentController::class);
     Route::apiResource('/notifications', NotificationController::class);
-    Route::apiResource('/posts', PostController::class);
-    Route::apiResource('/users', UserController::class);
+     Route::apiResource('/posts', PostController::class);
+     Route::apiResource('/users', UserController::class);
     Route::apiResource('/admin/users',AdminUserController::class);
     Route::apiResource('/admin/chatrooms',AdminChatRoomController::class);
     Route::apiResource('/admin/posts',AdminPostController::class);

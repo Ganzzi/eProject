@@ -30,7 +30,7 @@ export default function ChatRooms(){
             .then(({ data }) => {
                 setLoading(false);
                 console.log(data);
-                setChatrooms(data);
+              //  setChatrooms(data);
             })
             .catch(() => {
                 setLoading(false);
