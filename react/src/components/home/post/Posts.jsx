@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axiosClient from "../../../axios-client";
 import { useStateContext } from "../../../contexts/ContextProvider";
+
 import { BorderAll } from "@material-ui/icons";
 import { HiOutlinePhotograph } from "react-icons/Hi";
+
+// import { BorderAll } from "@material-ui/icons";
+
 
 const Posts = () => {
     const [posts, setPosts] = useState([]);

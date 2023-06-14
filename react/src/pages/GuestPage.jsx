@@ -7,9 +7,7 @@ export default function GuestLayout() {
     if (token) {
         if (user.role_id == 1) {
             return <Navigate to={"/admin"} />;
- 
         } else {
-
             return <Navigate to={"/posts"} />;
         }
     }

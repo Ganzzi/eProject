@@ -2,36 +2,22 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosClient from "../../../axios-client.js";
 import { useStateContext } from "../../../contexts/ContextProvider.jsx";
-
-
-
-
 export default function PostForm() {
 const navigate = useNavigate();
-
 let { id } = useParams();
 const [post, setPost] = useState({
-    id: null,
-    creator_id:null,
+    creator_id: null,
     description: "",
-    field:"",
-    image: "",
-    post_id:"",
-    userimage:"",
-   update_at: "",
- 
+    image: null,
 });
 const [errors, setErrors] = useState(null);
 const [loading, setLoading] = useState(false);
 const { setNotification } = useStateContext();
-
-
-
 if (id) {
     useEffect(() => {
         setLoading(true);
         axiosClient
-            .get(`/posts/${id}`)
+            .get(`/admin/posts/${id}`)
             .then(({ data }) => {
                 setLoading(false);
                 setPost(data);
@@ -41,12 +27,11 @@ if (id) {
             });
     }, []);
 }
-
 const onSubmit = (ev) => {
     ev.preventDefault();
     if (post.id) {
         axiosClient
-            .put(`/posts/${post.id}`, post)
+            .put(`/admin/posts/${post.id}`, post)
             .then(() => {
                 setNotification("post was successfully updated");
                 navigate("/admin/posts");
@@ -58,8 +43,13 @@ const onSubmit = (ev) => {
                 }
             });
     } else {
+        const formdata = new FormData();
+        formdata.append('description', post.description);
+        formdata.append('creator_id', post.creator_id);
+        formdata.append('image',post.image
+        );
         axiosClient
-            .post("/posts", post)
+            .post("/admin/posts", formdata)
             .then(() => {
                 setNotification("post was successfully created");
                 navigate("/admin/posts");
@@ -88,49 +78,32 @@ return (
             )}
             {!loading && (
                 <form onSubmit={onSubmit}>
-                    <input
+                    <input 
                         value={post.description}
                         onChange={(ev) =>
                             setPost({ ...post, description: ev.target.value })
                         }
                         placeholder="description"
                     />
-                     <input
-                        value={post.field}
-                        onChange={(ev) =>
-                            setPost({ ...post, field: ev.target.value })
-                        }
-                        placeholder="field"
-                    />
+                      {/* <input
+                            value={post.creator_id}
+                            type="number"
+                            min={1}
+                            max={2}
+                            onChange={(ev) =>
+                                setPost({ ...post, creator_id: ev.target.value })
+                            }
+                            placeholder="Creator id"
+                        /> */}
                     <input
-                        value={post.image}
                         onChange={(ev) =>
-                            setPost({ ...post, image: ev.target.value })
+                            setPost({ ...post, image: ev.target.files[0] })
                         }
-                        type="file" id="file-input" name="ImageStyle"
+                        type="file" 
                         placeholder="image"
                     />
-                     <input
-                        value={post.userimage}
-                        onChange={(ev) =>
-                            setPost({ ...post, userimage: ev.target.value })
-                        }
-                        type="file" id="file-input" name="ImageStyle"
-                        placeholder="userimage"
-                    />
-                   
-                    <input
-                        value={post.update_at}
-                        onChange={(ev) =>
-                            setPost({ ...post, update_at: ev.target.value })
-                           
-                        }
-                        placeholder="update_at"
-                       
-                    />
-           
-        
-                    <button className="btn">Save</button>
+                    
+                    <button className="btn btn-outline-success"style={{width:"100px",}}>Save</button>
                 </form>
             )}
         </div>

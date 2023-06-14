@@ -4,33 +4,33 @@ import { useStateContext } from "../../../contexts/ContextProvider";
 import axiosClient from "../../../axios-client";
 import { Link } from "react-router-dom";
 
-export default function Message() {
-    const [message, setMessage] = useState([]);
+export default function ChatRooms(){
+    const [ChatRooms, setChatrooms] = useState([]);
     const [loading, setLoading] = useState(false);
     const { setNotification } = useStateContext();
 
     useEffect(() => {
-        getMessage();
+        getChatroom();
     }, []);
 
-    const onDeleteClick = (message) => {
-        if (!window.confirm("Are you sure you want to delete this Message?")) {
+    const onDeleteClick = (ChatRooms_id) => {
+        if (!window.confirm("Are you sure you want to delete this chatrooms?")) {
             return;
         }
-        axiosClient.delete(`/messages/${message.id}`).then(() => {
-            setNotification("Message was successfully deleted");
-            getMessage();
+        axiosClient.delete(`/admin/chatrooms/${ChatRooms_id}`).then(() => {
+            setNotification("chatrooms was successfully deleted");
+            getChatroom();
         });
     };
 
-    const getMessage = () => {
+    const getChatroom = () => {
         setLoading(true);
         axiosClient
-            .get("/chatrooms")
+            .get("/admin/chatrooms")
             .then(({ data }) => {
                 setLoading(false);
                 console.log(data);
-                setMessage(data);
+                setChatrooms(data);
             })
             .catch(() => {
                 setLoading(false);
@@ -46,20 +46,25 @@ export default function Message() {
                     alignItems: "center",
                 }}
             >
-                <h1>Message Room</h1>
-                <Link className="btn-add" to="/admin/message/new">
+                <h1 style={{fontFamily:"fantasy",
+           justifycontent: "space-between",
+            }}>chatrooms</h1>
+                {/* <Link className="btn-add" to="/admin/chatrooms/new">
                     Add new
-                </Link>
+                </Link> */}
             </div>
             <div className="card animated fadeInDown">
                 <table>
                     <thead>
-                        <tr>
-                            <th>ID</th>
+                        <tr  style={{
+                            fontFamily:"cursive",textAlign:"center",padding:"40px",
+                        }}>
+                           
+                            <th>Id</th>
+                            <th>Chats</th>
                             <th>Users</th>
-                            <th>Messages</th>
-                            <th>Create at</th>
-                            <th>Update_at</th>
+                            <th>Created at</th>
+                            <th>Updated at</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -74,34 +79,25 @@ export default function Message() {
                     )}
                     {!loading && (
                         <tbody>
-                            {message.map((m) => (
+                            {ChatRooms.map((m) => (
                                 <tr key={m.id}>
                                     <td>{m.id}</td>
-                                    <td>
-                                        {m.users.map((user) => (
-                                            <p>{user.email}</p>
-                                        ))}
-                                    </td>
-                                    <td>
-                                        {m.chats.map((chat) => (
-                                            <p>{chat.text}</p>
-                                        ))}
-                                    </td>
+                                    <td>{m.chats.length}</td>
+                                    <td>{m.users.length}</td>
                                     <td>{m.created_at}</td>
                                     <td>{m.updated_at}</td>
+                                    
                                     <td>
-                                        <Link
+                                        {/* <Link
                                             className="btn-edit"
-                                            to={"/admin/messages/" + m.id}
+                                            to={"/admin/chatrooms/" + m.id}
                                         >
                                             Edit
-                                        </Link>
+                                        </Link> */}
                                         &nbsp;
                                         <button
                                             className="btn-delete"
-                                            onClick={(ev) =>
-                                                onDeleteClick(m.Message_Id)
-                                            }
+                                            onClick={() => onDeleteClick(m.id)}
                                         >
                                             Delete
                                         </button>

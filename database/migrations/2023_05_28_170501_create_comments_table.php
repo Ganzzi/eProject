@@ -17,7 +17,9 @@ return new class extends Migration
             $table->foreign('commentor_id')->references('id')->on('users');
             $table->unsignedBigInteger('post_id');
             $table->foreign('post_id')->references('id')->on('posts');
+            $table->string('text');
             $table->unsignedBigInteger('reply_to')->nullable();
+            $table->foreign('reply_to')->references('id')->on('comments')->onDelete('cascade');
             $table->timestamps();
         });
     }

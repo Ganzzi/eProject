@@ -17,7 +17,7 @@ export default function Posts() {
         if (!window.confirm("Are you sure you want to delete this post?")) {
             return;
         }
-        axiosClient.delete(`/posts/${post_id}`).then(() => {
+        axiosClient.delete(`/admin/posts/${post_id}`).then(() => {
             setNotification("post was successfully deleted");
             getPost();
         });
@@ -26,7 +26,7 @@ export default function Posts() {
     const getPost = () => {
         setLoading(true);
         axiosClient
-            .get("/posts")
+            .get("/admin/posts")
             .then(({ data }) => {
                 setLoading(false);
                 console.log(data);
@@ -46,19 +46,23 @@ export default function Posts() {
                     alignItems: "center",
                 }}
             >
-                <h1>Posts</h1>
-                <Link className="btn-add" to="/admin/posts/new">
+                <h1 style={{fontFamily:"fantasy",
+           justifycontent: "space-between",
+            }}>Posts</h1>
+                {/* <Link className="btn-add" to="/admin/posts/new">
                     Add new
-                </Link>
+                </Link> */}
             </div>
             <div className="card animated fadeInDown">
                 <table>
                     <thead>
-                        <tr>
+                        <tr  style={{
+                            fontFamily:"cursive",textAlign:"center",padding:"40px",
+                        }}>
                             <th>ID</th>
                             <th>Creator</th>
                             <th>Description</th>
-                            <th>Field</th>
+                            <th>Comment</th>
                             <th>image</th>
                             <th>Update at</th>
                             <th>Action</th>
@@ -79,33 +83,34 @@ export default function Posts() {
                                 <tr key={p.id}>
                                     <td>{p.id}</td>
                                     <td>{p.creator_id}</td>
+                                
                                     <td>{p.description}</td>
-                                    <td>{p.field}</td>
+                                   
+                                    <td>{p.comments.length}</td>
+
                                     <td>
                                         <img
                                             src={
                                                 "http://127.0.0.1:8000/api/images/" +
                                                 p.image
                                             }
-                                            alt=""
                                             width={50}
                                             height={50}
+                                            alt=""
                                         />
                                     </td>
                                     <td>{p.updated_at}</td>
                                     <td>
                                         <Link
                                             className="btn-edit"
-                                            to={"/admin/posts/" + p.Post_Id}
+                                            to={"/admin/posts/" + p.id}
                                         >
                                             Edit
                                         </Link>
                                         &nbsp;
                                         <button
                                             className="btn-delete"
-                                            onClick={() =>
-                                                onDeleteClick(p.Post_Id)
-                                            }
+                                            onClick={() => onDeleteClick(p.id)}
                                         >
                                             Delete
                                         </button>

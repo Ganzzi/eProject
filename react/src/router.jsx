@@ -10,8 +10,8 @@ import {
     UserForm,
     AdminPosts,
     AdminPostForm,
-    AdminMessage,
-    AdminMessageForm,
+    Adminchatrooms,
+    // AdminchatroomForm,
 } from "./components";
 import { Dashboard, GuestPage, HomePage } from "./pages";
 
@@ -85,17 +85,17 @@ const router = createBrowserRouter([
                 element: <AdminPostForm key={"postUpdate"} />,
             },
             {
-                path: "/admin/message",
-                element: <AdminMessage />,
+                path: "/admin/chatrooms",
+                element: <Adminchatrooms />,
             },
-            {
-                path: "/admin/message/new",
-                element: <AdminMessageForm key={"messageCreate"} />,
-            },
-            {
-                path: "/admin/message/:id",
-                element: <AdminMessageForm key={"messageUpdate"} />,
-            },
+            // {
+            //     path: "/admin/chatrooms/new",
+            //     element: <AdminchatroomForm key={"chatroomsCreate"} />,
+            // },
+            // {
+            //     path: "/admin/chatrooms/:id",
+            //     element: <AdminchatroomForm key={"chatroomsUpdate"} />,
+            // },
         ],
     },
     {

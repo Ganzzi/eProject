@@ -13,14 +13,28 @@ class LikePostController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'post_id' => 'required|exists:posts,id',
+        ]);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(LikePost $likePost)
-    {
-        //
+        $user = $request->user();
+
+        // Kiểm tra xem người dùng đã thích bài viết chưa
+        $existingLike = LikePost::where('post_id', $request->input('post_id'))
+            ->where('liker_id', $user->id)
+            ->first();
+
+        if ($existingLike) {
+            $existingLike->forceDelete();
+            return response()->json(['message' => 'Unliked the post']);
+        } else {
+            // Thêm lượt thích bài viết vào cơ sở dữ liệu
+            $like = new LikePost();
+            $like->post_id = $request->input('post_id');
+            $like->liker_id = $user->id;
+            $like->save();
+
+            return response()->json(['message' => 'Post liked successfully']);
+        }
     }
 }
