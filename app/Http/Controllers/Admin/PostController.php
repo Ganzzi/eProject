@@ -7,7 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Models\LikePost;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\UpdatePostRequest;
 use Illuminate\Support\Facades\Auth;
+
 
 class PostController extends Controller
 {
@@ -72,39 +74,34 @@ class PostController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     * * @param \App\Http\Requests\Request $request
-     * @param \App\Models\Post $post
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Post $post)
+    // /**
+    //  * Update the specified resource in storage.
+    //  * * @param \App\Http\Requests\UpdatePostRequest $request
+    //  * @param \App\Models\Post                     $post
+    //  * @return \Illuminate\Http\Response
+    //  */
+    public function update(UpdatePostRequest $request, Post $post)
     {
-       $data = $request->validate([
-           'image' => 'nullable|image',
-            'description' => 'nullable|string|max:100',
-        ]);
+        // Retrieve the validated form data from the request
+        $data = $request->validated();
 
-        // $user = Auth::user();
+        // Update the post model based on the form data
+        if (!empty($data['description'])) {
+            $post->description = $data['description'];
+        }
 
-        // if ($post->creator_id != $user->id) {
-        //     return response()->json(['message' => 'You are not the creator'], 403);
-        // }
-
-        $post->description = $data['description'];
-
-        // if (isset($data['description'])) {
-        //     $post->description = $data['description'];
-        // }
-
-        $filePath = isset($data['image']) ? basename($data['image']->store('public/images')) : null;
-
-         $post->image = $filePath;
-
+        if ($request->hasFile('image')) {
+            // Get the uploaded file from the request
+            $uploadedFile = $request->file('image');
+            // Store the uploaded file in a public storage disk
+            $filePath = $uploadedFile->store('public/images');
+            // Set the image path on the post model
+            $post->image = $filePath;
+        }
 
         $post->save();
 
-        return response()->json(['message' => $post], 202);
+        return response()->json(['message' => 'Update success'], 202);
     }
 
     /**
