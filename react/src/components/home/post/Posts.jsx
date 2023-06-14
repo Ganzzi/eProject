@@ -2,38 +2,11 @@ import React, { useEffect, useState } from "react";
 import axiosClient from "../../../axios-client";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import { BorderAll } from "@material-ui/icons";
+import { HiOutlinePhotograph } from "react-icons/Hi";
 
 const Posts = () => {
     const [posts, setPosts] = useState([]);
     const { user, token, setUser, setToken } = useStateContext();
-    const [postText, setPostText] = useState("");
-    const [selectedFile, setSelectedFile] = useState(null);
-
-    const handleTextChange = (event) => {
-        setPostText(event.target.value);
-    };
-
-    const handleFileChange = (event) => {
-        setSelectedFile(event.target.files[0]);
-    };
-
-    const handlePostSubmit = (event) => {
-        event.preventDefault();
-        if (postText.trim() !== "") {
-            // Thực hiện xử lý post bài viết tại đây
-            console.log("Post Text:", postText);
-            console.log("Selected File:", selectedFile);
-            // Gửi dữ liệu postText và selectedFile đến server để xử lý
-            // Ví dụ: fetch('/post', { method: 'POST', body: formData })
-            //   .then(response => response.json())
-            //   .then(data => console.log(data))
-            //   .catch(error => console.error(error));
-
-            setPostText("");
-            setSelectedFile(null);
-        }
-    };
-
     console.log();
 
     useEffect(() => {
@@ -41,7 +14,8 @@ const Posts = () => {
             console.log(data);
             setPosts(data);
         });
-    }, []);
+    }
+    );
     return (
         <div style={{}} className="row">
             <div
@@ -64,7 +38,7 @@ const Posts = () => {
 
             <div className="col-7">
                 <div
-                    className="posts"
+                    className=" posts "
                     style={{
                         display: "flex",
                         backgroundColor: "aliceblue",
@@ -90,32 +64,36 @@ const Posts = () => {
                             }}
                         />
                         <p>{user.name}</p>
-                        <textarea
-                            style={{
+                        <div>
+                            <input type="text" style={{
                                 display: "flex",
                                 width: "100%",
-                                height: "100px",
                                 padding: "10px",
                                 fontSize: "20px",
                                 border: "1px solid #ccc",
                                 borderRadius: "4px",
                                 resize: "none",
                             }}
-                            placeholder="What's on your mind?"
-                            value={postText}
-                        />
-                        <button
-                            style={{
-                                padding: "10px 20px",
-                                backgroundColor: "purple",
-                                color: "#fff",
-                                border: "none",
-                                cursor: "pointer",
-                            }}
-                            type="submit"
-                        >
-                            Post
-                        </button>
+                                placeholder="What's on your mind?"
+
+                            />
+                            <input type="file" id="file" />
+                            <label for="file" ><HiOutlinePhotograph/></label>
+                        </div>
+                        <div>
+                            <button
+                                style={{
+                                    padding: "10px 20px",
+                                    backgroundColor: "purple",
+                                    color: "#fff",
+                                    border: "none",
+                                    cursor: "pointer",
+                                }}
+                                type="submit"
+                            >
+                                Post
+                            </button>
+                        </div>
                     </form>
                 </div>
                 <div className="col">
@@ -128,9 +106,12 @@ const Posts = () => {
                             </div>
                             <div>
                                 <img
-                                    src={item.image}
-                                    alt=""
+                                    src={
+                                        "http://127.0.0.1:8000/api/images/" +
+                                        item.image
+                                    }
                                     className="img-fluid"
+                                    alt=""
                                 />
                             </div>
                             <br />
