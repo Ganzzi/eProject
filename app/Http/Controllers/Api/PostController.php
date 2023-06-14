@@ -51,10 +51,9 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'creator_id' => 'required',
+            'creator_id' => 'nullable',
             'image' => 'nullable|image',
             'description' => 'nullable|string|max:100',
-            'field' => 'nullable',
         ]);
 
         $filePath = isset($data['image']) ? basename($data['image']->store('public/images')) : null;
@@ -63,7 +62,6 @@ class PostController extends Controller
         $post->creator_id = $data['creator_id'];
         $post->image = $filePath;
         $post->description = $data['description'];
-        $post->field = $data['field'];
 
         $post->save();
 
