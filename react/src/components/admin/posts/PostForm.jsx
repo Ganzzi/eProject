@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosClient from "../../../axios-client.js";
 import { useStateContext } from "../../../contexts/ContextProvider.jsx";
+import { HiOutlinePhotograph } from "react-icons/Hi";
 export default function PostForm() {
 const navigate = useNavigate();
 let { id } = useParams();
@@ -46,8 +47,10 @@ const onSubmit = (ev) => {
         const formdata = new FormData();
         formdata.append('description', post.description);
         // formdata.append('creator_id', post.creator_id);
-        formdata.append('image',post.image
-        );
+        // formdata.append('image',post.image);
+        // formdata.append('image', null);
+        // console.log(post.image);
+        
         axiosClient
             .post("/admin/posts", formdata)
             .then(() => {
@@ -95,13 +98,11 @@ return (
                             }
                             placeholder="Creator id"
                         /> */}
-                    <input
-                        onChange={(ev) =>
+                   
+                    <input type="file" id="file"onChange={(ev) =>
                             setPost({ ...post, image: ev.target.files[0] })
-                        }
-                        type="file" 
-                        placeholder="image"
-                    />
+                        }/>
+                            <label for="file" ><HiOutlinePhotograph/></label>
                     
                     <button className="btn btn-outline-success"style={{width:"100px",}}>Save</button>
                 </form>

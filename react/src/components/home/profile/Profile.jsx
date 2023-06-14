@@ -1,10 +1,10 @@
 import React from "react";
-import { useStateContext } from "../../../contexts/ContextProvider";
-import { Height } from "@material-ui/icons";
+// import { useStateContext } from "../../../contexts/ContextProvider";
+// import { Height } from "@material-ui/icons";
 
 
 const Profile = () => {
-  const { user, token, setUser, setToken } = useStateContext();
+  // const { user, token, setUser, setToken } = useStateContext();
   console.log();
 
   return (
@@ -21,7 +21,8 @@ const Profile = () => {
             height: 200,
           }}
         />
-        <p className="justify-content-center d-flex">{user.name}</p></div>
+        {/* <p className="justify-content-center d-flex">{user.name}</p> */}
+        </div>
 <div className="col" style={{
   backgroundColor:"#dcdcdc",
   height:"400px",

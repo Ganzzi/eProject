@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosClient from "../../../axios-client.js";
 import { useStateContext } from "../../../contexts/ContextProvider.jsx";
+import { HiOutlinePhotograph } from "react-icons/Hi";
 
 export default function UserForm() {
     const navigate = useNavigate();
@@ -115,13 +116,12 @@ export default function UserForm() {
                             }
                             placeholder="Role id"
                         />
-                        <input
-                        type="file"
-                            onChange={(ev) =>
+                        
+                        <input type="file" id="file"onChange={(ev) =>
                                 setUser({ ...user, image: ev.target.files[0] })
-                            }
-                            placeholder="Image"
-                        />
+                            } />
+                            <label for="file" ><HiOutlinePhotograph/></label>
+                        
                         <input
                             type="password"
                             onChange={(ev) =>
