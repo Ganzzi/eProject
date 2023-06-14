@@ -31,21 +31,25 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'description' => 'nullable|string',
-            'image' => 'nullable|string',
+        $data = $request->validate([
+            'creator_id' => 'required',
+            'image' => 'nullable|image',
+            'description' => 'nullable|string|max:100',
         ]);
 
-        $user = Auth::user();
+        $filePath = isset($data['image']) ? basename($data['image']->store('public/images')) : null;
 
         $post = new Post();
-        $post->description = $validatedData['description'];
-        $post->image = $validatedData['image'];
-        $post->creator_id = $user->id;
+        $post->creator_id = $data['creator_id'];
+        $post->image = $filePath;
+        $post->description = $data['description'];
+        $post->creator_id = $data['creator_id'];
+        $post->image = $filePath;
+        $post->description = $data['description'];
 
         $post->save();
-        
-        return response()->json(['message' => 'Post created successfully']);
+
+        return response()->json(['post' => $post], 202);
 
     }
 
@@ -111,30 +115,34 @@ class PostController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * * @param \App\Http\Requests\UpdateUserRequest $request
-     * @param \App\Models\Post                     $post
+     * * @param \App\Http\Requests\Request $request
+     * @param \App\Models\Post $post
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Post $post)
     {
         $data = $request->validate([
-            'description' => 'required|string|max:100',
-            'field' => 'required',
+            // 'image' => 'nullable|image',
+            'description' => 'nullable|string|max:100',
         ]);
-        // return response()->json([$post]);
 
         $user = Auth::user();
 
         if ($post->creator_id != $user->id) {
-            return response()->json(['You are not the creator']);
+            return response()->json(['message' => 'You are not the creator'], 403);
         }
 
-        $post->description = $data['description'];
-        $post->field = $data['field'];
+        if (isset($data['description'])) {
+            $post->description = $data['description'];
+        }
+
+        // $filePath = isset($data['image']) ? basename($data['image']->store('public/images')) : null;
+
+        //  $post->image = $filePath;
 
         $post->save();
 
-        return response()->json(['update success', 202]);
+        return response()->json(['message' => 'Update success'], 202);
     }
 
     /**

@@ -45,7 +45,7 @@ const onSubmit = (ev) => {
     } else {
         const formdata = new FormData();
         formdata.append('description', post.description);
-        formdata.append('creator_id', post.creator_id);
+        // formdata.append('creator_id', post.creator_id);
         formdata.append('image',post.image
         );
         axiosClient
