@@ -33,7 +33,7 @@ export default function Homescreen() {
             <div
                 className="py-3 text-black row sticky-top"
                 style={{
-                    height: "9vh",
+                    height: "100px",
                     backgroundColor: "pink",
                 }}
             >

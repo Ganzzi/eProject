@@ -124,7 +124,7 @@ const Message = () =>
             <aside className="sidebar bg-light">
                 <h2>Rooms</h2>
                 <ul className="list-group">
-                    {chatrooms.map((room, index) => (
+                    {/* {chatrooms.map((room, index) => (
                         <li
                             key={index}
                             className={`list-group-item ${index === selectedRoom ? "active" : ""}`}
@@ -171,7 +171,7 @@ const Message = () =>
                                 return null; // Add this to handle the missing return statement warning
                             })}
                         </li>
-                    ))}
+                    ))} */}
 
                 </ul>
             </aside>
@@ -179,14 +179,14 @@ const Message = () =>
             {/* Chats */}
             <main className="chats">
                 <div>
-                    {chatrooms[selectedRoom]?.chats.map((chat, index) => (
+                    {/* {chatrooms[selectedRoom]?.chats.map((chat, index) => (
                         <div key={index}>
                             <div>{chat.text}</div>
                             <div>{index}</div>
                             <div>{chat.sender_id}</div>
                             <div>{chat.likes.length} Likes</div>
                         </div>
-                    ))}
+                    ))} */}
                 </div>
             </main>
         </div>

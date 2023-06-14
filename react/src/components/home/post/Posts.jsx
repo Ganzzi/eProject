@@ -81,7 +81,7 @@ const Posts = () => {
                                 placeholder="What's on your mind?"
 
                             />
-                            <input type="file" id="file" />
+                            <input type="file" />
                             <label for="file" ><HiOutlinePhotograph/></label>
                         </div>
                         <div>
