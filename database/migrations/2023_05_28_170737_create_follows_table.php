@@ -12,15 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('follows', function (Blueprint $table) {
-
+            $table->id();
             $table->unsignedBigInteger('follower_id');
             $table->foreign('follower_id')->references('id')->on('users');
             $table->unsignedBigInteger('following_id');
             $table->foreign('following_id')->references('id')->on('users');
             $table->datetime('follow_at');
             $table->timestamps();
-
-            $table->primary(['follower_id', 'following_id']);
         });
     }
 

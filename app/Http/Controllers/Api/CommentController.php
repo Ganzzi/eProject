@@ -47,7 +47,21 @@ class CommentController extends Controller
      */
     public function update(Request $request, Comment $comment)
     {
-        //
+        $data = $request->validate([
+            'text' => 'required|string|max:200',
+        ]);
+
+        $user = Auth::user();
+
+        if ($comment->commentor_id != $user->id) {
+            return response()->json(['You are not the commentor']);
+        }
+
+        $comment->text = $data['text'];
+
+        $comment->save();
+
+        return response()->json(['update success', 202]);
     }
 
     /**
