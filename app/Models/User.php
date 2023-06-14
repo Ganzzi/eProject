@@ -86,7 +86,7 @@ class User extends Authenticatable
 
     public function chatRooms()
     {
-        return $this->belongsToMany(ChatRoom::class, 'chat_room_user', 'user_id', 'chat_room_id')
+        return $this->belongsToMany(ChatRoom::class, 'chat_room_user', 'user_id', 'chat_room_id')->withPivot('join_at')
             ->withTimestamps();
     }
 

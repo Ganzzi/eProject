@@ -5,7 +5,7 @@ import axiosClient from "../../../axios-client";
 import { Link } from "react-router-dom";
 
 export default function ChatRooms(){
-    const [chatrooms, setChatrooms] = useState([]);
+    const [ChatRooms, setChatrooms] = useState([]);
     const [loading, setLoading] = useState(false);
     const { setNotification } = useStateContext();
 
@@ -13,11 +13,11 @@ export default function ChatRooms(){
         getChatroom();
     }, []);
 
-    const onDeleteClick = (chatrooms) => {
+    const onDeleteClick = (ChatRooms_id) => {
         if (!window.confirm("Are you sure you want to delete this chatrooms?")) {
             return;
         }
-        axiosClient.delete(`/admin/chatrooms/${chatrooms.id}`).then(() => {
+        axiosClient.delete(`/admin/chatrooms/${ChatRooms_id}`).then(() => {
             setNotification("chatrooms was successfully deleted");
             getChatroom();
         });
@@ -30,7 +30,7 @@ export default function ChatRooms(){
             .then(({ data }) => {
                 setLoading(false);
                 console.log(data);
-              //  setChatrooms(data);
+                setChatrooms(data);
             })
             .catch(() => {
                 setLoading(false);
@@ -79,9 +79,8 @@ export default function ChatRooms(){
                     )}
                     {!loading && (
                         <tbody>
-                            {chatrooms.map((m) => (
+                            {ChatRooms.map((m) => (
                                 <tr key={m.id}>
-                                   
                                     <td>{m.id}</td>
                                     <td>{m.chats.length}</td>
                                     <td>{m.users.length}</td>
@@ -98,7 +97,7 @@ export default function ChatRooms(){
                                         &nbsp;
                                         <button
                                             className="btn-delete"
-                                            onClick={() => onDeleteClick(m.chatrooms_Id)}
+                                            onClick={() => onDeleteClick(m.id)}
                                         >
                                             Delete
                                         </button>

@@ -27,8 +27,7 @@ class LikePostController extends Controller
         if ($existingLike) {
             $existingLike->forceDelete();
             return response()->json(['message' => 'Unliked the post']);
-        }
-        else{
+        } else {
             // Thêm lượt thích bài viết vào cơ sở dữ liệu
             $like = new LikePost();
             $like->post_id = $request->input('post_id');
@@ -37,15 +36,5 @@ class LikePostController extends Controller
 
             return response()->json(['message' => 'Post liked successfully']);
         }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(LikePost $likePost)
-    {
-        $likePost->delete();
-
-        return response()->json(['message' => 'Post like removed successfully'], 200);
     }
 }

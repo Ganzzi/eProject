@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Comment;
 use App\Http\Controllers\Controller;
+use App\Models\LikeComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -51,9 +52,29 @@ class CommentController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * @param \App\Models\Comment $comment
+     * @return \Illuminate\Http\Response
      */
     public function destroy(Comment $comment)
     {
+        // Kiểm tra xem người dùng có quyền xóa tin nhắn không
+        $user = Auth::user();
+        if ($comment->commentor_id !== $user->id) {
+            return response()->json(['message' => 'Unauthorized.'], 403);
+        }
+
+        $comments = Comment::whereIn('id', $comment)->get();
+
+        $comments->each(function ($cmt) {
+            Comment::where('reply_to', $cmt->id)->delete();
+        });
+
+        $likes = LikeComment::whereIn('id', $comment)->get();
+
+        $likes->each(function ($like) {
+            LikeComment::where('comment_id', $like->id)->delete();
+        });
+
         $comment->delete();
 
         return response()->json([

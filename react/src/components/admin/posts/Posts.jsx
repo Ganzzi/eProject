@@ -49,9 +49,9 @@ export default function Posts() {
                 <h1 style={{fontFamily:"fantasy",
            justifycontent: "space-between",
             }}>Posts</h1>
-                <Link className="btn-add" to="/admin/posts/new">
+                {/* <Link className="btn-add" to="/admin/posts/new">
                     Add new
-                </Link>
+                </Link> */}
             </div>
             <div className="card animated fadeInDown">
                 <table>
@@ -62,7 +62,6 @@ export default function Posts() {
                             <th>ID</th>
                             <th>Creator</th>
                             <th>Description</th>
-                            <th>Field</th>
                             <th>Comment</th>
                             <th>image</th>
                             <th>Update at</th>
@@ -86,7 +85,6 @@ export default function Posts() {
                                     <td>{p.creator_id}</td>
                                 
                                     <td>{p.description}</td>
-                                    <td>{p.field}</td>
                                    
                                     <td>{p.comments.length}</td>
 
@@ -105,14 +103,14 @@ export default function Posts() {
                                     <td>
                                         <Link
                                             className="btn-edit"
-                                            to={"/admin/posts/" + p.post_id}
+                                            to={"/admin/posts/" + p.id}
                                         >
                                             Edit
                                         </Link>
                                         &nbsp;
                                         <button
                                             className="btn-delete"
-                                            onClick={() => onDeleteClick(p.Post_Id)}
+                                            onClick={() => onDeleteClick(p.id)}
                                         >
                                             Delete
                                         </button>

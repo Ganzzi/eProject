@@ -12,6 +12,13 @@ use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\LikeCommentController;
 use App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Api\UserController;
+
+use App\Http\Controllers\Admin\ChatRoomController as AdminChatRoomController;
+use App\Http\Controllers\Admin\UserController  as AdminUserController;
+use App\Http\Controllers\Admin\PostController  as AdminPostController;
+
+
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -40,17 +47,19 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/likeposts', LikePostController::class);
     Route::apiResource('/likecomments', LikeCommentController::class);
     Route::apiResource('/notifications', NotificationController::class);
-     Route::apiResource('/posts', PostController::class);
-     Route::apiResource('/users', UserController::class);
-    Route::apiResource('/admin/users',AdminUserController::class);
-    Route::apiResource('/admin/chatrooms',AdminChatRoomController::class);
-    Route::apiResource('/admin/posts',AdminPostController::class);
+    Route::apiResource('/posts', PostController::class);
+    Route::post('/searchUser', [UserController::class, 'searchByName']);
 
+    Route::apiResource('/admin/users', AdminUserController::class);
+    Route::apiResource('/admin/chatrooms', AdminChatRoomController::class);
+    Route::apiResource('/admin/posts', AdminPostController::class);
 });
 
 Route::post("/signup", [Auth::class, 'signup']);
 Route::post("/login", [Auth::class, 'login']);
-Route::post('/recover-password', [UserController::class, 'sendResetPassword'])->name('password.email');
+Route::post("/reset-password", [Auth::class, 'submitForgetPassword']);
+Route::post("/verify-code", [Auth::class, 'submitResetPassword']);
+// Route::post('/recover-password', [UserController::class, 'sendResetPassword'])->name('password.email');
 
 Route::get('/images/{filename}', function ($filename) {
 
@@ -66,15 +75,15 @@ Route::get('/images/{filename}', function ($filename) {
     return response($file)->header('Content-Type', $type);
 });
 
-Route::get('/videos/{filename}', function ($filename) {
-    $path = storage_path('app/public/videos/' . $filename);
+// Route::get('/videos/{filename}', function ($filename) {
+//     $path = storage_path('app/public/videos/' . $filename);
 
-    if (!file_exists($path)) {
-        abort(404);
-    }
+//     if (!file_exists($path)) {
+//         abort(404);
+//     }
 
-    $file = file_get_contents($path);
-    $type = mime_content_type($path);
+//     $file = file_get_contents($path);
+//     $type = mime_content_type($path);
 
-    return response($file)->header('Content-Type', $type);
-});
+//     return response($file)->header('Content-Type', $type);
+// });

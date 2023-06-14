@@ -28,7 +28,7 @@ export default function Users() {
             .get("/admin/users")
             .then(({ data }) => {
                 setLoading(false);
-                console.log(data).data;
+                console.log(data);
                 setUsers(data.data);
             })
             .catch(() => {
@@ -108,7 +108,7 @@ export default function Users() {
                                         &nbsp;
                                         <button
                                             className="btn-delete"
-                                            onClick={(ev) => onDeleteClick(u)}
+                                            onClick={() => onDeleteClick(u)}
                                         >
                                             Delete
                                         </button>

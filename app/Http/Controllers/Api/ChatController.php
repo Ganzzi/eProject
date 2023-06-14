@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Chat;
 use App\Http\Controllers\Controller;
+use App\Models\LikeChat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,13 +28,15 @@ class ChatController extends Controller
         $chat->text = $validatedData['text'];
         $chat->sender_id = $user->id;
 
-        if ($validatedData['reply_to']) {
+        if (isset($validatedData['reply_to'])) {
             $replyToChat = Chat::findOrFail($validatedData['reply_to']);
             $chat->reply_to = $replyToChat->id;
         }
 
+        // return response()->json('dmm2');
+
         $chat->save();
-        
+
         return response()->json(['message' => 'Chat created successfully']);
     }
 
@@ -42,16 +45,27 @@ class ChatController extends Controller
      */
     public function destroy($chat)
     {
-        $chat = Chat::find($chat);
+        $_chat = Chat::find($chat);
 
         // Kiểm tra xem người dùng có quyền xóa tin nhắn không
         $user = Auth::user();
-        if ($chat->sender_id !== $user->id) {
+        if ($_chat->sender_id !== $user->id) {
             return response()->json(['message' => 'Unauthorized.'], 403);
         }
 
-        // Xóa tin nhắn khỏi database
-        $chat->delete();
+        $chats = Chat::whereIn('id', $_chat)->get();
+
+        $chats->each(function ($chat) {
+            Chat::where('reply_to', $chat->id)->delete();
+        });
+
+        $likes = LikeChat::whereIn('id', $_chat)->get();
+
+        $likes->each(function ($like) {
+            LikeChat::where('chat_id', $like->id)->delete();
+        });
+
+        $_chat->delete();
 
         return response()->json(['message' => 'Chat deleted.']);
     }
