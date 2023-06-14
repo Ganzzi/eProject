@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\LikePost;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -73,36 +74,37 @@ class PostController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * * @param \App\Http\Requests\UpdateUserRequest $request
-     * @param \App\Models\Post                     $post
+     * * @param \App\Http\Requests\Request $request
+     * @param \App\Models\Post $post
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Post $post)
     {
-        $data = $request->validate([
-            'description' => 'required|string|max:100',
-            'creator_id'=>'required',
-            'image'=> 'image',
+       $data = $request->validate([
+           'image' => 'nullable|image',
+            'description' => 'nullable|string|max:100',
         ]);
-       
-        if ($request->hasFile('image')) {
-            // Get the uploaded file from the request
-            $uploadedFile = $request->file('image');
 
-            // Store the uploaded file in a public storage disk
-            $filePath = $uploadedFile->store('public/images');
-        } else {
-            $filePath = null;}
-           
-        // $_post = Post::find($post);
-        // return response()->json($post);
-  
+        // $user = Auth::user();
+
+        // if ($post->creator_id != $user->id) {
+        //     return response()->json(['message' => 'You are not the creator'], 403);
+        // }
+
         $post->description = $data['description'];
-        $post->creator_id = $data['creator_id'];
-       $post->image = basename($filePath);
+
+        // if (isset($data['description'])) {
+        //     $post->description = $data['description'];
+        // }
+
+        $filePath = isset($data['image']) ? basename($data['image']->store('public/images')) : null;
+
+         $post->image = $filePath;
+
+
         $post->save();
 
-        return response('Test success success');
+        return response()->json(['message' => $post], 202);
     }
 
     /**
@@ -127,6 +129,6 @@ class PostController extends Controller
         // Delete the chat room
         $post->delete();
 
-        return response()->json(['success' => true, 'message' => 'Chat room deleted successfully']);
+        return response()->json(['success' => true, 'message' => 'Post deleted successfully']);
     }
 }
