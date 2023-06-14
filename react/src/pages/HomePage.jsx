@@ -50,11 +50,12 @@ export default function Homescreen() {
                 <div className="col-6  d-flex justify-content-center">
                     <form
                         action=""
-                        className="col-9"
+                        className="col-12"
                         style={{
                             display: "flex",
                             flexDirection: "row",
                             alignItems: "flex-start",
+
                         }}
                     >
                         <input
@@ -67,27 +68,32 @@ export default function Homescreen() {
                                 display: "flex",
                                 flexDirection: "row",
                                 alignItems: "flex-start",
-                                backgroundColor: "purple",
                                 color: "#fff",
                                 border: "none",
-                                cursor: "pointer",
+                                cursor: "pointer"
                             }}
                             type="submit"
                         >
-                            <FaSearchengin />
+                            <FaSearchengin size={30} color="black" />
                         </button>
                     </form>
                 </div>
 
                 <div
-                    className="col-3 d-flex justify-content-end align-items-center"
+                    className="col-2 d-flex justify-content-end align-items-center"
                     style={{}}
                 >
                     <Link to={"/messages"}>
-                        <BsChatRightText />
+                        <BsChatRightText size={30} color="black" />
                     </Link>
-                    <Link to={"/profile"}>{user.name}</Link>
+
                 </div>
+                <div className="col-1 d-flex justify-content-end align-items-center" >
+                    <Link to={"/profile"}>{user.name}
+                    
+                    </Link>
+                </div>
+
                 <div className="col-1 d-flex justify-content-end align-items-center">
                     <a
                         className="btn-logout btn btn-primary"
