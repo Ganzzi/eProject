@@ -11,7 +11,7 @@ import {
     AdminPosts,
     AdminPostForm,
     Adminchatrooms,
-    AdminchatroomForm,
+    // AdminchatroomForm,
 } from "./components";
 import { Dashboard, GuestPage, HomePage } from "./pages";
 
@@ -88,14 +88,14 @@ const router = createBrowserRouter([
                 path: "/admin/chatrooms",
                 element: <Adminchatrooms />,
             },
-            {
-                path: "/admin/chatrooms/new",
-                element: <AdminchatroomForm key={"chatroomsCreate"} />,
-            },
-            {
-                path: "/admin/chatrooms/:id",
-                element: <AdminchatroomForm key={"chatroomsUpdate"} />,
-            },
+            // {
+            //     path: "/admin/chatrooms/new",
+            //     element: <AdminchatroomForm key={"chatroomsCreate"} />,
+            // },
+            // {
+            //     path: "/admin/chatrooms/:id",
+            //     element: <AdminchatroomForm key={"chatroomsUpdate"} />,
+            // },
         ],
     },
     {

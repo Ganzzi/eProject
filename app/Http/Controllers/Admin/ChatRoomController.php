@@ -12,15 +12,15 @@ class ChatRoomController extends Controller
      */
     public function index()
     {
-        $chatrooms = ChatRoom::with('users', 'chats.likes')->get();
+        $chatRooms = ChatRoom::with('users', 'chats.likes')->get();
 
-        return response()->json($chatrooms);
+        return response()->json($chatRooms);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($chatRoom)
+    public function destroy($chatRooms)
     {
         // Find the chat room by ID
         $room = ChatRoom::with('users', 'chats.likes')->find($chatRoom);

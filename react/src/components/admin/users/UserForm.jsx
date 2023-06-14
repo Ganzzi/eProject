@@ -10,6 +10,8 @@ export default function UserForm() {
         id: null,
         name: "",
         email: "",
+        role_id: 1,
+        image: null,
         password: "",
         password_confirmation: "",
     });
@@ -21,7 +23,7 @@ export default function UserForm() {
         useEffect(() => {
             setLoading(true);
             axiosClient
-                .get(`/users/${id}`)
+                .get(`/admin/users/${id}`)
                 .then(({ data }) => {
                     setLoading(false);
                     setUser(data);
@@ -34,9 +36,9 @@ export default function UserForm() {
 
     const onSubmit = (ev) => {
         ev.preventDefault();
-        if (user.id) {
+        if (id) {
             axiosClient
-                .put(`/users/${user.id}`, user)
+                .put(`/admin/users/${id}`, user)
                 .then(() => {
                     setNotification("User was successfully updated");
                     navigate("/admin/users");
@@ -48,8 +50,19 @@ export default function UserForm() {
                     }
                 });
         } else {
+            const formdata = new FormData();
+            formdata.append('name', user.name);
+            formdata.append('role_id', user.role_id);
+            formdata.append('image', user.image);
+            formdata.append("email", user.email);
+            formdata.append("password", user.password);
+            formdata.append(
+                "password_confirmation",
+                user.password_confirmation
+            );
+
             axiosClient
-                .post("/users", user)
+                .post("/admin/users", formdata)
                 .then(() => {
                     setNotification("User was successfully created");
                     navigate("/admin/users");
@@ -93,6 +106,23 @@ export default function UserForm() {
                             placeholder="Email"
                         />
                         <input
+                            value={user.role_id}
+                            type="number"
+                            min={1}
+                            max={2}
+                            onChange={(ev) =>
+                                setUser({ ...user, role_id: ev.target.value })
+                            }
+                            placeholder="Role id"
+                        />
+                        <input
+                        type="file"
+                            onChange={(ev) =>
+                                setUser({ ...user, image: ev.target.files[0] })
+                            }
+                            placeholder="Image"
+                        />
+                        <input
                             type="password"
                             onChange={(ev) =>
                                 setUser({ ...user, password: ev.target.value })
@@ -109,7 +139,7 @@ export default function UserForm() {
                             }
                             placeholder="Password Confirmation"
                         />
-                        <button className="btn">Save</button>
+                        <button className="btn btn-outline-success"style={{width:"100px"}}>Save</button>
                     </form>
                 )}
             </div>

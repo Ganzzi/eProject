@@ -5,7 +5,7 @@ import axiosClient from "../../../axios-client";
 import { Link } from "react-router-dom";
 
 export default function ChatRooms(){
-    const [chatrooms, setChatrooms] = useState([]);
+    const [ChatRooms, setChatrooms] = useState([]);
     const [loading, setLoading] = useState(false);
     const { setNotification } = useStateContext();
 
@@ -13,11 +13,11 @@ export default function ChatRooms(){
         getChatroom();
     }, []);
 
-    const onDeleteClick = (chatrooms) => {
+    const onDeleteClick = (ChatRooms_id) => {
         if (!window.confirm("Are you sure you want to delete this chatrooms?")) {
             return;
         }
-        axiosClient.delete(`/chatrooms/${chatrooms.id}`).then(() => {
+        axiosClient.delete(`/admin/chatrooms/${ChatRooms_id}`).then(() => {
             setNotification("chatrooms was successfully deleted");
             getChatroom();
         });
@@ -26,7 +26,7 @@ export default function ChatRooms(){
     const getChatroom = () => {
         setLoading(true);
         axiosClient
-            .get("/chatrooms")
+            .get("/admin/chatrooms")
             .then(({ data }) => {
                 setLoading(false);
                 console.log(data);
@@ -46,15 +46,19 @@ export default function ChatRooms(){
                     alignItems: "center",
                 }}
             >
-                <h1>chatrooms</h1>
-                <Link className="btn-add" to="/admin/chatrooms/new">
+                <h1 style={{fontFamily:"fantasy",
+           justifycontent: "space-between",
+            }}>chatrooms</h1>
+                {/* <Link className="btn-add" to="/admin/chatrooms/new">
                     Add new
-                </Link>
+                </Link> */}
             </div>
             <div className="card animated fadeInDown">
                 <table>
                     <thead>
-                        <tr>
+                        <tr  style={{
+                            fontFamily:"cursive",textAlign:"center",padding:"40px",
+                        }}>
                            
                             <th>Id</th>
                             <th>Chats</th>
@@ -75,9 +79,8 @@ export default function ChatRooms(){
                     )}
                     {!loading && (
                         <tbody>
-                            {chatrooms.map((m) => (
+                            {ChatRooms.map((m) => (
                                 <tr key={m.id}>
-                                   
                                     <td>{m.id}</td>
                                     <td>{m.chats.length}</td>
                                     <td>{m.users.length}</td>
@@ -85,16 +88,16 @@ export default function ChatRooms(){
                                     <td>{m.updated_at}</td>
                                     
                                     <td>
-                                        <Link
+                                        {/* <Link
                                             className="btn-edit"
                                             to={"/admin/chatrooms/" + m.id}
                                         >
                                             Edit
-                                        </Link>
+                                        </Link> */}
                                         &nbsp;
                                         <button
                                             className="btn-delete"
-                                            onClick={() => onDeleteClick(m.chatrooms_Id)}
+                                            onClick={() => onDeleteClick(m.id)}
                                         >
                                             Delete
                                         </button>

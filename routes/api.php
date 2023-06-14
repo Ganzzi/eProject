@@ -48,7 +48,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/likecomments', LikeCommentController::class);
     Route::apiResource('/notifications', NotificationController::class);
     Route::apiResource('/posts', PostController::class);
-
     Route::post('/searchUser', [UserController::class, 'searchByName']);
 
     Route::apiResource('/admin/users', AdminUserController::class);
