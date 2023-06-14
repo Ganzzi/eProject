@@ -23,7 +23,7 @@ class ChatRoomController extends Controller
     public function destroy($chatRooms)
     {
         // Find the chat room by ID
-        $room = ChatRoom::with('users', 'chats.likes')->find($chatRoom);
+        $room = ChatRoom::with('users', 'chats.likes')->find($chatRooms);
 
         if (!$room) {
             return response()->json(['success' => false, 'message' => 'Chat room not found'], 404);
