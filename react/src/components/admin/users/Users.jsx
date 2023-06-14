@@ -16,7 +16,7 @@ export default function Users() {
         if (!window.confirm("Are you sure you want to delete this user?")) {
             return;
         }
-        axiosClient.delete(`/users/${user.id}`).then(() => {
+        axiosClient.delete(`/admin/users/${user.id}`).then(() => {
             setNotification("User was successfully deleted");
             getUsers();
         });
@@ -25,10 +25,10 @@ export default function Users() {
     const getUsers = () => {
         setLoading(true);
         axiosClient
-            .get("/users")
+            .get("/admin/users")
             .then(({ data }) => {
                 setLoading(false);
-                console.log(data.data);
+                console.log(data);
                 setUsers(data.data);
             })
             .catch(() => {
@@ -45,7 +45,9 @@ export default function Users() {
                     alignItems: "center",
                 }}
             >
-                <h1>Users</h1>
+                <h1 style={{fontFamily:"fantasy",
+           justifycontent: "space-between",
+            }}>Users</h1>
                 <Link className="btn-add" to="/admin/users/new">
                     Add new
                 </Link>
@@ -53,7 +55,9 @@ export default function Users() {
             <div className="card animated fadeInDown">
                 <table>
                     <thead>
-                        <tr>
+                        <tr style={{
+                            fontFamily:"cursive",textAlign:"center",padding:"40px",
+                        }}>
                             <th>ID</th>
                             <th>Image</th>
                             <th>Name</th>
@@ -104,7 +108,7 @@ export default function Users() {
                                         &nbsp;
                                         <button
                                             className="btn-delete"
-                                            onClick={(ev) => onDeleteClick(u)}
+                                            onClick={() => onDeleteClick(u)}
                                         >
                                             Delete
                                         </button>

@@ -20,26 +20,7 @@ class PostController extends Controller
 
         $posts = Post::with('likes', 'comments.likes')->get();
 
-        return response()->json($posts->map(function ($_post) {
-
-            $user = User::find($_post->creator_id);
-
-            $creator_name = $user->name;
-            $creator_image = $user->image;
-
-            return [
-                "id" => $_post->id,
-                "creator_id" => $_post->creator_id,
-                "description" => $_post->description,
-                "image" => $_post->image,
-                "created_at" => $_post->created_at,
-                "updated_at" => $_post->updated_at,
-                'creator_name' => $creator_name,
-                'creator_image' => $creator_image,
-                "likes" => $_post->likes,
-                "comments" => $_post->comments,
-            ];
-        }));
+        return response()->json($posts);
     }
 
     /**
@@ -62,12 +43,13 @@ class PostController extends Controller
         $post->creator_id = $data['creator_id'];
         $post->image = $filePath;
         $post->description = $data['description'];
+        $post->field = $data['field'];
 
         $post->save();
 
         return response()->json(['post' => $post], 202);
-    }
 
+    }
 
     /**
      * Display the specified resource.
@@ -76,54 +58,90 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        // return response('hi');
-        $_post = Post::with('likes', 'comments.likes')->find($post)->first();
-        // return response($_post);
+        $room = ChatRoom::with('users', 'chats.likes')->find($chatRoom);
+        // return response()->json(['data' => $room]);
 
-        $user = User::find($_post->creator_id);
+        $lastMessage = $room->chats()->orderByDesc('created_at')->first();
 
-        $creator_name = $user->name;
-        $creator_image = $user->image;
+        // Lấy tất cả các tin nhắn reply của tin nhắn gốc
+        $replyToId = $lastMessage->id; // Thay thế $lastMessage->id bằng ID của tin nhắn gốc cụ thể
+        $replies = Chat::where('reply_to', $replyToId)->get();
 
         return response()->json([
-            "id" => $_post->id,
-            "creator_id" => $_post->creator_id,
-            "description" => $_post->description,
-            "image" => $_post->image,
-            "created_at" => $_post->created_at,
-            "updated_at" => $_post->updated_at,
-            'creator_name' => $creator_name,
-            'creator_image' => $creator_image,
-            "likes" => $_post->likes,
-            "comments" => $_post->comments,
+            'chat_room_id' => $room->id,
+            'created_at' => $room->created_at->toISOString(),
+            'participants' => $room->users->map(function ($user) {
+                return [
+                    'paticipator_id' => $user->id,
+                    'name' => $user->name,
+                    'image' => $user->image,
+                    'created_at' => $user->pivot->created_at,
+                ];
+            }),
+
+            'chats' => $room->chats->map(function ($chat) {
+                return [
+                    'chat_id' => $chat->id,
+                    'created_at' => $chat->created_at->toISOString(),
+                    'text' => $chat->text,
+                    'sender_id' => $chat->sender_id,
+                    'likes' => $chat->likes->map(function ($like) {
+                        return [
+                            'liker' => $like->liker_id,
+                            'created_at' => $like->created_at->toISOString(),
+                        ];
+                    })
+                ];
+            }),
+
+            'replies' => $replies->map(function ($reply) {
+                return [
+                    'reply_id' => $reply->id,
+                    'created_at' => $reply->created_at->toISOString(),
+                    'text' => $reply->text,
+                    'sender_id' => $reply->sender_id,
+                    'likes' => $reply->likes->map(function ($like) {
+                        $username = User::find($like->liker_id)->name;
+                        return [
+                            'liker' => $username,
+                        ];
+                    })
+                ];
+            }),
         ]);
     }
 
     /**
      * Update the specified resource in storage.
-     * * @param \App\Http\Requests\UpdateUserRequest $request
-     * @param \App\Models\Post                     $post
+     * * @param \App\Http\Requests\Request $request
+     * @param \App\Models\Post $post
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Post $post)
     {
         $data = $request->validate([
-            'description' => 'required|string',
+
+            // 'image' => 'nullable|image',
+            'description' => 'nullable|string|max:100',
         ]);
-        // return response()->json([$post]);
 
         $user = Auth::user();
 
         if ($post->creator_id != $user->id) {
-            return response()->json(['You are not the creator']);
+            return response()->json(['message' => 'You are not the creator'], 403);
         }
 
-        $post->description = $data['description'];
-        $post->field = $data['field'];
+        if (isset($data['description'])) {
+            $post->description = $data['description'];
+        }
+
+        // $filePath = isset($data['image']) ? basename($data['image']->store('public/images')) : null;
+
+        //  $post->image = $filePath;
 
         $post->save();
 
-        return response()->json(['update success', 202]);
+        return response()->json(['message' => 'Update success'], 202);
     }
 
     /**
@@ -133,26 +151,9 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        if (!$post) {
-            return response()->json(['success' => false, 'message' => 'not found'], 404);
-        }
-        $user = Auth::user();
-
-        if ($post->creator_id != $user->id) {
-            return response()->json(['You are not the creator']);
-        }
-
-        $post->likes()->delete();
-
-        // Delete chats and associated like chats
-        $post->comments()->each(function ($comment) {
-            $comment->likes()->delete();
-            $comment->delete();
-        });
-
-        // Delete the chat room
+        // lam lai
         $post->delete();
 
-        return response()->json(['success' => true, 'message' => 'Chat room deleted successfully']);
+        return response("", 204);
     }
 }

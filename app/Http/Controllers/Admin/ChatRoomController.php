@@ -12,9 +12,9 @@ class ChatRoomController extends Controller
      */
     public function index()
     {
-        $chatrooms = ChatRoom::with('users', 'chats.likes')->get();
+        $chatRooms = ChatRoom::with('users', 'chats.likes')->get();
 
-        return response()->json($chatrooms);
+        return response()->json($chatRooms);
     }
 
     /**
@@ -23,7 +23,7 @@ class ChatRoomController extends Controller
     public function destroy($chatRoom)
     {
         // Find the chat room by ID
-        $room = ChatRoom::find($chatRoom);
+        $room = ChatRoom::with('users', 'chats.likes')->find($chatRoom);
 
         if (!$room) {
             return response()->json(['success' => false, 'message' => 'Chat room not found'], 404);
@@ -34,7 +34,8 @@ class ChatRoomController extends Controller
 
         // Delete chats and associated like chats
         $room->chats()->each(function ($chat) {
-            $chat->likeChats()->delete();
+            $chat->likes()->delete();
+            $chat->likes()->delete();
             $chat->delete();
         });
 
