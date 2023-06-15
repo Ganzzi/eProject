@@ -11,15 +11,30 @@ import { HiOutlinePhotograph } from "react-icons/Hi";
 const Posts = () => {
     const [posts, setPosts] = useState([]);
     const { user, token, setUser, setToken } = useStateContext();
-    console.log();
+    console.log(user.id);
 
     useEffect(() => {
         axiosClient.get("/posts").then(({ data }) => {
             console.log(data);
             setPosts(data);
         });
+    }, []);
+
+    const handleLikePost = async (id) => {
+        const x = {
+            post_id: id
+        }
+        await axiosClient.post('/likeposts?', x).then(({ data }) => {
+            console.log(data);
+        })
+        .catch(() => {
+        });
     }
-    );
+
+    const handleCreatePost = async () => {
+        
+    }
+
     return (
         <div style={{}} className="row">
             <div
@@ -94,6 +109,9 @@ const Posts = () => {
                                     cursor: "pointer",
                                 }}
                                 type="submit"
+                                onClick={() => {
+                                    handleCreatePost()
+                                }}
                             >
                                 Post
                             </button>
@@ -102,10 +120,16 @@ const Posts = () => {
                 </div>
                 <div className="col">
                     {posts.map((item, index) => (
-                        <div className="col-12">
+                        <div className="col-12" style={{
+                            border: 'solid thin black',
+                            padding: 5,
+                            margin: 5
+                        }}>
                             <div>
-                                {/* <img src={item.image} alt="" /> */}
-                                <h1>{item.creator_id}</h1>
+                                <div className="d-flex">
+                                    <img src={"http://127.0.0.1:8000/api/images/"+item.creator_image} width={50} height={50} alt=""/>
+                                     <p >{item.creator_name}</p>
+                                </div>
                                 <p>{item.description}</p>
                             </div>
                             <div>
@@ -113,12 +137,39 @@ const Posts = () => {
                                     src={
                                         "http://127.0.0.1:8000/api/images/" +
                                         item.image
-                                    }
+                                    } 
                                     className="img-fluid"
                                     alt=""
                                 />
                             </div>
-                            <br />
+                            <div className="d-flex" style={{
+                                justifyContent: 'space-between'
+                            }}>
+                                <div>{item?.likes?.length} likes</div>
+                                <div>{item?.comments?.length} comments</div>
+                            </div>
+                            <div>
+                                {item?.comments.map((cmt) => (
+                                    
+                                    <div className="" style={{
+                                        backgroundColor: 'blue',
+                                        padding: '10px',
+                                        width: ''
+                                    }}>
+                                        <p>{cmt.text}</p>
+                                        <button onClick={async () => {
+                                            await handleLikePost(item.id)
+                                        }}
+                                        >like</button>
+                                        <p 
+                                        
+                                        style={{
+                                            
+                                           
+                                        }}>{cmt.likes.length} likes</p>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     ))}
                 </div>
