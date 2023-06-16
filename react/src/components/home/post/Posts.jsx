@@ -152,7 +152,7 @@ const Posts = () => {
                                 {item?.comments.map((cmt) => (
                                     
                                     <div className="" style={{
-                                        backgroundColor: 'blue',
+                                        backgroundColor: 'gray',
                                         padding: '10px',
                                         width: ''
                                     }}>
