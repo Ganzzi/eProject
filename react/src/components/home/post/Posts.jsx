@@ -4,19 +4,45 @@ import { useStateContext } from "../../../contexts/ContextProvider";
 
 // import { BorderAll } from "@material-ui/icons";
 import { HiOutlinePhotograph } from "react-icons/Hi";
+import PostCard from "./PostCard";
+import { useNavigate } from "react-router-dom";
 
 // import { BorderAll } from "@material-ui/icons";
 
 const Posts = () => {
     const [posts, setPosts] = useState([]);
+    const [follows, setfollows] = useState({
+        followers: [],
+        followings: []
+    })
     const { user, token, setUser, setToken } = useStateContext();
+    const navigate = useNavigate();
+    const [postForm, setPostForm] = useState({
+        image: null,
+    })
+
     console.log(user.id);
 
-    useEffect(() => {
-        axiosClient.get("/posts").then(({ data }) => {
+    const [description, setdescription] = useState(null)
+
+    const getPostData = async () => {
+        await axiosClient.get("/posts").then(({ data }) => {
             setPosts(data);
         });
+    }
+
+    useEffect(() => {
+        getPostData();
+
+        axiosClient.get("/follows").then(({ data }) => {
+            setfollows({
+                followers: data?.followers,
+                followings: data?.followings,
+            });
+        });
     }, []);
+
+
 
     const handleLikePost = async (id) => {
         const x = {
@@ -29,8 +55,20 @@ const Posts = () => {
             });
     }
 
-    const handleCreatePost = async () => {
+    const handleCreatePost = async (e) => {
+        e.preventDefault();
 
+        console.log(postForm);
+
+        const formData = new FormData();
+        formData.append('image', postForm.image)
+        formData.append('creator_id', user.id)
+        formData.append('description', description)
+
+        await axiosClient.post('/posts', formData).then(async ({data}) => {
+            // console.log(data);
+            await getPostData();
+        });
     }
 
     return (
@@ -92,22 +130,31 @@ const Posts = () => {
                             alignItems: "flex-start",
                             marginBottom: "30px",
                         }}
+                        onSubmit={handleCreatePost}
                     >
                         
                         <div className="d-flex col-12">
-                            <input type="text" style={{
-                                display: "flex",
-                                width: "100%",
-                                padding: "10px",
-                                fontSize: "20px",
-                                border: "1px solid #ccc",
-                                borderRadius: "4px",
-                                resize: "none",
-                            }}
+                            <input 
+                                style={{
+                                    display: "flex",
+                                    width: "100%",
+                                    padding: "10px",
+                                    fontSize: "20px",
+                                    border: "1px solid #ccc",
+                                    borderRadius: "4px",
+                                    resize: "none",
+                                }}
                                 placeholder="What's on your mind?"
+                                onChange={(ev) =>{
+                                    setdescription(ev.target.value);
+                                    console.log(description);
+                                }}
                             />
-                            <input type="file" />
-                            <HiOutlinePhotograph size={40} />
+                           
+                            <input type="file" id="file" 
+                                onChange={(ev) => setPostForm({...postForm, image: ev.target.files[0]}) }
+                            />
+                            <label for="file" ><HiOutlinePhotograph size={40}/></label>
                         </div>
                         <div>
                             <button
@@ -119,9 +166,6 @@ const Posts = () => {
                                     cursor: "pointer",
                                 }}
                                 type="submit"
-                                onClick={() => {
-                                    handleCreatePost()
-                                }}
                             >
                                 Post
                             </button>
@@ -129,75 +173,72 @@ const Posts = () => {
                     </form>
                 </div>
                 <div className="col">
-                    {posts.map((item, index) => (
-                        <div className="col-12" style={{
-                            border: 'solid thin black',
-                            padding: 5,
-                            margin: 5
-                        }}>
-                            <div>
-                                <div className="d-flex">
-                                    <img src={"http://127.0.0.1:8000/api/images/" + item.creator_image} width={50} height={50} alt="" />
-                                    <p >{item.creator_name}</p>
-                                </div>
-                                <p>{item.description}</p>
-                            </div>
-                            <div>
-                                <img
-                                    src={
-                                        "http://127.0.0.1:8000/api/images/" +
-                                        item.image
-                                    }
-                                    className="img-fluid"
-                                    alt=""
-                                />
-                            </div>
-                            <div className="d-flex" style={{
-                                justifyContent: 'space-between'
-                            }}>
-                                <div>{item?.likes?.length} likes</div>
-                                <div>{item?.comments?.length} comments</div>
-                            </div>
-                            <div>
-                                {item?.comments.map((cmt) => (
-
-                                    <div className="" style={{
-                                        backgroundColor: 'gray',
-                                        padding: '10px',
-                                        width: ''
-                                    }}>
-                                        <p>{cmt.post_id}</p>
-                                        <p>{cmt.text}</p>
-                                        <p>{cmt.commentor_id
-                                        }</p>
-
-                                        <button onClick={async () => {
-                                            await handleLikePost(item.id)
-                                        }}
-                                        >like</button>
-                                        <p
-
-                                            style={{
-
-
-                                            }}>{cmt.likes.length} likes</p>
-
-
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    ))}
+                    {
+                        posts.map((post) => (
+                            <PostCard
+                                post={post}
+                                user={{
+                                    image: post.creator_image,
+                                    name: post.creator_name,
+                                }}
+                            />))
+                    }
                 </div>
             </div>
 
             <div className="col-3 justify-content-center align-items-start d-flex row">
                 <div className="col-12 row">
                     <div className="col-12">
-                        <h2>Follower</h2>
+                        <h2>{follows?.followers?.length} Follower</h2>
+                        {follows.followers &&
+                                    follows.followers.map((fl) => (
+                                        <div
+                                            className="d-flex"
+                                            onClick={() => {
+                                                navigate(`/profile/${fl.id}`);
+                                            }}
+                                        >
+                                            <img
+                                                src={
+                                                    "http://127.0.0.1:8000/api/images/" +
+                                                    fl.image
+                                                }
+                                                alt="Creator Image"
+                                                className="rounded-circle"
+                                                style={{
+                                                    width: "30px",
+                                                    height: "30px",
+                                                }}
+                                            />
+                                            <p>{fl.name}</p>
+                                        </div>
+                                    ))}
                     </div>
                     <div className="col-12">
-                        <h2>Following</h2>
+                        <h2>{follows?.followings?.length} Following</h2>
+                        {follows.followings &&
+                                    follows.followings.map((fl) => (
+                                        <div
+                                            className="d-flex"
+                                            onClick={() => {
+                                                navigate(`/profile/${fl.id}`);
+                                            }}
+                                        >
+                                            <img
+                                                src={
+                                                    "http://127.0.0.1:8000/api/images/" +
+                                                    fl.image
+                                                }
+                                                alt="Creator Image"
+                                                className="rounded-circle"
+                                                style={{
+                                                    width: "30px",
+                                                    height: "30px",
+                                                }}
+                                            />
+                                            <p>{fl.name}</p>
+                                        </div>
+                                    ))}
                     </div>
                 </div>
             </div>

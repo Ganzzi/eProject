@@ -4,7 +4,6 @@ import { Outlet, Navigate, Link } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client";
 import { BsChatRightText } from "react-icons/Bs";
-import { FaSearchengin } from "react-icons/Fa";
 
 export default function Homescreen() {
     const { user, token, setUser, setToken } = useStateContext();
@@ -73,7 +72,6 @@ export default function Homescreen() {
                             }}
                             type="submit"
                         >
-                            <FaSearchengin size={30} color="black" />
                         </button>
                     </form>
                 </div>

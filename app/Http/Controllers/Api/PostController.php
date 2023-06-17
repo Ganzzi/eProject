@@ -71,7 +71,6 @@ class PostController extends Controller
         $post->creator_id = $data['creator_id'];
         $post->image = $filePath;
         $post->description = $data['description'];
-        $post->field = $data['field'];
 
         $post->save();
 
