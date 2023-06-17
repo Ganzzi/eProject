@@ -7,19 +7,15 @@ import { HiOutlinePhotograph } from "react-icons/Hi";
 
 // import { BorderAll } from "@material-ui/icons";
 
-
 const Posts = () => {
     const [posts, setPosts] = useState([]);
     const { user, token, setUser, setToken } = useStateContext();
-    console.log();
 
     useEffect(() => {
         axiosClient.get("/posts").then(({ data }) => {
-            console.log(data);
             setPosts(data);
         });
-    }
-    );
+    });
     return (
         <div style={{}} className="row">
             <div
@@ -69,20 +65,23 @@ const Posts = () => {
                         />
                         <p>{user.name}</p>
                         <div>
-                            <input type="text" style={{
-                                display: "flex",
-                                width: "100%",
-                                padding: "10px",
-                                fontSize: "20px",
-                                border: "1px solid #ccc",
-                                borderRadius: "4px",
-                                resize: "none",
-                            }}
+                            <input
+                                type="text"
+                                style={{
+                                    display: "flex",
+                                    width: "100%",
+                                    padding: "10px",
+                                    fontSize: "20px",
+                                    border: "1px solid #ccc",
+                                    borderRadius: "4px",
+                                    resize: "none",
+                                }}
                                 placeholder="What's on your mind?"
-
                             />
                             <input type="file" id="file" />
-                            <label for="file" ><HiOutlinePhotograph/></label>
+                            <label for="file">
+                                <HiOutlinePhotograph />
+                            </label>
                         </div>
                         <div>
                             <button
