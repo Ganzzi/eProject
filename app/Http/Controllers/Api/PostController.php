@@ -42,6 +42,15 @@ class PostController extends Controller
         }));
     }
 
+    public function getPostProfile($userid)
+    {
+        // return response()->json('dmm');
+
+        $posts = Post::with('likes', 'comments.likes')->where('creator_id', $userid)->get();
+
+        return response()->json(['posts' => $posts]);
+    }
+
     /**
      * Store a newly created resource in storage.
      * 
@@ -67,7 +76,6 @@ class PostController extends Controller
         $post->save();
 
         return response()->json(['post' => $post], 202);
-
     }
 
     /**
@@ -75,7 +83,7 @@ class PostController extends Controller
      *  @param \App\Models\Post $post
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
+    /* public function show(Post $post)
     {
         $room = ChatRoom::with('users', 'chats.likes')->find($chatRoom);
         // return response()->json(['data' => $room]);
@@ -128,7 +136,8 @@ class PostController extends Controller
                 ];
             }),
         ]);
-    }
+    }   
+    */
 
     /**
      * Update the specified resource in storage.

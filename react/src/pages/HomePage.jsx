@@ -55,7 +55,6 @@ export default function Homescreen() {
                             display: "flex",
                             flexDirection: "row",
                             alignItems: "flex-start",
-
                         }}
                     >
                         <input
@@ -70,7 +69,7 @@ export default function Homescreen() {
                                 alignItems: "flex-start",
                                 color: "#fff",
                                 border: "none",
-                                cursor: "pointer"
+                                cursor: "pointer",
                             }}
                             type="submit"
                         >
@@ -86,12 +85,9 @@ export default function Homescreen() {
                     <Link to={"/messages"}>
                         <BsChatRightText size={30} color="black" />
                     </Link>
-
                 </div>
-                <div className="col-1 d-flex justify-content-end align-items-center" >
-                    <Link to={"/profile"}>{user.name}
-                    
-                    </Link>
+                <div className="col-1 d-flex justify-content-end align-items-center">
+                    <Link to={"/profile/" + user.id}>{user.name}</Link>
                 </div>
 
                 <div className="col-1 d-flex justify-content-end align-items-center">

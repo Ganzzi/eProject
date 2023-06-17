@@ -7,7 +7,6 @@ import { HiOutlinePhotograph } from "react-icons/Hi";
 
 // import { BorderAll } from "@material-ui/icons";
 
-
 const Posts = () => {
     const [posts, setPosts] = useState([]);
     const { user, token, setUser, setToken } = useStateContext();
@@ -15,7 +14,6 @@ const Posts = () => {
 
     useEffect(() => {
         axiosClient.get("/posts").then(({ data }) => {
-            console.log(data);
             setPosts(data);
         });
     }, []);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Follow;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,7 +22,24 @@ class FollowController extends Controller
 
         $followings = Follow::where('follower_id', $user_id)->get();
 
-        return response()->json(['followers' => $followers, 'followings' => $followings]);
+        return response()->json([
+            'followers' => $followers->map(function ($fl) {
+                $user = User::find($fl->follower_id);
+                return [
+                    'image' => $user->image,
+                    'name' => $user->name,
+                    'id' => $user->id,
+                ];
+            }),
+            'followings' => $followings->map(function ($fl) {
+                $user = User::find($fl->following_id);
+                return [
+                    'image' => $user->image,
+                    'name' => $user->name,
+                    'id' => $user->id,
+                ];
+            }),
+        ]);
     }
 
     /**

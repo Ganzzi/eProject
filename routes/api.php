@@ -48,7 +48,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/likecomments', LikeCommentController::class);
     Route::apiResource('/notifications', NotificationController::class);
     Route::apiResource('/posts', PostController::class);
-    Route::post('/searchUser', [UserController::class, 'searchByName']);
+    Route::get('/posts-profile/{userid}', [PostController::class, 'getPostProfile']);
+    Route::get('/user-profile/{user}', [UserController::class, 'show']);
+    Route::post('/search-user', [UserController::class, 'searchByName']);
+    Route::post('/update-profile/{user}', [UserController::class, 'update']);
 
     Route::apiResource('/admin/users', AdminUserController::class);
     Route::apiResource('/admin/chatrooms', AdminChatRoomController::class);
