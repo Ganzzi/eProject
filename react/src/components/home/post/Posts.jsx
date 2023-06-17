@@ -27,12 +27,12 @@ const Posts = () => {
         await axiosClient.post('/likeposts?', x).then(({ data }) => {
             console.log(data);
         })
-        .catch(() => {
-        });
+            .catch(() => {
+            });
     }
 
     const handleCreatePost = async () => {
-        
+
     }
 
     return (
@@ -40,6 +40,10 @@ const Posts = () => {
             <div
                 className="col-2 justify-content-center d-flex"
                 style={{
+                    display: "flex",
+                    border: 'solid thin black',
+                    padding: 5,
+                    margin: 5,
                     backgroundColor: "aliceblue",
                     height: 5000,
                 }}
@@ -57,16 +61,33 @@ const Posts = () => {
 
             <div className="col-7">
                 <div
-                    className=" posts "
+
                     style={{
                         display: "flex",
+                        border: 'solid thin black',
+                        padding: 5,
+                        margin: 5,
                         backgroundColor: "aliceblue",
                         borderRadius: "10px",
                         width: "none",
+                        flexDirection: 'column'
                     }}
                 >
+                    <div style={{
+                        display: 'flex'
+                    }}>
+                    <img
+                src="https://i0.wp.com/thatnhucuocsong.com.vn/wp-content/uploads/2022/04/Anh-avatar-dep-anh-dai-dien-FB-Tiktok-Zalo.jpg?ssl=1"
+                alt=""
+                style={{
+                    width: 40,
+                    height: 40,
+                }}
+            />
+            <p>{user.name}</p>
+                    </div>
                     <form
-                        className="col-12"
+                        className="col-9 d-flex"
                         style={{
                             display: "flex",
                             flexDirection: "col",
@@ -74,16 +95,8 @@ const Posts = () => {
                             marginBottom: "30px",
                         }}
                     >
-                        <img
-                            src="https://i0.wp.com/thatnhucuocsong.com.vn/wp-content/uploads/2022/04/Anh-avatar-dep-anh-dai-dien-FB-Tiktok-Zalo.jpg?ssl=1"
-                            alt=""
-                            style={{
-                                width: 40,
-                                height: 40,
-                            }}
-                        />
-                        <p>{user.name}</p>
-                        <div>
+                        
+                        <div className="d-flex col-12">
                             <input type="text" style={{
                                 display: "flex",
                                 width: "100%",
@@ -94,10 +107,9 @@ const Posts = () => {
                                 resize: "none",
                             }}
                                 placeholder="What's on your mind?"
-
                             />
                             <input type="file" />
-                            <label for="file" ><HiOutlinePhotograph/></label>
+                            <HiOutlinePhotograph size={40} />
                         </div>
                         <div>
                             <button
@@ -127,8 +139,8 @@ const Posts = () => {
                         }}>
                             <div>
                                 <div className="d-flex">
-                                    <img src={"http://127.0.0.1:8000/api/images/"+item.creator_image} width={50} height={50} alt=""/>
-                                     <p >{item.creator_name}</p>
+                                    <img src={"http://127.0.0.1:8000/api/images/" + item.creator_image} width={50} height={50} alt="" />
+                                    <p >{item.creator_name}</p>
                                 </div>
                                 <p>{item.description}</p>
                             </div>
@@ -137,7 +149,7 @@ const Posts = () => {
                                     src={
                                         "http://127.0.0.1:8000/api/images/" +
                                         item.image
-                                    } 
+                                    }
                                     className="img-fluid"
                                     alt=""
                                 />
@@ -150,23 +162,29 @@ const Posts = () => {
                             </div>
                             <div>
                                 {item?.comments.map((cmt) => (
-                                    
+
                                     <div className="" style={{
                                         backgroundColor: 'gray',
                                         padding: '10px',
                                         width: ''
                                     }}>
+                                        <p>{cmt.post_id}</p>
                                         <p>{cmt.text}</p>
+                                        <p>{cmt.commentor_id
+                                        }</p>
+
                                         <button onClick={async () => {
                                             await handleLikePost(item.id)
                                         }}
                                         >like</button>
-                                        <p 
-                                        
-                                        style={{
-                                            
-                                           
-                                        }}>{cmt.likes.length} likes</p>
+                                        <p
+
+                                            style={{
+
+
+                                            }}>{cmt.likes.length} likes</p>
+
+
                                     </div>
                                 ))}
                             </div>
