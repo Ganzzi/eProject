@@ -62,7 +62,8 @@ export default function Users() {
                             <th>Image</th>
                             <th>Name</th>
                             <th>Email</th>
-                           
+                           <th>gender</th>
+                           <th>bio</th>
                             <th>Create Date</th>
                             <th>Actions</th>
                         </tr>

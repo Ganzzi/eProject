@@ -7,7 +7,7 @@ export default function PostForm() {
 const navigate = useNavigate();
 let { id } = useParams();
 const [post, setPost] = useState({
-    creator_id: null,
+    
     description: "",
     image: null,
 });
@@ -46,10 +46,8 @@ const onSubmit = (ev) => {
     } else {
         const formdata = new FormData();
         formdata.append('description', post.description);
-        // formdata.append('creator_id', post.creator_id);
-        // formdata.append('image',post.image);
-        // formdata.append('image', null);
-        // console.log(post.image);
+        formdata.append('image', post.image);
+
         
         axiosClient
             .post("/admin/posts", formdata)
@@ -88,21 +86,13 @@ return (
                         }
                         placeholder="description"
                     />
-                      {/* <input
-                            value={post.creator_id}
-                            type="number"
-                            min={1}
-                            max={2}
-                            onChange={(ev) =>
-                                setPost({ ...post, creator_id: ev.target.value })
-                            }
-                            placeholder="Creator id"
-                        /> */}
-                   
-                    <input type="file" id="file"onChange={(ev) =>
-                            setPost({ ...post, image: ev.target.files[0] })
-                        }/>
+                   <br></br>
+                   <input type="file" id="file"onChange={(ev) =>
+                                setPost({ ...post, image: ev.target.files[0] })
+                            } />
                             <label for="file" ><HiOutlinePhotograph/></label>
+                        
+                        <br></br>
                     
                     <button className="btn btn-outline-success"style={{width:"100px",}}>Save</button>
                 </form>
