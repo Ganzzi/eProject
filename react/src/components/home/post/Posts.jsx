@@ -100,7 +100,7 @@ const Posts = () => {
 
                     style={{
                         display: "flex",
-                        border: 'solid thin black',
+                        border: 'solid thin gray',
                         padding: 5,
                         margin: 5,
                         backgroundColor: "aliceblue",
@@ -154,15 +154,15 @@ const Posts = () => {
                             <input type="file" id="file" 
                                 onChange={(ev) => setPostForm({...postForm, image: ev.target.files[0]}) }
                             />
-                            <label for="file" ><HiOutlinePhotograph size={40}/></label>
+                            <label for="file" ><HiOutlinePhotograph size={30}/></label>
                         </div>
                         <div>
                             <button
                                 style={{
-                                    padding: "10px 20px",
+                                    padding: "20px 20px",
                                     backgroundColor: "purple",
                                     color: "#fff",
-                                    border: "none",
+                                    border: "",
                                     cursor: "pointer",
                                 }}
                                 type="submit"

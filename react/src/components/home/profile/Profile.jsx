@@ -87,7 +87,7 @@ const Profile = () => {
         try {
             await axiosClient
                 .post(`/update-profile/${id}`, formData)
-                .then(({ data }) => {});
+                .then(({ data }) => { });
 
             await axiosClient.get("/user").then(({ data }) => {
                 setUser(data);

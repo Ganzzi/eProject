@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CommentCard from "./CommentCard";
 import { AiFillHeart } from "react-icons/ai";
 import { BiCommentDetail } from "react-icons/bi";
@@ -11,18 +11,29 @@ const PostCard = ({ post, user }) => {
 
     const handleCommentChange = (e) => {
         setComment(e.target.value);
-    };
-
-    const handleCommentSubmit = (e) => {
+ };
+       const handleCommentSubmit = (e) => {
         e.preventDefault();
         // Perform comment submission logic
         setComment("");
+        console.log(comment);
+        const formData = new FormData();
+        formData.append('post_id', comment.id)
+        formData.append('text', user.text)
+        formData.append('commentor_id', user.id)
+        
+        // await axiosClient.comment('/comments', formData).then(async ({data}) => {
+            // console.log(data);
+        //    await getPostData ();
+        // });
     };
 
     const handleLikePost = async () => {
         axiosClient.post('/likeposts', {
             'post_id': post.id
         })
+        .catch(() => {
+        });
     }
 
     return (
@@ -46,6 +57,7 @@ const PostCard = ({ post, user }) => {
                         </div>
                     </div>
                     <div>
+                        
                         <MdOutlineSettingsSuggest size={40} />
                     </div>
                 </div>
@@ -104,6 +116,10 @@ const PostCard = ({ post, user }) => {
                                 placeholder="Add a comment"
                                 value={comment}
                                 onChange={handleCommentChange}
+                                // onChange={(e) =>{
+                                //     setComment(e.target.value);
+                                //     console.log(description);
+                                // }}
                             />
                         </div>
                         <button
