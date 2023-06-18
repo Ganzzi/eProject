@@ -6,26 +6,27 @@ import { MdOutlineSettingsSuggest } from "react-icons/md";
 import { formatDateTime } from "../../../utils";
 import axiosClient from "../../../axios-client";
 
-const PostCard = ({ post, user }) => {
+const PostCard = ({ post, user , getPostData}) => {
     const [comment, setComment] = useState("");
 
     const handleCommentChange = (e) => {
         setComment(e.target.value);
  };
-       const handleCommentSubmit = (e) => {
+       const handleCommentSubmit = async(e) => {
         e.preventDefault();
         // Perform comment submission logic
         setComment("");
         console.log(comment);
         const formData = new FormData();
-        formData.append('post_id', comment.id)
-        formData.append('text', user.text)
+        formData.append('post_id', post.id)
+        formData.append('text', comment)
         formData.append('commentor_id', user.id)
+        formData.append('reply_to', [])
         
-        // await axiosClient.comment('/comments', formData).then(async ({data}) => {
-            // console.log(data);
-        //    await getPostData ();
-        // });
+        await axiosClient.post('/comments', formData).then(async ({data}) => {
+            console.log(data);
+            getPostData ();
+        });
     };
 
     const handleLikePost = async () => {

@@ -42,7 +42,10 @@ const Posts = () => {
         });
     }, []);
 
+const getPostDataFromChil = async() => {
+    await getPostData();
 
+}
 
     const handleLikePost = async (id) => {
         const x = {
@@ -176,6 +179,7 @@ const Posts = () => {
                     {
                         posts.map((post) => (
                             <PostCard
+                            getPostData={getPostDataFromChil}
                                 post={post}
                                 user={{
                                     image: post.creator_image,
