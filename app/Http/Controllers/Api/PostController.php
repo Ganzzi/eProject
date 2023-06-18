@@ -20,7 +20,26 @@ class PostController extends Controller
 
         $posts = Post::with('likes', 'comments.likes')->get();
 
-        return response()->json($posts);
+        return response()->json($posts->map(function ($_post) {
+
+            $user = User::find($_post->creator_id);
+
+            $creator_name = $user->name;
+            $creator_image = $user->image;
+
+            return [
+                "id" => $_post->id,
+                "creator_id" => $_post->creator_id,
+                "description" => $_post->description,
+                "image" => $_post->image,
+                "created_at" => $_post->created_at,
+                "updated_at" => $_post->updated_at,
+                'creator_name' => $creator_name,
+                'creator_image' => $creator_image,
+                "likes" => $_post->likes,
+                "comments" => $_post->comments,
+            ];
+        }));
     }
 
     public function getPostProfile($userid)
@@ -52,7 +71,6 @@ class PostController extends Controller
         $post->creator_id = $data['creator_id'];
         $post->image = $filePath;
         $post->description = $data['description'];
-        $post->field = $data['field'];
 
         $post->save();
 
