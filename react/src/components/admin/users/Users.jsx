@@ -45,9 +45,14 @@ export default function Users() {
                     alignItems: "center",
                 }}
             >
-                <h1 style={{fontFamily:"fantasy",
-           justifycontent: "space-between",
-            }}>Users</h1>
+                <h1
+                    style={{
+                        fontFamily: "fantasy",
+                        justifycontent: "space-between",
+                    }}
+                >
+                    Users
+                </h1>
                 <Link className="btn-add" to="/admin/users/new">
                     Add new
                 </Link>
@@ -55,14 +60,20 @@ export default function Users() {
             <div className="card animated fadeInDown">
                 <table>
                     <thead>
-                        <tr style={{
-                            fontFamily:"cursive",textAlign:"center",padding:"40px",
-                        }}>
+                        <tr
+                            style={{
+                                fontFamily: "cursive",
+                                textAlign: "center",
+                                padding: "40px",
+                            }}
+                        >
                             <th>ID</th>
                             <th>Image</th>
                             <th>Name</th>
                             <th>Email</th>
-                           
+                            <th>Gender</th>
+                            <th>Bio</th>
+
                             <th>Create Date</th>
                             <th>Actions</th>
                         </tr>

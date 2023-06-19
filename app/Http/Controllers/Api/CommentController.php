@@ -19,7 +19,7 @@ class CommentController extends Controller
         $validatedData = $request->validate([
             'post_id' => 'required|numeric',
             'text' => 'required|string',
-            'reply_to' => 'nullable|exists:comments,id',
+            'reply_to' => 'nullable',
         ]);
 
         $user = Auth::user();
@@ -30,12 +30,9 @@ class CommentController extends Controller
         $comment->text = $validatedData['text'];
         $comment->commentor_id = $user->id;
 
-        // if ($validatedData['reply_to']) {
-            
-        //     // No bi loi cho nay ne
-        //     $replyToComment = Comment::findOrFail($validatedData['reply_to']);
-        //     $comment->reply_to = $replyToComment->id;
-        // }
+        $replyToComment = Comment::find($validatedData['reply_to']);
+
+        $comment->reply_to = $replyToComment ? $replyToComment->id : null;
 
         // Save the comment to the database
         $comment->save();

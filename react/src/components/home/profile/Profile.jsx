@@ -87,7 +87,7 @@ const Profile = () => {
         try {
             await axiosClient
                 .post(`/update-profile/${id}`, formData)
-                .then(({ data }) => { });
+                .then(({ data }) => {});
 
             await axiosClient.get("/user").then(({ data }) => {
                 setUser(data);
@@ -236,7 +236,7 @@ const Profile = () => {
                         profileContent.posts.map((post) => (
                             <PostCard
                                 post={post}
-                                user={{
+                                post_creator={{
                                     image: profileContent.image,
                                     name: profileContent.name,
                                 }}

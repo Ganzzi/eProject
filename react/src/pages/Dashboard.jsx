@@ -32,13 +32,13 @@ export default function Dashboard() {
     };
 
     return (
-        <div id="dashboardLayout">
-            <aside>
+        <div id="dashboardLayout" className="row">
+            <aside className="col-2">
                 <Link to={"/admin/users"}>user</Link>{" "}
                 <Link to={"/admin/chatrooms"}>Chat</Link>
                 <Link to={"/admin/posts"}>Posts</Link>
             </aside>
-            <div className="content">
+            <div className="content col-10">
                 <header>
                     <div>header</div>
                     <div>

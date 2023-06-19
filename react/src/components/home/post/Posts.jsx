@@ -6,6 +6,7 @@ import { useStateContext } from "../../../contexts/ContextProvider";
 import { HiOutlinePhotograph } from "react-icons/Hi";
 import PostCard from "./PostCard";
 import { useNavigate } from "react-router-dom";
+import { formatDateTime } from "../../../utils";
 
 // import { BorderAll } from "@material-ui/icons";
 
@@ -44,18 +45,6 @@ const Posts = () => {
         await getPostData();
     };
 
-    const handleLikePost = async (id) => {
-        const x = {
-            post_id: id,
-        };
-        await axiosClient
-            .post("/likeposts?", x)
-            .then(({ data }) => {
-                console.log(data);
-            })
-            .catch(() => {});
-    };
-
     const handleCreatePost = async (e) => {
         e.preventDefault();
 
@@ -79,19 +68,33 @@ const Posts = () => {
                     border: "solid thin black",
                     padding: 5,
                     margin: 5,
-                    backgroundColor: "aliceblue",
-                    height: 5000,
+                    height: "fit",
+                    height: "fit-content",
                 }}
             >
-                <img
-                    src="https://i0.wp.com/thatnhucuocsong.com.vn/wp-content/uploads/2022/04/Anh-avatar-dep-anh-dai-dien-FB-Tiktok-Zalo.jpg?ssl=1"
-                    alt=""
-                    style={{
-                        width: 40,
-                        height: 40,
-                    }}
-                />
-                <p>{user.name}</p>
+                <div>
+                    <h3>Information</h3>
+                    <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "center",
+                        }}
+                    >
+                        <img
+                            src="https://i0.wp.com/thatnhucuocsong.com.vn/wp-content/uploads/2022/04/Anh-avatar-dep-anh-dai-dien-FB-Tiktok-Zalo.jpg?ssl=1"
+                            alt=""
+                            style={{
+                                width: 80,
+                                height: 80,
+                            }}
+                        />{" "}
+                    </div>
+                    <p>Name: {user.name}</p>
+                    <p>Email: {user.email}</p>
+                    <p>Bio: {user.bio}</p>
+                    <p>Gender: {user.gender}</p>
+                    <p>Join Date: {formatDateTime(user.created_at)}</p>
+                </div>
             </div>
 
             <div className="col-7">
@@ -184,7 +187,7 @@ const Posts = () => {
                         <PostCard
                             getPostData={getPostDataFromChil}
                             post={post}
-                            user={{
+                            post_creator={{
                                 image: post.creator_image,
                                 name: post.creator_name,
                             }}
