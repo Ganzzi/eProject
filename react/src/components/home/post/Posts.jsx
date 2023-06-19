@@ -40,6 +40,10 @@ const Posts = () => {
         });
     }, []);
 
+    const getPostDataFromChil = async () => {
+        await getPostData();
+    };
+
     const handleLikePost = async (id) => {
         const x = {
             post_id: id,
@@ -94,7 +98,7 @@ const Posts = () => {
                 <div
                     style={{
                         display: "flex",
-                        border: "solid thin black",
+                        border: "solid thin gray",
                         padding: 5,
                         margin: 5,
                         backgroundColor: "aliceblue",
@@ -156,16 +160,16 @@ const Posts = () => {
                                 }
                             />
                             <label for="file">
-                                <HiOutlinePhotograph size={40} />
+                                <HiOutlinePhotograph size={30} />
                             </label>
                         </div>
                         <div>
                             <button
                                 style={{
-                                    padding: "10px 20px",
+                                    padding: "20px 20px",
                                     backgroundColor: "purple",
                                     color: "#fff",
-                                    border: "none",
+                                    border: "",
                                     cursor: "pointer",
                                 }}
                                 type="submit"
@@ -178,6 +182,7 @@ const Posts = () => {
                 <div className="col">
                     {posts.map((post) => (
                         <PostCard
+                            getPostData={getPostDataFromChil}
                             post={post}
                             user={{
                                 image: post.creator_image,

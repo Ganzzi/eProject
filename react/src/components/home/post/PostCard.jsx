@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CommentCard from "./CommentCard";
 import { AiFillHeart } from "react-icons/ai";
 import { BiCommentDetail } from "react-icons/bi";
@@ -7,18 +7,28 @@ import { formatDateTime } from "../../../utils";
 import axiosClient from "../../../axios-client";
 import { useNavigate } from "react-router-dom";
 
-const PostCard = ({ post, user }) => {
+const PostCard = ({ post, user, getPostData }) => {
     const [comment, setComment] = useState("");
     const navigate = useNavigate();
 
     const handleCommentChange = (e) => {
         setComment(e.target.value);
     };
-
-    const handleCommentSubmit = (e) => {
+    const handleCommentSubmit = async (e) => {
         e.preventDefault();
         // Perform comment submission logic
         setComment("");
+        console.log(comment);
+        const formData = new FormData();
+        formData.append("post_id", post.id);
+        formData.append("text", comment);
+        formData.append("commentor_id", user.id);
+        formData.append("reply_to", []);
+
+        await axiosClient.post("/comments", formData).then(async ({ data }) => {
+            console.log(data);
+            getPostData();
+        });
     };
 
     const handleLikePost = async () => {
@@ -117,6 +127,10 @@ const PostCard = ({ post, user }) => {
                                 placeholder="Add a comment"
                                 value={comment}
                                 onChange={handleCommentChange}
+                                // onChange={(e) =>{
+                                //     setComment(e.target.value);
+                                //     console.log(description);
+                                // }}
                             />
                         </div>
                         <button
