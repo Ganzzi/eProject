@@ -26,8 +26,18 @@ export default function Dashboard() {
     }, []);
 
     return (
+      
         <div id="dashboardLayout">
+          
+           
+          
             <aside>
+               <div style={{fontFamily:"fantasy",fontSize:"30px",paddingLeft:"0px"
+}}>
+            <img src="https://cdn2.iconfinder.com/data/icons/colored-simple-circle-volume-01/128/circle-flat-general-51851bd79-1024.png" alt="" style={{width:"80px",height:"80px"}} /> ADMIN
+            </div>
+          
+         
                 <Link to={"/admin/users"}>user</Link> <Link to={"/admin/chatrooms"}>Chat</Link>
                 <Link to={"/admin/posts"}>Posts</Link>
             </aside>
@@ -35,7 +45,7 @@ export default function Dashboard() {
                 <header>
                     <div> </div>
                     <div>
-                        {user.name}
+                        
                         <a
                             href="#"
                             className="btn-logout btn btn-primary"

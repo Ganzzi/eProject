@@ -7,11 +7,10 @@ use App\Http\Controllers\Controller;
 use App\Models\LikePost;
 use App\Models\User;
 use Illuminate\Http\Request;
-
+use App\Http\Resources\PostResource;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\PostStoreRequest;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 class PostController extends Controller
 {
@@ -45,8 +44,16 @@ class PostController extends Controller
             ];
         }));
     }
+    
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param \App\Http\Requests\PostStoreRequest $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(PostStoreRequest $request)
     {
+        return response()->json(['message' => 'Update success'], 202);
         $data = $request->validated();
 
         // Check if an image was uploaded
@@ -63,9 +70,9 @@ class PostController extends Controller
         $post = Post::create([
             'description' => $data['description'],
             
-            'image' => basename($filePath)
-        ]);
-        return response()->json(['message' => 'Update success'], 202);
+            'image' => basename($filePath)]);
+
+            return response()->json(['message' => 'Update success'], 202);
     }
     /**
      * Display the specified resource.

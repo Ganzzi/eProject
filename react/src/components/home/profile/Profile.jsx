@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import { useNavigate, useNavigation, useParams } from "react-router-dom";
 
-import PostCard from "./PostCard";
+import PostCard from "../post/PostCard";
 import axiosClient from "../../../axios-client";
 import UpdateProfileModal from "./UpdateProfileModal";
 import ActivityLogModal from "./ActivityLogModal";
@@ -87,7 +87,7 @@ const Profile = () => {
         try {
             await axiosClient
                 .post(`/update-profile/${id}`, formData)
-                .then(({ data }) => {});
+                .then(({ data }) => { });
 
             await axiosClient.get("/user").then(({ data }) => {
                 setUser(data);

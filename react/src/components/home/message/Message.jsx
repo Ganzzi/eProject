@@ -32,84 +32,6 @@ const Message = () => {
             .catch(() => {});
     };
 
-    //     return (
-    //         <div className="main-content d-flex">
-    //             {/* Sidebar */}
-    //             <aside className="sidebar bg-light">
-    //                 <h2>Rooms</h2>
-    //                 <ul className="list-group">
-    //                     {chatrooms.map((room, index) => (
-    //                         <li
-    //                             key={index}
-    //                             className={`list-group-item ${index === selectedRoom ? "active" : ""
-    //                                 }`}
-    //                             onClick={() =>
-    //                             {
-    //                                 setSelectedRoom(index);
-    //                             }}
-    //                         >
-    //                             {room.participants.map((participant, i) =>
-    //                             {
-    //                                 if (user.id != participant.paticipator_id)
-    //                                 {
-    //                                     return (
-    //                                         <div className="d-flex justify-content-start flex-row items-center bg-gray">
-    //                                             <div className="">
-    //                                                 <img
-    //                                                     src={
-    //                                                         "http://127.0.0.1:8000/api/images/" +
-    //                                                         u.image
-    //                                                     }
-    //                                                     width={80}
-    //                                                     height={80}
-    //                                                     alt=""
-    //                                                 />
-    //                                             </div>
-
-    //                                             <div
-    //                                                 className="d-flex"
-    //                                                 style={{
-    //                                                     flexDirection: "column",
-    //                                                     flex: 1,
-    //                                                     justifyContent: "start",
-    //                                                     alignItems: "start",
-    //                                                 }}
-    //                                             >
-    //                                                 <p>{u.name}</p>
-    //                                                 <p>
-    //                                                     {
-    //                                                         chatrooms[index]
-    //                                                             .last_message.text
-    //                                                     }
-    //                                                 </p>
-    //                                             </div>
-    //                                         </div>
-    //                                     );
-    //                                 }
-    //                             })}
-    //                         </li>
-    //                     ))}
-    //                 </ul>
-    //             </aside>
-
-    //             {/* Chats */}
-    //             <main className="chats">
-    //                 <div>
-    //                     {/* {map((item, index) => (
-    //                         <div>
-    //                             <div>{item.text}</div>
-    //                             <div>{index}</div>
-    //                             <div>{item.sender}</div>
-    //                         </div>
-    //                     ))} */}
-    //                 </div>
-    //             </main>
-    //         </div>
-    //     );
-    // };
-
-    // export default Message;
-
     return (
         <div className="main-content d-flex">
             {/* Sidebar */}
@@ -154,9 +76,7 @@ const Message = () => {
                                                 }}
                                             >
                                                 <p>{participant.name}</p>
-                                                <p>
-                                                    {room?.chats.length > 0 ? room?.chats[room?.chats.length - 1].text : ''}
-                                                </p>
+                                                <p>{room?.last_message?.text}</p>
                                             </div>
                                         </div>
                                     );

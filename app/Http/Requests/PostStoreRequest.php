@@ -19,38 +19,14 @@ class PostStoreRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
      */
-    public function rules(): array
+    public function rules()
     {
-        if(request()->isMethod('post')){
         return [
-           'description'=>'required|string|max:258',
-           'image'=> 'required|image|mimes:jpeg,png,jpg|max:2048'
-
+            'description' => 'required|string|max:55',
             
+            'image' => 'image',
+           
         ];
-    }
-    else{
-        return[
-            'description'=>'required|string',
-            'image'=>'nullable|image|
-            mimes:jpeg,png,jpg|max:2048'
-            ]
-            ;
-        }
-    }
 
-public function messages(){
-    if(request()->isMethod('post')){
-        return[
-            'description.required'=>'Description.required!',
-            'image.required'=>'Image is required!'
-        ];
     }
-    else{
-        return[
-            'description.required'=>'Description.required!'
-        ];
-    }
-}
-
 }

@@ -43,10 +43,11 @@ const onSubmit = (ev) => {
                 }
             });
     } else {
-        
-       +
+        const formdata = new FormData();
+            formdata.append('description', post.description);
+            formdata.append('image', post.image);
         axiosClient
-            .post("/admin/posts", post)
+            .post("/admin/posts", formdata)
             .then(() => {
                 setNotification("post was successfully created");
                 navigate("/admin/posts");
@@ -90,7 +91,7 @@ return (
                         
                         <br></br>
                     
-                    <button className="btn btn-outline-success"style={{width:"100px",}}>Save</button>
+                    <button className="btn btn-outline-success"style={{width:"100px"}}>Save</button>
                 </form>
             )}
         </div>

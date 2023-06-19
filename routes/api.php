@@ -57,6 +57,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/admin/chatrooms', AdminChatRoomController::class);
     Route::apiResource('/admin/posts', AdminPostController::class);
     Route::post('/admin/posts', [AdminPostController::class, 'store']);
+    
 });
 
 Route::post("/signup", [Auth::class, 'signup']);
