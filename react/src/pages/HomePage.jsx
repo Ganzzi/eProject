@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Outlet, Navigate, Link } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
@@ -7,26 +7,43 @@ import { BsChatRightText } from "react-icons/Bs";
 
 export default function Homescreen() {
     const { user, token, setUser, setToken } = useStateContext();
+    const [userDataFetched, setUserDataFetched] = useState(false);
+
+    useEffect(() => {
+        if (token) {
+            axiosClient
+                .get("/user")
+                .then(({ data }) => {
+                    setUser(data);
+                    setUserDataFetched(true);
+                })
+                .catch((err) => {
+                    const response = err.response;
+
+                    if (response && response.status === 401) {
+                        console.error(response.status); // Access the status code
+                        console.error(response.data.message);
+                        localStorage.removeItem("ACCESS_TOKEN");
+                    }
+                });
+        }
+    }, [token, setUser]);
 
     if (!token) {
         return <Navigate to={"/"} />;
+    } else if (token && user.role_id == 1 && userDataFetched) {
+        return <Navigate to={"/admin"} />;
     }
-
-    useEffect(() => {
-        axiosClient.get("/user").then(({ data }) => {
-            // console.log(data);
-            setUser(data);
-        });
-    }, []);
 
     const onLogout = (ev) => {
         ev.preventDefault();
 
         axiosClient.post("/logout").then(() => {
-            setUser({});
             setToken(null);
+            setUser({});
         });
     };
+
     return (
         <div id="homeLayout" className="container-fluid">
             <div
@@ -71,8 +88,7 @@ export default function Homescreen() {
                                 cursor: "pointer",
                             }}
                             type="submit"
-                        >
-                        </button>
+                        ></button>
                     </form>
                 </div>
 
@@ -98,7 +114,7 @@ export default function Homescreen() {
                 </div>
             </div>
 
-            <Outlet />
+            {user.role_id != 1 && <Outlet />}
         </div>
     );
 }

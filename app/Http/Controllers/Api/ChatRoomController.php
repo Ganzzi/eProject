@@ -102,7 +102,6 @@ class ChatRoomController extends Controller
             }),
 
             'chats' => $room->chats->map(function ($chat) {
-
                 return [
                     'chat_id' => $chat->id,
                     'created_at' => $chat->created_at->toISOString(),

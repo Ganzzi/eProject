@@ -5,9 +5,11 @@ import { BiCommentDetail } from "react-icons/bi";
 import { MdOutlineSettingsSuggest } from "react-icons/md";
 import { formatDateTime } from "../../../utils";
 import axiosClient from "../../../axios-client";
+import { useNavigate } from "react-router-dom";
 
 const PostCard = ({ post, user }) => {
     const [comment, setComment] = useState("");
+    const navigate = useNavigate();
 
     const handleCommentChange = (e) => {
         setComment(e.target.value);
@@ -20,10 +22,10 @@ const PostCard = ({ post, user }) => {
     };
 
     const handleLikePost = async () => {
-        axiosClient.post('/likeposts', {
-            'post_id': post.id
-        })
-    }
+        axiosClient.post("/likeposts", {
+            post_id: post.id,
+        });
+    };
 
     return (
         <div className="card">
@@ -39,7 +41,15 @@ const PostCard = ({ post, user }) => {
                             style={{ width: "50px", height: "50px" }}
                         />
                         <div>
-                            <h5 className="card-title ml-3">{user.name}</h5>
+                            <h5
+                                className="card-title ml-3"
+                                onClick={() => {
+                                    console.log(post);
+                                    navigate(`/profile/${post.creator_id}`);
+                                }}
+                            >
+                                {user.name}
+                            </h5>
                             <p className="card-subtitle text-muted font-size-sm">
                                 {formatDateTime(post.created_at)}
                             </p>
@@ -57,7 +67,10 @@ const PostCard = ({ post, user }) => {
                 />
                 <div className="d-flex justify-content-between mt-3">
                     {/* like button */}
-                    <span className="mr-2 d-flex justify-content-center items-center text-3xl" onClick={handleLikePost}>
+                    <span
+                        className="mr-2 d-flex justify-content-center items-center text-3xl"
+                        onClick={handleLikePost}
+                    >
                         <AiFillHeart size={24} color={true ? "red" : "gray"} />
                         {post.likes.length}
                     </span>
