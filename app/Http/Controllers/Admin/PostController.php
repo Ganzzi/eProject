@@ -6,12 +6,13 @@ use App\Models\Post;
 use App\Http\Controllers\Controller;
 use App\Models\LikePost;
 use App\Models\User;
-use App\Http\Resources\PostResource;
 use Illuminate\Http\Request;
-use App\Http\Requests\StorePostRequest;
+
+use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\PostStoreRequest;
 use Illuminate\Support\Facades\Auth;
-
-
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 class PostController extends Controller
 {
     /**
@@ -44,7 +45,7 @@ class PostController extends Controller
             ];
         }));
     }
-    public function store(StorePostRequest $request)
+    public function store(PostStoreRequest $request)
     {
         $data = $request->validated();
 
@@ -65,7 +66,6 @@ class PostController extends Controller
             'image' => basename($filePath)
         ]);
         return response()->json(['message' => 'Update success'], 202);
-       
     }
     /**
      * Display the specified resource.

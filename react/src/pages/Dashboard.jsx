@@ -33,7 +33,7 @@ export default function Dashboard() {
             </aside>
             <div className="content">
                 <header>
-                    <div>header</div>
+                    <div> </div>
                     <div>
                         {user.name}
                         <a

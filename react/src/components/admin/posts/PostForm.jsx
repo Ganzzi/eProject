@@ -7,7 +7,6 @@ export default function PostForm() {
 const navigate = useNavigate();
 let { id } = useParams();
 const [post, setPost] = useState({
-    
     description: "",
     image: null,
 });
@@ -44,13 +43,10 @@ const onSubmit = (ev) => {
                 }
             });
     } else {
-        const formdata = new FormData();
-        formdata.append('description', post.description);
-        formdata.append('image', post.image);
-
         
+       +
         axiosClient
-            .post("/admin/posts", formdata)
+            .post("/admin/posts", post)
             .then(() => {
                 setNotification("post was successfully created");
                 navigate("/admin/posts");
