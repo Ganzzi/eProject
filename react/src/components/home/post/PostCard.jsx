@@ -2,18 +2,26 @@ import React, { useEffect, useState } from "react";
 import CommentCard from "./CommentCard";
 import { AiFillHeart } from "react-icons/ai";
 import { BiCommentDetail } from "react-icons/bi";
+import { TiDeleteOutline } from "react-icons/Ti";
 import { MdOutlineSettingsSuggest } from "react-icons/md";
 import { formatDateTime } from "../../../utils";
 import axiosClient from "../../../axios-client";
 import { useNavigate } from "react-router-dom";
 import { useStateContext } from "../../../contexts/ContextProvider";
+import UpdatePostModal from "./UpdatePostModal";
 
 const PostCard = ({ post, post_creator, getPostData }) => {
     const { user } = useStateContext();
     const [comments, setcomments] = useState([]);
     const [isReplying, setIsReplying] = useState(false);
     const [repliedId, setRepliedId] = useState(null);
+    const [isLikedPost, setIsLikedPost] = useState(false);
+    const [isLikeOrUnlike, setisLikeOrUnlike] = useState(false);
 
+    const [] = useState({
+        description: "",
+    });
+    const [showModalPost, setShowModalPost] = useState(false);
     useEffect(() => {
         const checkRepliedCmt = () => {
             const cmt = [];
@@ -67,6 +75,20 @@ const PostCard = ({ post, post_creator, getPostData }) => {
             await getPostData();
         });
     };
+    const checkIsLikedPost = () => {
+        let _isLikedPost = false;
+        for (let i = 0; i < post.likes.length; i++) {
+            if (user.id == post.likes[i].liker_id) {
+                _isLikedPost = true;
+            }
+        }
+        setIsLikedPost(_isLikedPost ? true : false);
+    };
+
+    useEffect(() => {
+        checkIsLikedPost();
+    }, [post]);
+
 
     const handleLikePost = async () => {
         axiosClient
@@ -74,7 +96,10 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                 post_id: post.id,
             })
             .then(async () => {
+                setisLikeOrUnlike(true);
                 await getPostData();
+                setIsLikedPost(!IsLikedPost);
+                setisLikeOrUnlike(false);
             });
     };
 
@@ -109,7 +134,11 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                     </div>
                     <div>
                         {/* update post button */}
-                        {<MdOutlineSettingsSuggest size={40} />}
+                        {<MdOutlineSettingsSuggest size={40}
+                        onClick={()=>{
+                            setShowModalPost(true);
+                        }}
+                        />}
                     </div>
                 </div>
                 <p className="card-text">{post.description}</p>
@@ -121,18 +150,21 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                 <div className="d-flex justify-content-between mt-3">
                     {/* like button */}
                     <span
-                        className="mr-2 d-flex justify-content-center items-center text-3xl"
-                        onClick={handleLikePost}
-                    >
-                        <AiFillHeart size={24} color={true ? "red" : "gray"} />
+                        className="mr-2 d-flex justify-content-center items-center text-3xl" >
+                        <AiFillHeart 
+                        size={24}
+                        color={isLikedPost ? "red" : "gray"} 
+                        onClick={async()=>{
+                            await handleLikePost(post.id)
+                        }}
+                        />
+                    
                         {post.likes.length}
                     </span>
                     <span>
-                        <BiCommentDetail
-                            size={24}
-                            color={true ? "red" : "gray"}
-                        />
                         {post.comments.length}
+                        <BiCommentDetail  size={24} color={true ? "red" : "gray"} />
+                        
                     </span>
                 </div>
                 <div className="mt-3">
@@ -179,7 +211,7 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                                         }}
                                         onClick={() => setIsReplying(false)}
                                     >
-                                        close
+                                       <TiDeleteOutline  size= {20}/>
                                     </p>
                                 </>
                             )}

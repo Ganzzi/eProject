@@ -8,6 +8,7 @@ import PostCard from "./PostCard";
 import { useNavigate } from "react-router-dom";
 import { formatDateTime } from "../../../utils";
 
+
 // import { BorderAll } from "@material-ui/icons";
 
 const Posts = () => {
@@ -62,7 +63,7 @@ const Posts = () => {
     return (
         <div style={{}} className="row">
             <div
-                className="col-2 justify-content-center d-flex"
+                className="col-2 justify-content-center d-flex card"
                 style={{
                     display: "flex",
                     border: "solid thin black",
@@ -81,7 +82,7 @@ const Posts = () => {
                         }}
                     >
                         <img
-                            src="https://i0.wp.com/thatnhucuocsong.com.vn/wp-content/uploads/2022/04/Anh-avatar-dep-anh-dai-dien-FB-Tiktok-Zalo.jpg?ssl=1"
+                            src="http://127.0.0.1:8000/api/images/"
                             alt=""
                             style={{
                                 width: 80,
@@ -104,7 +105,6 @@ const Posts = () => {
                         border: "solid thin gray",
                         padding: 5,
                         margin: 5,
-                        backgroundColor: "aliceblue",
                         borderRadius: "10px",
                         width: "none",
                         flexDirection: "column",
@@ -116,7 +116,7 @@ const Posts = () => {
                         }}
                     >
                         <img
-                            src="https://i0.wp.com/thatnhucuocsong.com.vn/wp-content/uploads/2022/04/Anh-avatar-dep-anh-dai-dien-FB-Tiktok-Zalo.jpg?ssl=1"
+                            src="http://127.0.0.1:8000/api/images/"
                             alt=""
                             style={{
                                 width: 40,
@@ -132,6 +132,7 @@ const Posts = () => {
                             flexDirection: "col",
                             alignItems: "flex-start",
                             marginBottom: "30px",
+                            padding:"10px",
                         }}
                         onSubmit={handleCreatePost}
                     >
@@ -140,9 +141,9 @@ const Posts = () => {
                                 style={{
                                     display: "flex",
                                     width: "100%",
-                                    padding: "10px",
+                                    padding: "0px",
                                     fontSize: "20px",
-                                    border: "1px solid #ccc",
+                                    border: "null",
                                     borderRadius: "4px",
                                     resize: "none",
                                 }}
@@ -163,17 +164,20 @@ const Posts = () => {
                                 }
                             />
                             <label for="file">
-                                <HiOutlinePhotograph size={30} />
+                                <HiOutlinePhotograph width={100} 
+                                height={1000}
+                                size={40}
+                                color="black"/>
                             </label>
                         </div>
                         <div>
                             <button
                                 style={{
-                                    padding: "20px 20px",
+                                    padding: "25px",
                                     backgroundColor: "purple",
-                                    color: "#fff",
-                                    border: "",
-                                    cursor: "pointer",
+                                    color: "white",
+                                    border: "3px",
+                                    
                                 }}
                                 type="submit"
                             >
