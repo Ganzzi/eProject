@@ -22,10 +22,10 @@ const Profile = () => {
         created_at: null,
         followers: [],
         followings: [],
-        posts: [],
     });
     const [showModal, setShowModal] = useState(false);
     const [isActivityModalOpen, setIsActivityModalOpen] = useState(false);
+    const [posts, setposts] = useState([]);
 
     useEffect(() => {
         const getProfileData = async () => {
@@ -44,23 +44,25 @@ const Profile = () => {
                     _profileContent,
                 });
             } else {
-                axiosClient.get(`/user-profile/${id}`).then(({ data }) => {
-                    _profileContent = {
-                        ...profileContent,
-                        image: data.image,
-                        bio: data.bio,
-                        created_at: data.created_at,
-                        email: data.email,
-                        gender: data.gender,
-                        name: data.name,
-                    };
-                    setProfileContent({
-                        _profileContent,
+                await axiosClient
+                    .get(`/user-profile/${id}`)
+                    .then(({ data }) => {
+                        _profileContent = {
+                            ...profileContent,
+                            image: data.image,
+                            bio: data.bio,
+                            created_at: data.created_at,
+                            email: data.email,
+                            gender: data.gender,
+                            name: data.name,
+                        };
+                        setProfileContent({
+                            _profileContent,
+                        });
                     });
-                });
             }
 
-            axiosClient.get("/follows").then(({ data }) => {
+            await axiosClient.get("/follows").then(({ data }) => {
                 _profileContent = {
                     ..._profileContent,
                     followers: data?.followers,
@@ -70,18 +72,16 @@ const Profile = () => {
                 setProfileContent(_profileContent);
             });
 
-            axiosClient.get(`posts-profile/${id}`).then(({ data }) => {
-                _profileContent = {
-                    ..._profileContent,
-                    posts: data?.posts,
-                };
-
-                setProfileContent(_profileContent);
-            });
+            await getPostData();
         };
-
         getProfileData();
     }, [id, user]);
+
+    const getPostData = async () => {
+        await axiosClient.get(`posts-profile/${id}`).then(({ data }) => {
+            setposts(data?.reverse());
+        });
+    };
 
     const handleUpdateProfile = async (formData) => {
         try {
@@ -232,9 +232,10 @@ const Profile = () => {
                 </div>
                 <div className="col-lg-8">
                     <h3>Posts</h3>
-                    {profileContent.posts &&
-                        profileContent.posts.map((post) => (
+                    {posts &&
+                        posts.map((post) => (
                             <PostCard
+                                getPostData={getPostData}
                                 post={post}
                                 post_creator={{
                                     image: profileContent.image,

@@ -25,6 +25,12 @@ export const ContextProvider = ({ children }) => {
             localStorage.removeItem("ACCESS_TOKEN");
         }
     };
+    const [notifications, setNotifications] = useState([]);
+    const [alerts, setAlerts] = useState({
+        type: null,
+        message: null,
+        time: null,
+    });
 
     return (
         <StateContext.Provider
@@ -33,6 +39,10 @@ export const ContextProvider = ({ children }) => {
                 setUser,
                 token,
                 setToken,
+                notifications,
+                setNotifications,
+                alerts,
+                setAlerts,
             }}
         >
             {children}
