@@ -1,33 +1,53 @@
 import React, { useEffect, useState } from "react";
 import axiosClient from "../../../axios-client";
 import { useStateContext } from "../../../contexts/ContextProvider";
-import { useLocation } from "react-router-dom";
-
-const receivedMessages = [
-    { text: "Xin chào!", sender: "receiver" },
-    { text: "Chào bạn!", sender: "receiver" },
-    { text: "Bạn đang làm gì?", sender: "receiver" },
-];
+import { useLocation, useNavigate } from "react-router-dom";
+import Chats from "./Chats";
 
 const Message = () => {
     const { user } = useStateContext();
     const location = useLocation();
+    const navigate = useNavigate();
 
     const [chatrooms, setChatrooms] = useState([]);
-    const [selectedRoom, setSelectedRoom] = useState(0);
-    const [messagingTo, setMessagingTo] = useState(location.state?.id);
+    const [selectedRoom, setSelectedRoom] = useState(-1);
+    const [messagingTo, setMessagingTo] = useState({
+        name: "",
+        id: location.state?.id,
+        image: "",
+    });
+    const [chatRoomId, setChatRoomId] = useState(null);
+    const [isMessageExisted, setIsMessageExisted] = useState(false);
 
     useEffect(() => {
         getChatroom();
-        console.log(messagingTo);
     }, []);
 
     const getChatroom = () => {
         axiosClient
             .get("/chatrooms")
             .then(({ data }) => {
-                console.log(data);
+                // console.log(data);
+                let _selectedRoom = -1;
+
+                outerLoop: for (let i = 0; i < data.length; i++) {
+                    for (let j = 0; j < data[i].participants.length; j++) {
+                        // console.log(i);
+                        if (
+                            data[i].participants[j].paticipator_id ==
+                            location.state?.id
+                        ) {
+                            _selectedRoom = i;
+                            setSelectedRoom(i);
+                            break outerLoop;
+                        }
+                    }
+                }
+
+                // The code will continue from here after breaking out of the loops
+
                 setChatrooms(data);
+                setChatRoomId(data[_selectedRoom].id);
             })
             .catch(() => {});
     };
@@ -45,13 +65,30 @@ const Message = () => {
                                 index === selectedRoom ? "active" : ""
                             }`}
                             onClick={() => {
+                                for (
+                                    let i = 0;
+                                    i < room.participants.length;
+                                    i++
+                                ) {
+                                    if (
+                                        room.participants[i].paticipator_id !=
+                                        user.id
+                                    ) {
+                                        setMessagingTo({
+                                            id: room.participants[i]
+                                                .paticipator_id,
+                                            image: room.participants[i].image,
+                                            name: room.participants[i].name,
+                                        });
+                                        break;
+                                    }
+                                }
                                 setSelectedRoom(index);
+                                setChatRoomId(room.id);
                             }}
                         >
-                            {/* {room?.participants.map((participant, i) =>
-                            {
-                                if (user.id == participant.paticipator_id)
-                                {
+                            {room?.participants.map((participant, i) => {
+                                if (user.id != participant.paticipator_id) {
                                     return (
                                         <div
                                             className="d-flex justify-content-start flex-row items-center bg-gray"
@@ -59,7 +96,10 @@ const Message = () => {
                                         >
                                             <div className="">
                                                 <img
-                                                    src={"http://127.0.0.1:8000/api/images/" + participant.image}
+                                                    src={
+                                                        "http://127.0.0.1:8000/api/images/" +
+                                                        participant.image
+                                                    }
                                                     width={80}
                                                     height={80}
                                                     alt=""
@@ -76,31 +116,26 @@ const Message = () => {
                                                 }}
                                             >
                                                 <p>{participant.name}</p>
-                                                <p>{room?.last_message?.text}</p>
+                                                <p>
+                                                    {room?.last_message?.text}
+                                                </p>
                                             </div>
                                         </div>
                                     );
                                 }
                                 return null; // Add this to handle the missing return statement warning
-                            })} */}
+                            })}
                         </li>
                     ))}
                 </ul>
             </aside>
 
             {/* Chats */}
-            <main className="chats">
-                <div>
-                    {/* {chatrooms[selectedRoom]?.chats.map((chat, index) => (
-                        <div key={index}>
-                            <div>{chat.text}</div>
-                            <div>{index}</div>
-                            <div>{chat.sender_id}</div>
-                            <div>{chat.likes.length} Likes</div>
-                        </div>
-                    ))} */}
-                </div>
-            </main>
+            <Chats
+                messagingTo={messagingTo}
+                chatRoomId={chatRoomId}
+                currentUser={user}
+            />
         </div>
     );
 };

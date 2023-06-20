@@ -38,7 +38,7 @@ class Auth extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'role_id' => 1,
+            'role_id' => 2,
             'image' => basename($filePath)
         ]);
 
@@ -56,9 +56,9 @@ class Auth extends Controller
         $credentials = $request->validated();
 
         if (!FacadesAuth::attempt($credentials)) {
-            return response([
+            return response()->json([
                 'message' => 'incorrect email or password',
-            ]);
+            ], 422);
         }
 
         /** @var \App\Models\User $user */

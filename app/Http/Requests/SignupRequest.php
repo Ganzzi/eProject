@@ -28,10 +28,10 @@ class SignupRequest extends FormRequest
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email', 'regex:/\w{1,}@\w{1,}\.\w{2,5}/i'],
             'password' => [
                 'required',
-                'confirmed',
+                // 'confirmed',
                 Password::min(8)->letters()
             ],
-            'image' => 'image',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
 

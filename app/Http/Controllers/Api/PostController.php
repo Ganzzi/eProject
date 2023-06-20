@@ -37,7 +37,22 @@ class PostController extends Controller
                 'creator_name' => $creator_name,
                 'creator_image' => $creator_image,
                 "likes" => $_post->likes,
-                "comments" => $_post->comments,
+                "comments" => $_post->comments->map(function ($cmt) {
+                    $_commentor = User::find($cmt->commentor_id);
+
+                    return [
+                        'commentor_id' =>  $cmt->commentor_id,
+                        'created_at' => $cmt->created_at,
+                        'id' => $cmt->id,
+                        'id' => $cmt->id,
+                        'post_id' => $cmt->post_id,
+                        'reply_to' => $cmt->reply_to,
+                        'text' => $cmt->text,
+                        'likes' => $cmt->likes,
+                        'user_image' => $_commentor->image,
+                        'user_name' => $_commentor->name,
+                    ];
+                }),
             ];
         }));
     }
@@ -82,61 +97,30 @@ class PostController extends Controller
      *  @param \App\Models\Post $post
      * @return \Illuminate\Http\Response
      */
-    /* public function show(Post $post)
-    {
-        $room = ChatRoom::with('users', 'chats.likes')->find($chatRoom);
-        // return response()->json(['data' => $room]);
+    // public function show($post)
+    // {
+    //     $_post = Post::with('likes', 'comments.likes')->find($post);
+    //     $user = User::find($_post->creator_id);
 
-        $lastMessage = $room->chats()->orderByDesc('created_at')->first();
+    //     $creator_name = $user->name;
+    //     $creator_image = $user->image;
 
-        // Lấy tất cả các tin nhắn reply của tin nhắn gốc
-        $replyToId = $lastMessage->id; // Thay thế $lastMessage->id bằng ID của tin nhắn gốc cụ thể
-        $replies = Chat::where('reply_to', $replyToId)->get();
+    //     return response()->json(
+    //         [
+    //             "id" => $_post->id,
+    //             "creator_id" => $_post->creator_id,
+    //             "description" => $_post->description,
+    //             "image" => $_post->image,
+    //             "created_at" => $_post->created_at,
+    //             "updated_at" => $_post->updated_at,
+    //             'creator_name' => $creator_name,
+    //             'creator_image' => $creator_image,
+    //             "likes" => $_post->likes,
+    //             "comments" => $_post->comments,
+    //         ]
+    //     );
+    // }
 
-        return response()->json([
-            'chat_room_id' => $room->id,
-            'created_at' => $room->created_at->toISOString(),
-            'participants' => $room->users->map(function ($user) {
-                return [
-                    'paticipator_id' => $user->id,
-                    'name' => $user->name,
-                    'image' => $user->image,
-                    'created_at' => $user->pivot->created_at,
-                ];
-            }),
-
-            'chats' => $room->chats->map(function ($chat) {
-                return [
-                    'chat_id' => $chat->id,
-                    'created_at' => $chat->created_at->toISOString(),
-                    'text' => $chat->text,
-                    'sender_id' => $chat->sender_id,
-                    'likes' => $chat->likes->map(function ($like) {
-                        return [
-                            'liker' => $like->liker_id,
-                            'created_at' => $like->created_at->toISOString(),
-                        ];
-                    })
-                ];
-            }),
-
-            'replies' => $replies->map(function ($reply) {
-                return [
-                    'reply_id' => $reply->id,
-                    'created_at' => $reply->created_at->toISOString(),
-                    'text' => $reply->text,
-                    'sender_id' => $reply->sender_id,
-                    'likes' => $reply->likes->map(function ($like) {
-                        $username = User::find($like->liker_id)->name;
-                        return [
-                            'liker' => $username,
-                        ];
-                    })
-                ];
-            }),
-        ]);
-    }   
-    */
 
     /**
      * Update the specified resource in storage.
@@ -147,7 +131,6 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         $data = $request->validate([
-
             // 'image' => 'nullable|image',
             'description' => 'nullable|string|max:100',
         ]);
