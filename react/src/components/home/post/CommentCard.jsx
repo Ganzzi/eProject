@@ -85,6 +85,7 @@ const CommentCard = ({ cmt, getPostData, onReply }) => {
                         <span style={{}}>
                             {cmt?.reply_to?.length }
                             <BiCommentDetail size={24} color={"blue"} />
+                            {cmt.replierComments.length}
                         </span>
                     </div>
                 </div>

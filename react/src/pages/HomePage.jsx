@@ -59,12 +59,13 @@ export default function Homescreen() {
                     style={{
                         fontFamily: "Arial",
                         fontSize: "35px",
-                        fontWeight:"bold",
-                        color:"black",
-                        textShadow:"inherit",
+                        fontWeight: "bold",
                     }}
                 >
-                    <Link to={"/posts"}>spaceshare</Link>
+                    <Link to={"/posts"} style={{
+                        color: "black",
+                        textDecoration: "none",
+                    }}>spaceshare</Link>
                 </div>
 
                 <div className="col-6  d-flex justify-content-center">
@@ -105,18 +106,30 @@ export default function Homescreen() {
                     </Link>
                 </div>
                 <div className="col-1 d-flex justify-content-end align-items-center">
-                    <Link to={"/profile/" + user.id}>{user.name}</Link>
+                    <Link to={"/profile/" + user.id}>
+                        <img
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNPPYQRCLyeyObsjMwbp1LB3wumXPRTgM6Fw&usqp=CAU"
+                            alt=""
+                            style={{
+                                width: 60,
+                                height: 60,
+                                borderRadius:"50%"
+                            }}
+                        /></Link>
                 </div>
                 <div
                     className="col-1 d-flex justify-content-end align-items-center"
                     style={{}}
-                ><BsFillBellFill size={30}/>
+                ><BsFillBellFill size={30} />
                 </div>
 
                 <div className="col-1 d-flex justify-content-end align-items-center">
                     <a
                         className="btn-logout btn btn-primary"
                         onClick={onLogout}
+                        style={{
+                            backgroundColor:"black"
+                        }}
                     >
                         Logout
                     </a>

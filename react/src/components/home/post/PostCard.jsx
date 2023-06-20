@@ -8,7 +8,7 @@ import { formatDateTime } from "../../../utils";
 import axiosClient from "../../../axios-client";
 import { useNavigate } from "react-router-dom";
 import { useStateContext } from "../../../contexts/ContextProvider";
-import UpdatePostModal from "./UpdatePostModal";
+// import UpdatePostModal from "./UpdatePostModal";
 
 const PostCard = ({ post, post_creator, getPostData }) => {
     const { user } = useStateContext();
