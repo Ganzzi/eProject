@@ -27,7 +27,7 @@ const Posts = () => {
 
     const getPostData = async () => {
         await axiosClient.get("/posts").then(({ data }) => {
-            setPosts(data);
+            setPosts(data.reverse());
         });
     };
 
@@ -69,7 +69,6 @@ const Posts = () => {
                     border: "solid thin black",
                     padding: 5,
                     margin: 5,
-                    height: "fit",
                     height: "fit-content",
                 }}
             >
@@ -82,13 +81,13 @@ const Posts = () => {
                         }}
                     >
                         <img
-                            src="http://127.0.0.1:8000/api/images/"
+                            src={"http://127.0.0.1:8000/api/images/" + user.image}
                             alt=""
                             style={{
                                 width: 80,
                                 height: 80,
                             }}
-                        />{" "}
+                        />
                     </div>
                     <p>Name: {user.name}</p>
                     <p>Email: {user.email}</p>
@@ -116,7 +115,7 @@ const Posts = () => {
                         }}
                     >
                         <img
-                            src="http://127.0.0.1:8000/api/images/"
+                            src={"http://127.0.0.1:8000/api/images/" + user.image}
                             alt=""
                             style={{
                                 width: 40,

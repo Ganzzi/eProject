@@ -3,12 +3,12 @@ import CommentCard from "./CommentCard";
 import { AiFillHeart } from "react-icons/ai";
 import { BiCommentDetail } from "react-icons/bi";
 import { TiDeleteOutline } from "react-icons/Ti";
-import { MdOutlineSettingsSuggest } from "react-icons/md";
+import { MdOutlineCancel, MdOutlineSettingsSuggest } from "react-icons/md";
 import { formatDateTime } from "../../../utils";
 import axiosClient from "../../../axios-client";
 import { useNavigate } from "react-router-dom";
 import { useStateContext } from "../../../contexts/ContextProvider";
-import UpdatePostModal from "./UpdatePostModal";
+// import UpdatePostModal from "./UpdatePostModal";
 
 const PostCard = ({ post, post_creator, getPostData }) => {
     const { user } = useStateContext();
@@ -18,10 +18,11 @@ const PostCard = ({ post, post_creator, getPostData }) => {
     const [isLikedPost, setIsLikedPost] = useState(false);
     const [isLikeOrUnlike, setisLikeOrUnlike] = useState(false);
 
-    const [] = useState({
-        description: "",
-    });
-    const [showModalPost, setShowModalPost] = useState(false);
+    const [isUpdating, setIsUpdating] = useState(false);
+    const [newPostForm, setNewPostForm] = useState({
+        description: ''
+    })
+
     useEffect(() => {
         const checkRepliedCmt = () => {
             const cmt = [];
@@ -89,7 +90,6 @@ const PostCard = ({ post, post_creator, getPostData }) => {
         checkIsLikedPost();
     }, [post]);
 
-
     const handleLikePost = async () => {
         axiosClient
             .post("/likeposts", {
@@ -102,6 +102,10 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                 setisLikeOrUnlike(false);
             });
     };
+
+    const handleUpdatePost = async () => {
+
+    }
 
     return (
         <div className="card">
@@ -134,14 +138,36 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                     </div>
                     <div>
                         {/* update post button */}
-                        {<MdOutlineSettingsSuggest size={40}
-                        onClick={()=>{
-                            setShowModalPost(true);
-                        }}
-                        />}
+                        {user.id === post.creator_id && (
+                            <>
+                            {isUpdating ? (
+                                <MdOutlineCancel
+                                size={40}
+                                onClick={() => {
+                                    setIsUpdating(false);
+                                }}
+                                />
+                            ) : (
+                                <MdOutlineSettingsSuggest
+                                size={40}
+                                onClick={() => {
+                                    setIsUpdating(true);
+                                }}
+                                />
+                            )}
+                            </>
+                        )}
                     </div>
+
                 </div>
-                <p className="card-text">{post.description}</p>
+               {isUpdating  ? (<div className="d-flex">
+                <input type="text" defaultValue={post.description}  onChange={(ev) => {
+                    setNewPostForm({...newPostForm, description: ev.target.value})
+                }}/>
+                <button onClick={() => {
+                    handleUpdatePost()
+                }}>update</button>
+               </div>) : (<p className="card-text">{post.description}</p>)}
                 <img
                     src={"http://127.0.0.1:8000/api/images/" + post.image}
                     alt="Post Image"

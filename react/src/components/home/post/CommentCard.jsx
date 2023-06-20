@@ -5,12 +5,17 @@ import { ImReply } from "react-icons/im";
 import { formatDateTime } from "../../../utils";
 import axiosClient from "../../../axios-client";
 import { useStateContext } from "../../../contexts/ContextProvider";
+import { MdOutlineCancel, MdOutlineSettingsSuggest } from "react-icons/md";
+import RepliedCommentCard from "./RepliedCommentCard";
 
 const CommentCard = ({ cmt, getPostData, onReply }) => {
     const { user } = useStateContext();
     const [reply_to, setreply_to] = useState([]);
     const [isLiked, setIsLiked] = useState(false);
     const [isLikeOrUnlikeSuccess, setisLikeOrUnlikeSuccess] = useState(false);
+    const [isUpdating, setIsUpdating] = useState(false);
+    const [newComment, setNewComment] = useState('')
+
 
     const checkIsLiked = () => {
         // if (cmt?.likes.length != 0) {
@@ -41,6 +46,10 @@ const CommentCard = ({ cmt, getPostData, onReply }) => {
             });
     };
 
+    const handleUpdateComment = async (id) => {
+
+    }
+
     return (
         <div className="card">
             <div className="card-body p-2">
@@ -68,8 +77,42 @@ const CommentCard = ({ cmt, getPostData, onReply }) => {
                             onReply(cmt.id);
                         }}
                     />
+                    
                 </div>
-                <p className="card-text font-size-sm">{cmt.text}</p>
+                <div style={{
+                    position: 'absolute',
+                    right: 40,
+                    top: 40
+                }}>
+                {user.id === cmt.commentor_id && (
+                            <>
+                            {isUpdating ? (
+                                <MdOutlineCancel
+                                size={20}
+                                onClick={() => {
+                                    setIsUpdating(false);
+                                }}
+                                />
+                            ) : (
+                                <MdOutlineSettingsSuggest
+                                size={20}
+                                onClick={() => {
+                                    setIsUpdating(true);
+                                }}
+                                />
+                            )}
+                            </>
+                        )}
+                </div>
+                {isUpdating  ? (<div className="d-flex">
+                <input type="text" defaultValue={cmt.text}  onChange={(ev) => {
+                    setNewComment(ev.target.value)
+                }}/>
+                <button onClick={() => {
+                    handleUpdateComment(cmt.id)
+                }}>update</button>
+               </div>) : (<p className="card-text font-size-sm">{cmt.text}</p>)}
+                
                 <div className="">
                     <div className="text-muted font-size-sm d-flex justify-content-between align-items-center">
                         <span className="mr-2 d-flex justify-content-center items-center text-3xl">
@@ -85,6 +128,7 @@ const CommentCard = ({ cmt, getPostData, onReply }) => {
                         <span style={{}}>
                             {cmt?.reply_to?.length }
                             <BiCommentDetail size={24} color={"blue"} />
+                            {cmt.replierComments.length}
                         </span>
                     </div>
                 </div>
@@ -92,39 +136,9 @@ const CommentCard = ({ cmt, getPostData, onReply }) => {
                 {/* display replied comments */}
                 <div className="replied-comments">
                     {cmt.replierComments.map((cmt, index) => (
-                        <div
-                            key={index}
-                            className="card"
-                            style={{ opacity: "0.7" }}
-                        >
-                            <div className="card-body p-2">
-                                <div className="d-flex align-items-center mb-2">
-                                    <img
-                                        src={
-                                            "http://127.0.0.1:8000/api/images/" +
-                                            cmt.user_image
-                                        }
-                                        alt="Replied Commentor Image"
-                                        className="rounded-circle"
-                                        style={{
-                                            width: "20px",
-                                            height: "20px",
-                                        }}
-                                    />
-                                    <div>
-                                        <h6 className="card-title ml-2 mb-0">
-                                            {cmt.user_name}
-                                        </h6>
-                                        <p className="card-subtitle text-muted font-size-xs">
-                                            {formatDateTime(cmt.created_at)}
-                                        </p>
-                                    </div>
-                                </div>
-                                <p className="card-text font-size-xs">
-                                    {cmt.text}
-                                </p>
-                            </div>
-                        </div>
+                        <RepliedCommentCard onUpdate={(id) => {
+                            handleUpdateComment(id)
+                        }} cmt={cmt} key={index}/>
                     ))}
                     {/* Add more replied comments here */}
                 </div>
