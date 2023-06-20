@@ -4,6 +4,7 @@ import { Outlet, Navigate, Link } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client";
 import { BsChatRightText } from "react-icons/Bs";
+import { BsFillBellFill } from "react-icons/Bs";
 
 export default function Homescreen() {
     const { user, token, setUser, setToken } = useStateContext();
@@ -56,8 +57,11 @@ export default function Homescreen() {
                 <div
                     className="col-2 d-flex justify-content-center"
                     style={{
-                        fontFamily: "Papyrus",
-                        fontSize: "30px",
+                        fontFamily: "Arial",
+                        fontSize: "35px",
+                        fontWeight:"bold",
+                        color:"black",
+                        textShadow:"inherit",
                     }}
                 >
                     <Link to={"/posts"}>spaceshare</Link>
@@ -93,7 +97,7 @@ export default function Homescreen() {
                 </div>
 
                 <div
-                    className="col-2 d-flex justify-content-end align-items-center"
+                    className="col-1 d-flex justify-content-end align-items-center"
                     style={{}}
                 >
                     <Link to={"/messages"}>
@@ -102,6 +106,11 @@ export default function Homescreen() {
                 </div>
                 <div className="col-1 d-flex justify-content-end align-items-center">
                     <Link to={"/profile/" + user.id}>{user.name}</Link>
+                </div>
+                <div
+                    className="col-1 d-flex justify-content-end align-items-center"
+                    style={{}}
+                ><BsFillBellFill size={30}/>
                 </div>
 
                 <div className="col-1 d-flex justify-content-end align-items-center">

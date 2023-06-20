@@ -8,6 +8,7 @@ import { useStateContext } from "../../../contexts/ContextProvider";
 
 const CommentCard = ({ cmt, getPostData, onReply }) => {
     const { user } = useStateContext();
+    const [reply_to, setreply_to] = useState([]);
     const [isLiked, setIsLiked] = useState(false);
     const [isLikeOrUnlikeSuccess, setisLikeOrUnlikeSuccess] = useState(false);
 
@@ -82,7 +83,7 @@ const CommentCard = ({ cmt, getPostData, onReply }) => {
                             {cmt?.likes?.length}
                         </span>
                         <span style={{}}>
-                            {cmt?.reply_to?.length || 0}
+                            {cmt?.reply_to?.length }
                             <BiCommentDetail size={24} color={"blue"} />
                         </span>
                     </div>
