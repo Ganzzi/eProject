@@ -78,6 +78,10 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
     };
 
     useEffect(() => {
+        setnewChat({
+            text: "",
+            reply_to: null,
+        });
         // Fetch data initially
         fetchData();
 

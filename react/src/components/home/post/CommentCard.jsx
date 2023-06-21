@@ -9,13 +9,13 @@ import { MdOutlineCancel, MdOutlineSettingsSuggest } from "react-icons/md";
 import RepliedCommentCard from "./RepliedCommentCard";
 
 const CommentCard = ({ cmt, getPostData, onReply }) => {
+    console.log(cmt);
     const { user } = useStateContext();
     const [reply_to, setreply_to] = useState([]);
     const [isLiked, setIsLiked] = useState(false);
     const [isLikeOrUnlikeSuccess, setisLikeOrUnlikeSuccess] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
-    const [newComment, setNewComment] = useState('')
-
+    const [newComment, setNewComment] = useState("");
 
     const checkIsLiked = () => {
         // if (cmt?.likes.length != 0) {
@@ -46,9 +46,7 @@ const CommentCard = ({ cmt, getPostData, onReply }) => {
             });
     };
 
-    const handleUpdateComment = async (id) => {
-
-    }
+    const handleUpdateComment = async (id) => {};
 
     return (
         <div className="card">
@@ -77,42 +75,55 @@ const CommentCard = ({ cmt, getPostData, onReply }) => {
                             onReply(cmt.id);
                         }}
                     />
-                    
                 </div>
-                <div style={{
-                    position: 'absolute',
-                    right: 40,
-                    top: 40
-                }}>
-                {user.id === cmt.commentor_id && (
-                            <>
+                <div
+                    style={{
+                        position: "absolute",
+                        right: 40,
+                        top: 40,
+                    }}
+                >
+                    {user.id === cmt.commentor_id && (
+                        <>
                             {isUpdating ? (
                                 <MdOutlineCancel
-                                size={20}
-                                onClick={() => {
-                                    setIsUpdating(false);
-                                }}
+                                    size={20}
+                                    onClick={() => {
+                                        setIsUpdating(false);
+                                    }}
                                 />
                             ) : (
                                 <MdOutlineSettingsSuggest
-                                size={20}
-                                onClick={() => {
-                                    setIsUpdating(true);
-                                }}
+                                    size={20}
+                                    onClick={() => {
+                                        setIsUpdating(true);
+                                    }}
                                 />
                             )}
-                            </>
-                        )}
+                        </>
+                    )}
                 </div>
-                {isUpdating  ? (<div className="d-flex">
-                <input type="text" defaultValue={cmt.text}  onChange={(ev) => {
-                    setNewComment(ev.target.value)
-                }}/>
-                <button onClick={() => {
-                    handleUpdateComment(cmt.id)
-                }}>update</button>
-               </div>) : (<p className="card-text font-size-sm">{cmt.text}</p>)}
-                
+                {isUpdating ? (
+                    <div className="d-flex">
+                        <input
+                            type="text"
+                            defaultValue={cmt.text}
+                            onChange={(ev) => {
+                                setNewComment(ev.target.value);
+                            }}
+                        />
+                        <button
+                            onClick={() => {
+                                handleUpdateComment(cmt.id);
+                            }}
+                        >
+                            update
+                        </button>
+                    </div>
+                ) : (
+                    <p className="card-text font-size-sm">{cmt.text}</p>
+                )}
+
                 <div className="">
                     <div className="text-muted font-size-sm d-flex justify-content-between align-items-center">
                         <span className="mr-2 d-flex justify-content-center items-center text-3xl">
@@ -126,7 +137,7 @@ const CommentCard = ({ cmt, getPostData, onReply }) => {
                             {cmt?.likes?.length}
                         </span>
                         <span style={{}}>
-                            {cmt?.reply_to?.length }
+                            {cmt?.reply_to?.length}
                             <BiCommentDetail size={24} color={"blue"} />
                             {cmt.replierComments.length}
                         </span>
@@ -136,9 +147,13 @@ const CommentCard = ({ cmt, getPostData, onReply }) => {
                 {/* display replied comments */}
                 <div className="replied-comments">
                     {cmt.replierComments.map((cmt, index) => (
-                        <RepliedCommentCard onUpdate={(id) => {
-                            handleUpdateComment(id)
-                        }} cmt={cmt} key={index}/>
+                        <RepliedCommentCard
+                            onUpdate={(id) => {
+                                handleUpdateComment(id);
+                            }}
+                            cmt={cmt}
+                            key={index}
+                        />
                     ))}
                     {/* Add more replied comments here */}
                 </div>

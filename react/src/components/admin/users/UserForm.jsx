@@ -11,7 +11,7 @@ export default function UserForm() {
         id: null,
         name: "",
         email: "",
-        role_id: 1,
+        role_id: null,
         image: null,
         password: "",
         password_confirmation: "",
@@ -52,9 +52,9 @@ export default function UserForm() {
                 });
         } else {
             const formdata = new FormData();
-            formdata.append('name', user.name);
-            formdata.append('role_id', user.role_id);
-            formdata.append('image', user.image);
+            formdata.append("name", user.name);
+            formdata.append("role_id", user.role_id);
+            formdata.append("image", user.image);
             formdata.append("email", user.email);
             formdata.append("password", user.password);
             formdata.append(
@@ -78,7 +78,10 @@ export default function UserForm() {
     };
 
     return (
-        <>
+   
+       <>
+       
+        
             {user.id && <h1>Update User: {user.name}</h1>}
             {!user.id && <h1>New User</h1>}
             <div className="card animated fadeInDown">
@@ -116,12 +119,18 @@ export default function UserForm() {
                             }
                             placeholder="Role id"
                         />
-                        
-                        <input type="file" id="file"onChange={(ev) =>
+
+                        <input
+                            type="file"
+                            id="file"
+                            onChange={(ev) =>
                                 setUser({ ...user, image: ev.target.files[0] })
-                            } />
-                            <label for="file" ><HiOutlinePhotograph/></label>
-                        
+                            }
+                        />
+                        <label for="file">
+                            <HiOutlinePhotograph />
+                        </label>
+
                         <input
                             type="password"
                             onChange={(ev) =>
@@ -141,9 +150,18 @@ export default function UserForm() {
                         />
                         
                         <button className="btn btn-outline-success"style={{width:"100px"}}>Save</button>
+                        <button
+                            className="btn btn-outline-success"
+                            style={{ width: "100px" }}
+                        >
+                            Save
+                        </button>
                     </form>
                 )}
             </div>
-        </>
+            </>
+          
+          
+     
     );
 }

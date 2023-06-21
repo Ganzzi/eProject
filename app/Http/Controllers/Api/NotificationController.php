@@ -14,9 +14,6 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        // $notifications = Notification::all();
-
-        // return response($notifications);
         $user_id = Auth::user()->id;
 
         // find all chatrooms belong to a user
@@ -39,5 +36,18 @@ class NotificationController extends Controller
 
         $notification->delete();
         return response('deleted');
+    }
+
+    public function updateNotificationState(Request $request)
+    {
+        $receiverId = auth()->user()->id;
+
+        // Update notifications where receiver_id matches the authenticated user's ID
+        Notification::where('receiver_id', $receiverId)
+            ->where('state', 'new')
+            ->update(['state' => 'old']);
+
+        // Check the number of updated notifications
+        return response()->json(['message' => 'Notifications state updated successfully'], 202);
     }
 }
