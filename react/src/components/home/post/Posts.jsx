@@ -10,7 +10,8 @@ import { formatDateTime } from "../../../utils";
 
 // import { BorderAll } from "@material-ui/icons";
 
-const Posts = () => {
+const Posts = () =>
+{
     const [posts, setPosts] = useState([]);
     const [follows, setfollows] = useState({
         followers: [],
@@ -24,16 +25,20 @@ const Posts = () => {
 
     const [description, setdescription] = useState(null);
 
-    const getPostData = async () => {
-        await axiosClient.get("/posts").then(({ data }) => {
+    const getPostData = async () =>
+    {
+        await axiosClient.get("/posts").then(({ data }) =>
+        {
             setPosts(data);
         });
     };
 
-    useEffect(() => {
+    useEffect(() =>
+    {
         getPostData();
 
-        axiosClient.get("/follows").then(({ data }) => {
+        axiosClient.get("/follows").then(({ data }) =>
+        {
             setfollows({
                 followers: data?.followers,
                 followings: data?.followings,
@@ -41,11 +46,13 @@ const Posts = () => {
         });
     }, []);
 
-    const getPostDataFromChil = async () => {
+    const getPostDataFromChil = async () =>
+    {
         await getPostData();
     };
 
-    const handleCreatePost = async (e) => {
+    const handleCreatePost = async (e) =>
+    {
         e.preventDefault();
 
         const formData = new FormData();
@@ -53,7 +60,8 @@ const Posts = () => {
         formData.append("creator_id", user.id);
         formData.append("description", description);
 
-        await axiosClient.post("/posts", formData).then(async ({ data }) => {
+        await axiosClient.post("/posts", formData).then(async ({ data }) =>
+        {
             // console.log(data);
             await getPostData();
         });
@@ -147,7 +155,8 @@ const Posts = () => {
                                     resize: "none",
                                 }}
                                 placeholder="What's on your mind?"
-                                onChange={(ev) => {
+                                onChange={(ev) =>
+                                {
                                     setdescription(ev.target.value);
                                 }}
                             />
@@ -204,7 +213,8 @@ const Posts = () => {
                             follows.followers.map((fl) => (
                                 <div
                                     className="d-flex"
-                                    onClick={() => {
+                                    onClick={() =>
+                                    {
                                         navigate(`/profile/${fl.id}`);
                                     }}
                                 >
@@ -230,7 +240,8 @@ const Posts = () => {
                             follows.followings.map((fl) => (
                                 <div
                                     className="d-flex"
-                                    onClick={() => {
+                                    onClick={() =>
+                                    {
                                         navigate(`/profile/${fl.id}`);
                                     }}
                                 >
