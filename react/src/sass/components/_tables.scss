@@ -1,17 +1,38 @@
 table {
   width: 100%;
   border-spacing: 0;
-  border-collapse: collapse;
 
+  justify-content: center;
+  border-collapse:collapse;
+ 
   > thead > tr > th {
     text-align: left;
     padding: 0.5rem 0.5rem;
     background-color: #efefef;
+
   }
 
   > tbody > tr > td {
     padding: 0.5rem 0.5rem;
     border-bottom: 1px solid #efefef;
     white-space: nowrap;
+ 
+    
   }
+  #father{
+    width:160rem;
+    overflow:auto;
+    display: flex;
+  justify-content: space-between;
+  right:200px;
+    width:auto;
+    height: auto;
+}
+table{
+    width:600px;
+}
+  tr:hover{
+    background-color:aqua;
+    cursor:pointer;
+}
 }

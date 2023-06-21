@@ -53,27 +53,21 @@ export default function Users() {
                             justifycontent: "space-between",
                         }}
                     >
-                        Users
                     </h1>
-                    <Link className="btn-add" to="/admin/users/new">
+                    <Link className="btn-add" to="/admin/users/new" >
                         Add new
                     </Link>
                 </div>
-                <div className="card animated fadeInDown">
-                    <table>
-                        <thead>
-                            <tr
-                                style={{
-                                    fontFamily: "cursive",
-                                    textAlign: "center",
-                                    padding: "40px",
-                                }}
+                <div className="card animated fadeInDown" style={{left:"5rem"}}>
+                    <table className="" style={{with:"100%",paddingRight:"3rem",}}>
+                        <thead className="thead-dark" style={{with:"100%"}}>
+                            <tr 
                             >
-                                <th>ID</th>
-                                <th>Image</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Create Date</th>
+                                <th style={{paddingRight:"7rem"}}>ID</th>
+                                <th  style={{paddingRight:"7rem"}}>Image</th>
+                                <th style={{paddingRight:"7rem"}}>Name</th>
+                                <th  style={{paddingRight:"7rem"}}>Email</th>
+                                <th  style={{paddingRight:"7rem"}}>Create Date</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>

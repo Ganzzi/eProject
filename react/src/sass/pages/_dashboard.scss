@@ -1,10 +1,18 @@
 #dashboardLayout {
+  background-image: url(" https://media.bkns.vn/uploads/2020/03/loi-ich-cua-social-media.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
   display: flex;
+box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); 
+overflow:auto;
+  
+background-color:whitesmoke;
 
   aside {
     width: 240px;
     background-color:cadetblue;
     padding: 1rem;
+    
 
     a {
       display: block;
@@ -16,35 +24,39 @@
      font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
      font-size: 24px;
      font-style: italic;
+     
      text-align: center;
       &hover {
         background-color: rgba(0, 0, 0, 0.2);
       }
     }
   }
-  
-@media (max-width:768px){
-  .main{
-    font-size: 16px;
-  }
-}
-@media (min-width:768px)and (max-width:1024px){
-  .main{
-    font-size: 18px;
-  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Covered+By+Your+Grace&family=Great+Vibes&display=swap');
+
+  #father{
+    
+    overflow:auto;
+    display: flex;
+  justify-content: space-between;
+  width: 100%;
+    
 }
   header {
     height: 80px;
-    width: 100%;
-    padding: 2rem 3rem;
-    background-color: white;
-    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+     padding: 2rem 3rem;
+    // background-color: white;
+    font-family: 'Covered By Your Grace', cursive;
+font-family: 'Great Vibes', cursive;
     display: flex;
-
+    
+    color:ghostwhite
+   
+ 
     aside {
         background-color: #5b08a7;
         padding: 1rem;
-
+display: flex;
         a {
             display: block;
             padding: 1rem 1rem;
@@ -57,41 +69,41 @@
             font-size: 24px;
             font-style: italic;
             text-align: center;
+            display: flex;
             &hover {
                 background-color: rgba(0, 0, 0, 0.2);
             }
         }
     }
+.container{
+  width:160rem;
+  overflow:auto;
+  display: flex;
+justify-content: space-between;
+right:200px;
+  width:auto;
+  height: auto;
+}
 
-    header {
-        height: 80px;
-        padding: 2rem 3rem;
-        background-color: white;
-        box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
 
         
-        @media only screen and (max-width:1024px){
-          main{
-            display: none;
-           flex-direction: column-reverse;
-          }
-        }
-        @media only screen and (min-width:616px)and (max-width:1024px){
-          main{
-          display: none;
-          }
-        }
+     
    
 
     .content {
         flex: 1;
         font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+        display: flex;
     }
 }
+// #main{
+//   display: flex;
+//   justify-content: space-between;
+//   right:200px;
+//     width:auto;
+//     height: auto;
+  
+// }
 
 // aside {
 //   width: 240px;
