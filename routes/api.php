@@ -16,9 +16,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Admin\ChatRoomController as AdminChatRoomController;
 use App\Http\Controllers\Admin\UserController  as AdminUserController;
 use App\Http\Controllers\Admin\PostController  as AdminPostController;
-
-
-
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -47,6 +45,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/likeposts', LikePostController::class);
     Route::apiResource('/likecomments', LikeCommentController::class);
     Route::apiResource('/notifications', NotificationController::class);
+    Route::post('/update-notification-state', [NotificationController::class, 'updateNotificationState']);
     Route::apiResource('/posts', PostController::class);
     Route::get('/posts-profile/{userid}', [PostController::class, 'getPostProfile']);
     Route::get('/user-profile/{user}', [UserController::class, 'show']);
@@ -56,7 +55,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/admin/users', AdminUserController::class);
     Route::apiResource('/admin/chatrooms', AdminChatRoomController::class);
     Route::apiResource('/admin/posts', AdminPostController::class);
-    
 });
 
 Route::post("/signup", [Auth::class, 'signup']);

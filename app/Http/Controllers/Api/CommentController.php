@@ -31,7 +31,6 @@ class CommentController extends Controller
         $comment->commentor_id = $user->id;
 
         $replyToComment = Comment::find($validatedData['reply_to']);
-
         $comment->reply_to = $replyToComment ? $replyToComment->id : null;
 
         // Save the comment to the database
