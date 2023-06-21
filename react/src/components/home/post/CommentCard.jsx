@@ -47,7 +47,19 @@ const CommentCard = ({ cmt, getPostData, onReply }) => {
     };
 
     const handleUpdateComment = async (id) => {
+        console.log(repliedId);
+        id.preventDefault();
+        // Perform comment submission logic
+        setComment("");
+        const formData = new FormData();
+        formData.append("post_id", post.id);
+        formData.append("text", comment);
+        // formData.append("commentor_id", post_creator.id);
+        formData.append("reply_to", repliedId);
 
+        await axiosClient.post("/comments", formData).then(async ({ data }) => {
+            await getPostData();
+        });
     }
 
     return (

@@ -108,7 +108,7 @@ export default function Homescreen() {
                 <div className="col-1 d-flex justify-content-end align-items-center">
                     <Link to={"/profile/" + user.id}>
                         <img
-                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNPPYQRCLyeyObsjMwbp1LB3wumXPRTgM6Fw&usqp=CAU"
+                             src={"http://127.0.0.1:8000/api/images/" + user.image}
                             alt=""
                             style={{
                                 width: 60,
