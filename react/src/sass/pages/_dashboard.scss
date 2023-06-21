@@ -22,7 +22,16 @@
       }
     }
   }
- 
+@media (max-width:768px){
+  .myText{
+    font-size: 16px;
+  }
+}
+@media (min-width:768px)and (max-width:1024px){
+  .myText{
+    font-size: 18px;
+  }
+}
   header {
     height: 80px;
     padding: 2rem 3rem;

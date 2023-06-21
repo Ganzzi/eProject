@@ -35,9 +35,6 @@ export default function dashboard () {
     return (
       
         <div id="dashboardLayout">
-          
-           
-       
             <aside>
                <div style={{fontFamily:"fantasy",fontSize:"30px",paddingLeft:"0px"
 }}>
@@ -47,8 +44,7 @@ export default function dashboard () {
                 <Link to={"/admin/posts"}>Posts</Link>
             </aside>
             <div className="container">
-            <div class="row">
-            <div className="col-10">
+          
                 <header>
                     <div> </div>
                     <div>
@@ -67,8 +63,6 @@ export default function dashboard () {
                 )}
             </div>
         </div>
-        </div>
-        </div>
-      
+        
     );
 }
