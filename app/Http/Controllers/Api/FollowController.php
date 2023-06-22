@@ -54,19 +54,18 @@ class FollowController extends Controller
 
         $user = $request->user();
 
-        if ($request->input('follower_id') != $user->id) {
-            return response(404);
+        if ($validatedData['follower_id'] != $user->id) {
+            return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        // Kiểm tra xem người dùng đã follow chưa
-        $existingFollow = Follow::where('follower_id', $request->input('follower_id'))
-            ->where('following_id', $request->input('following_id'))
+        $follow = Follow::where('follower_id', $validatedData['follower_id'])
+            ->where('following_id', $validatedData['following_id'])
             ->first();
 
-        if ($existingFollow) {
+        if ($follow) {
             // If already followed, unfollow
-            $existingFollow->delete();
-            return response()->json(['message' => 'unfolllowed.']);
+            $follow->delete();
+            return response()->json(['message' => 'Unfollowed.']);
         } else {
             $follow = new Follow;
             $follow->follower_id = $validatedData['follower_id'];
@@ -75,8 +74,39 @@ class FollowController extends Controller
 
             $follow->save();
 
-            return response()->json(['message' => 'followed']);
+            return response()->json(['message' => 'Followed.']);
         }
+
+        // $validatedData = $request->validate([
+        //     'follower_id' => 'required|numeric',
+        //     'following_id' => 'required|numeric',
+        // ]);
+
+        // $user = $request->user();
+
+        // if ($request->input('follower_id') != $user->id) {
+        //     return response(404);
+        // }
+
+        // // Kiểm tra xem người dùng đã follow chưa
+        // $existingFollow = Follow::where('follower_id', $request->input('follower_id'))
+        //     ->where('following_id', $request->input('following_id'))
+        //     ->first();
+
+        // if ($existingFollow) {
+        //     // If already followed, unfollow
+        //     $existingFollow->delete();
+        //     return response()->json(['message' => 'unfolllowed.']);
+        // } else {
+        //     $follow = new Follow;
+        //     $follow->follower_id = $validatedData['follower_id'];
+        //     $follow->following_id = $validatedData['following_id'];
+        //     $follow->follow_at = now();
+
+        //     $follow->save();
+
+        //     return response()->json(['message' => 'followed']);
+        // }
     }
 
     // /**
