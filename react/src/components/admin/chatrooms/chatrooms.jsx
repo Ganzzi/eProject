@@ -48,23 +48,22 @@ export default function ChatRooms(){
             >
                 <h1 style={{fontFamily:"fantasy",
            justifycontent: "space-between",
-            }}>chatrooms</h1>
+            }}></h1>
                 {/* <Link className="btn-add" to="/admin/chatrooms/new">
                     Add new
                 </Link> */}
             </div>
-            <div className="card animated fadeInDown">
+            <div className="card animated fadeInDown" style={{left:"3rem"}}>
                 <table>
                     <thead>
-                        <tr  style={{
-                            fontFamily:"cursive",textAlign:"center",padding:"40px",
-                        }}>
+                        <tr 
+                        >
                            
-                            <th>Id</th>
-                            <th>Chats</th>
-                            <th>Users</th>
-                            <th>Created at</th>
-                            <th>Updated at</th>
+                            <th  style={{paddingRight:"7rem"}}>Id</th>
+                            <th  style={{paddingRight:"7rem"}}>Chats</th>
+                            <th  style={{paddingRight:"7rem"}}>Users</th>
+                            <th  style={{paddingRight:"7rem"}}>Created at</th>
+                            <th  style={{paddingRight:"7rem"}}>Updated at</th>
                             <th>Action</th>
                         </tr>
                     </thead>
