@@ -78,7 +78,10 @@ export default function UserForm() {
     };
 
     return (
-        <>
+   
+       <>
+       
+        
             {user.id && <h1>Update User: {user.name}</h1>}
             {!user.id && <h1>New User</h1>}
             <div className="card animated fadeInDown">
@@ -145,6 +148,8 @@ export default function UserForm() {
                             }
                             placeholder="Password Confirmation"
                         />
+                        
+                        <button className="btn btn-outline-success"style={{width:"100px"}}>Save</button>
                         <button
                             className="btn btn-outline-success"
                             style={{ width: "100px" }}
@@ -154,6 +159,9 @@ export default function UserForm() {
                     </form>
                 )}
             </div>
-        </>
+            </>
+          
+          
+     
     );
 }

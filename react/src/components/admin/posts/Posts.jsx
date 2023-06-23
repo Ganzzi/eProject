@@ -48,23 +48,23 @@ export default function Posts() {
             >
                 <h1 style={{fontFamily:"fantasy",
            justifycontent: "space-between",
-            }}>Posts</h1>
+            }}></h1>
                 {/* <Link className="btn-add" to="/admin/posts/new">
                     Add new
                 </Link> */}
             </div>
-            <div className="card animated fadeInDown">
+            <div className="card animated fadeInDown" style={{left:"2rem"}}>
                 <table>
                     <thead>
                         <tr  style={{
                             fontFamily:"cursive",textAlign:"center",padding:"40px",
                         }}>
-                            <th>ID</th>
-                            <th>Creator</th>
-                            <th>Description</th>
-                            <th>Comment</th>
-                            <th>image</th>
-                            <th>Update at</th>
+                            <th style={{paddingRight:"5rem"}}>ID</th>
+                            <th  style={{paddingRight:"5rem"}}>Creator</th>
+                            <th  style={{paddingRight:"5rem"}}>Description</th>
+                            <th  style={{paddingRight:"5rem"}}>Comment</th>
+                            <th  style={{paddingRight:"5rem"}}>image</th>
+                            <th  style={{paddingRight:"5rem"}}>Update at</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -89,15 +89,12 @@ export default function Posts() {
                                     <td>{p.comments.length}</td>
 
                                     <td>
-                                        <img
-                                            src={
-                                                "http://127.0.0.1:8000/api/images/" +
-                                                p.image
-                                            }
-                                            width={50}
-                                            height={50}
-                                            alt=""
-                                        />
+                                    <img
+                                                src={"http://127.0.0.1:8000/api/images/" +
+                                                    p.image}
+                                                width={50}
+                                                height={50}
+                                                alt="" />
                                     </td>
                                     <td>{p.updated_at}</td>
                                     <td>
