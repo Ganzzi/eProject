@@ -38,7 +38,57 @@ const UpdateProfileModal = ({ closeModal, profileContent, onUpdate }) => {
             </div>
             <div className="modal-body">
                 <form onSubmit={handleSubmit}>
-                    <div className="mb-3">
+                    <div
+                        className="mb-1 d-flex align-items-center"
+                        style={{
+                            flexDirection: "column",
+                        }}
+                    >
+                        <div>
+                            {!profile.image && (
+                                <img
+                                    src={
+                                        "http://127.0.0.1:8000/api/images/" +
+                                        profileContent.image
+                                    }
+                                    className="my-2"
+                                    alt=""
+                                    style={{
+                                        width: 200,
+                                        height: 200,
+                                        borderRadius: 200,
+                                    }}
+                                />
+                            )}
+                        </div>
+                        <div
+                            style={{
+                                borderRadius: 5,
+                                backgroundColor: "green",
+                                width: "fit-content",
+                                textAlign: "center",
+                                padding: 5,
+                            }}
+                        >
+                            <label htmlFor="image" className="form-label">
+                                Choose An Image
+                            </label>
+                            <input
+                                type="file"
+                                className="form-control"
+                                id="image"
+                                accept="image/*"
+                                onChange={(e) =>
+                                    setProfile({
+                                        ...profile,
+                                        image: e.target.files[0],
+                                    })
+                                }
+                                hidden
+                            />
+                        </div>
+                    </div>
+                    <div className="mb-1">
                         <label htmlFor="name" className="form-label">
                             Name:
                         </label>
@@ -53,7 +103,7 @@ const UpdateProfileModal = ({ closeModal, profileContent, onUpdate }) => {
                             required
                         />
                     </div>
-                    <div className="mb-3">
+                    <div className="mb-1">
                         <label htmlFor="email" className="form-label">
                             Email:
                         </label>
@@ -70,34 +120,7 @@ const UpdateProfileModal = ({ closeModal, profileContent, onUpdate }) => {
                             }
                         />
                     </div>
-                    <div className="mb-3">
-                        <label htmlFor="image" className="form-label">
-                            Image:
-                        </label>
-                        <input
-                            type="file"
-                            className="form-control"
-                            id="image"
-                            accept="image/*"
-                            onChange={(e) =>
-                                setProfile({
-                                    ...profile,
-                                    image: e.target.files[0],
-                                })
-                            }
-                        />
-                        {!profile.image && (
-                            <img
-                                src={
-                                    "http://127.0.0.1:8000/api/images/" +
-                                    profileContent.image
-                                }
-                                className="img-fluid my-2"
-                                alt=""
-                            />
-                        )}
-                    </div>
-                    <div className="mb-3">
+                    <div className="mb-1">
                         <label htmlFor="bio" className="form-label">
                             Bio:
                         </label>
@@ -111,7 +134,7 @@ const UpdateProfileModal = ({ closeModal, profileContent, onUpdate }) => {
                             required
                         ></textarea>
                     </div>
-                    <div className="mb-3">
+                    <div className="mb-1">
                         <label htmlFor="gender" className="form-label">
                             Gender:
                         </label>
@@ -131,9 +154,17 @@ const UpdateProfileModal = ({ closeModal, profileContent, onUpdate }) => {
                             <option value="female">Female</option>
                         </select>
                     </div>
-                    <button type="submit" className="btn btn-primary">
-                        Update Profile
-                    </button>
+                    <div
+                        className="d-flex"
+                        style={{
+                            justifyContent: "center",
+                            margin: 10,
+                        }}
+                    >
+                        <button type="submit" className="btn btn-primary">
+                            Update Profile
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>

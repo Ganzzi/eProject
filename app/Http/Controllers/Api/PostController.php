@@ -17,7 +17,6 @@ class PostController extends Controller
      */
     public function index()
     {
-
         $posts = Post::with('likes', 'comments.likes')->get();
 
         return response()->json($posts->map(function ($_post) {
@@ -63,7 +62,43 @@ class PostController extends Controller
 
         $posts = Post::with('likes', 'comments.likes')->where('creator_id', $userid)->get();
 
-        return response()->json(['posts' => $posts]);
+        return response()->json($posts->map(function ($_post) {
+
+            $user = User::find($_post->creator_id);
+
+            $creator_name = $user->name;
+            $creator_image = $user->image;
+
+            return [
+                "id" => $_post->id,
+                "creator_id" => $_post->creator_id,
+                "description" => $_post->description,
+                "image" => $_post->image,
+                "created_at" => $_post->created_at,
+                "updated_at" => $_post->updated_at,
+                'creator_name' => $creator_name,
+                'creator_image' => $creator_image,
+                "likes" => $_post->likes,
+                "comments" => $_post->comments->map(function ($cmt) {
+                    $_commentor = User::find($cmt->commentor_id);
+
+                    return [
+                        'commentor_id' =>  $cmt->commentor_id,
+                        'created_at' => $cmt->created_at,
+                        'id' => $cmt->id,
+                        'id' => $cmt->id,
+                        'post_id' => $cmt->post_id,
+                        'reply_to' => $cmt->reply_to,
+                        'text' => $cmt->text,
+                        'likes' => $cmt->likes,
+                        'user_image' => $_commentor->image,
+                        'user_name' => $_commentor->name,
+                    ];
+                }),
+            ];
+        }));
+
+        // return response()->json(['posts' => $posts]);
     }
 
     /**
@@ -91,36 +126,6 @@ class PostController extends Controller
 
         return response()->json(['post' => $post], 202);
     }
-
-    /**
-     * Display the specified resource.
-     *  @param \App\Models\Post $post
-     * @return \Illuminate\Http\Response
-     */
-    // public function show($post)
-    // {
-    //     $_post = Post::with('likes', 'comments.likes')->find($post);
-    //     $user = User::find($_post->creator_id);
-
-    //     $creator_name = $user->name;
-    //     $creator_image = $user->image;
-
-    //     return response()->json(
-    //         [
-    //             "id" => $_post->id,
-    //             "creator_id" => $_post->creator_id,
-    //             "description" => $_post->description,
-    //             "image" => $_post->image,
-    //             "created_at" => $_post->created_at,
-    //             "updated_at" => $_post->updated_at,
-    //             'creator_name' => $creator_name,
-    //             'creator_image' => $creator_image,
-    //             "likes" => $_post->likes,
-    //             "comments" => $_post->comments,
-    //         ]
-    //     );
-    // }
-
 
     /**
      * Update the specified resource in storage.

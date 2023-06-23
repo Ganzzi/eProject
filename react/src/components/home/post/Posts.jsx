@@ -8,7 +8,6 @@ import PostCard from "./PostCard";
 import { useNavigate } from "react-router-dom";
 import { formatDateTime } from "../../../utils";
 
-
 // import { BorderAll } from "@material-ui/icons";
 
 const Posts = () => {
@@ -63,7 +62,7 @@ const Posts = () => {
     return (
         <div style={{}} className="row">
             <div
-                className="col-2 justify-content-center d-flex card"
+                className="col-md-3 justify-content-center d-none d-md-flex card"
                 style={{
                     display: "flex",
                     border: "solid thin black",
@@ -81,7 +80,9 @@ const Posts = () => {
                         }}
                     >
                         <img
-                            src={"http://127.0.0.1:8000/api/images/" + user.image}
+                            src={
+                                "http://127.0.0.1:8000/api/images/" + user.image
+                            }
                             alt=""
                             style={{
                                 width: 80,
@@ -94,10 +95,64 @@ const Posts = () => {
                     <p>Bio: {user.bio}</p>
                     <p>Gender: {user.gender}</p>
                     <p>Join Date: {formatDateTime(user.created_at)}</p>
+                    <div className=" d-xl-none">
+                        <div className="">
+                            <h2>{follows?.followers?.length} Follower</h2>
+                            {follows.followers &&
+                                follows.followers.map((fl) => (
+                                    <div
+                                        className="d-flex"
+                                        onClick={() => {
+                                            navigate(`/profile/${fl.id}`);
+                                        }}
+                                    >
+                                        <img
+                                            src={
+                                                "http://127.0.0.1:8000/api/images/" +
+                                                fl.image
+                                            }
+                                            alt="Creator Image"
+                                            className="rounded-circle"
+                                            style={{
+                                                width: "30px",
+                                                height: "30px",
+                                            }}
+                                        />
+                                        <p>{fl.name}</p>
+                                    </div>
+                                ))}
+                        </div>
+                        <div className="">
+                            <h2>{follows?.followings?.length} Following</h2>
+                            {follows.followings &&
+                                follows.followings.map((fl) => (
+                                    <div
+                                        className="d-flex"
+                                        onClick={() => {
+                                            navigate(`/profile/${fl.id}`);
+                                        }}
+                                    >
+                                        <img
+                                            src={
+                                                "http://127.0.0.1:8000/api/images/" +
+                                                fl.image
+                                            }
+                                            alt="Creator Image"
+                                            className="rounded-circle"
+                                            style={{
+                                                width: "30px",
+                                                height: "30px",
+                                            }}
+                                        />
+                                        <p>{fl.name}</p>
+                                    </div>
+                                ))}
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div className="col-7">
+            <div className="col-12 col-md-8 col-xl-7">
                 <div
                     style={{
                         display: "flex",
@@ -115,7 +170,9 @@ const Posts = () => {
                         }}
                     >
                         <img
-                            src={"http://127.0.0.1:8000/api/images/" + user.image}
+                            src={
+                                "http://127.0.0.1:8000/api/images/" + user.image
+                            }
                             alt=""
                             style={{
                                 width: 40,
@@ -131,7 +188,7 @@ const Posts = () => {
                             flexDirection: "col",
                             alignItems: "flex-start",
                             marginBottom: "30px",
-                            padding:"10px",
+                            padding: "10px",
                         }}
                         onSubmit={handleCreatePost}
                     >
@@ -163,10 +220,12 @@ const Posts = () => {
                                 }
                             />
                             <label for="file">
-                                <HiOutlinePhotograph width={100} 
-                                height={1000}
-                                size={40}
-                                color="black"/>
+                                <HiOutlinePhotograph
+                                    width={100}
+                                    height={1000}
+                                    size={40}
+                                    color="black"
+                                />
                             </label>
                         </div>
                         <div>
@@ -176,7 +235,6 @@ const Posts = () => {
                                     backgroundColor: "purple",
                                     color: "white",
                                     border: "3px",
-                                    
                                 }}
                                 type="submit"
                             >
@@ -199,7 +257,7 @@ const Posts = () => {
                 </div>
             </div>
 
-            <div className="col-3 justify-content-center align-items-start d-flex row">
+            <div className="col-xl-2 justify-content-center align-items-start d-none d-xl-flex row">
                 <div className="col-12 row">
                     <div className="col-12">
                         <h2>{follows?.followers?.length} Follower</h2>
