@@ -8,6 +8,8 @@ use App\Models\LikePost;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\ActivityLogController;
 
 class PostController extends Controller
 {
@@ -124,7 +126,24 @@ class PostController extends Controller
 
         $post->save();
 
-        return response()->json(['post' => $post], 202);
+
+        $receiverId = $post->creator_id;
+        $type = 'Post';
+        $text = 'A new post has been created.';
+
+        // Create a notification
+        $notificationController = new NotificationController();
+        $notificationController->store($receiverId, $type, $text);
+
+        // Create a activity log
+        $userId = $post->creator_id;
+        $type = 'Post';
+        $describe = 'A new post has been created by you.';
+
+        $activityLogController = new ActivityLogController();
+        $activityLogController->store($userId, $type, $describe);
+
+        return response()->json(['post' => $post, 'message' => 'You have created a new post']);
     }
 
     /**

@@ -23,6 +23,8 @@ const Profile = () => {
         followers: [],
         followings: [],
     });
+
+    const [isFollowing, setIsFollowing] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [isActivityModalOpen, setIsActivityModalOpen] = useState(false);
     const [posts, setposts] = useState([]);
@@ -62,7 +64,7 @@ const Profile = () => {
                     });
             }
 
-            await axiosClient.get("/follows").then(({ data }) => {
+            await axiosClient.get(`/follows/${id}`).then(({ data }) => {
                 _profileContent = {
                     ..._profileContent,
                     followers: data?.followers,
@@ -70,10 +72,18 @@ const Profile = () => {
                 };
 
                 setProfileContent(_profileContent);
+
+                for (let i = 0; i < data.followers.length; i++) {
+                    if (data.followers[i].id == user.id) {
+                        setIsFollowing(true);
+                        break;
+                    }
+                }
             });
 
             await getPostData();
         };
+
         getProfileData();
     }, [id, user]);
 
@@ -97,6 +107,32 @@ const Profile = () => {
         } catch (error) {
             console.error(error);
         }
+    };
+
+    const handleFollowOrUnfollow = async () => {
+        await axiosClient
+            .post("/follows", {
+                follower_id: user.id,
+                following_id: id,
+            })
+            .then(async () => {
+                await axiosClient.get(`/follows/${id}`).then(({ data }) => {
+                    setProfileContent({
+                        ...profileContent,
+                        followers: data?.followers,
+                        followings: data?.followings,
+                    });
+
+                    let _isFollowing = false;
+                    for (let i = 0; i < data.followers.length; i++) {
+                        if (data.followers[i].id == user.id) {
+                            _isFollowing = true;
+                            break;
+                        }
+                    }
+                    setIsFollowing(_isFollowing);
+                });
+            });
     };
 
     // console.log(profileContent);
@@ -150,10 +186,27 @@ const Profile = () => {
                         variant="dark"
                         className="mx-1 btn btn-outline-secondary"
                         onClick={() => {
-                            navigate(`/messages/`, { state: { id: id } });
+                            navigate(`/messages/`, {
+                                state: {
+                                    id: id,
+                                    name: profileContent.name,
+                                    image: profileContent.image,
+                                },
+                            });
                         }}
                     >
                         Message
+                    </button>
+                    <button
+                        variant={`${isFollowing ? "danger" : "primary"}`}
+                        className={`mx-1 btn ${
+                            isFollowing
+                                ? "btn-outline-danger"
+                                : "btn-outline-primary"
+                        }`}
+                        onClick={handleFollowOrUnfollow}
+                    >
+                        {isFollowing ? "Unfollow" : "Follow"}
                     </button>
                 </div>
             )}

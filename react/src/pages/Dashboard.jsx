@@ -2,10 +2,30 @@ import React, { useEffect, useState } from "react";
 import { Link, Navigate, Outlet } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client";
+import { AiOutlineUser, AiOutlineLogout } from "react-icons/ai";
+import { BsFillChatDotsFill, BsFillFilePostFill } from "react-icons/Bs";
+import { formatDateTime } from "../utils";
 
-export default function Dashboard() {
-    const { user, token, setUser, setToken, notification } = useStateContext();
+export default function dashboard() {
+    const { user, token, setUser, setToken, alerts, setAlerts } =
+        useStateContext();
     const [userDataFetched, setUserDataFetched] = useState(false);
+    const [showAlert, setShowAlert] = useState(true);
+
+    useEffect(() => {
+        setShowAlert(true);
+        const timer = setTimeout(() => {
+            setShowAlert(false);
+        }, 5000);
+
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [alerts]);
+
+    const handleAlertClose = () => {
+        setShowAlert(false);
+    };
 
     useEffect(() => {
         if (token) {
@@ -32,29 +52,136 @@ export default function Dashboard() {
     };
 
     return (
-        <div id="dashboardLayout" className="row">
-            <aside className="col-2">
-                <Link to={"/admin/users"}>user</Link>{" "}
-                <Link to={"/admin/chatrooms"}>Chat</Link>
-                <Link to={"/admin/posts"}>Posts</Link>
-            </aside>
-            <div className="content col-10">
-                <header>
-                    <div>header</div>
-                    <div>
-                        {user.name}
-                        <a
-                            href="#"
-                            className="btn-logout btn btn-primary"
-                            onClick={onLogout}
-                        >
-                            Logout
-                        </a>
+        <div id="dashboardLayout">
+            <aside>
+                <div
+                    style={{
+                        fontFamily: "fantasy",
+                        fontSize: "30px",
+                        paddingLeft: "0px",
+                    }}
+                >
+                    <img
+                        src={"http://127.0.0.1:8000/api/images/" + user.image}
+                        alt=""
+                        style={{ width: "80px", height: "80px" }}
+                    />{" "}
+                    ADMIN
+                </div>
+                <div></div>
+                <br />
+                <div class="w3-row">
+                    <div
+                        className="w3-col"
+                        style={{
+                            width: "100%",
+                            border: "solid thin black",
+                            borderRadius: "3rem",
+                        }}
+                    >
+                        <Link to={"/admin/users"}>
+                            <AiOutlineUser size={30} color="black" /> user
+                        </Link>
                     </div>
-                </header>
-                <main>{user.role_id == 1 && <Outlet />}</main>
-                {notification && (
-                    <div className="notification">{notification}</div>
+                    <br />
+                    <div
+                        className="w3-col"
+                        style={{
+                            width: "100%",
+                            border: "solid thin black",
+                            borderRadius: "3rem",
+                        }}
+                    >
+                        <Link to={"/admin/chatrooms"}>
+                            <BsFillChatDotsFill size={30} color="black" />
+                            Chat
+                        </Link>
+                    </div>
+                    <br />
+                    <div
+                        className="w3-col"
+                        style={{
+                            width: "100%",
+                            border: "solid thin black",
+                            borderRadius: "3rem",
+                        }}
+                    >
+                        <Link to={"/admin/posts"}>
+                            <BsFillFilePostFill size={30} color="black" />
+                            Posts
+                        </Link>
+                    </div>
+                </div>
+            </aside>
+            <div className="container" style={{}}>
+                <div id="head">
+                    <header className="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+                        <a className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                            <svg className="bi me-2" width="80" height="32">
+                                <use xlink:href="#bootstrap" />
+                            </svg>
+                            <span
+                                className="fs-2"
+                                style={{
+                                    fontFamily: "fantasy",
+
+                                    fontWeight: "bold",
+
+                                    paddingBottom: "10rem",
+                                }}
+                            >
+                                spaceshare
+                            </span>
+                        </a>
+                        <ul class="nav nav-pills">
+                            <li class="nav-item">
+                                <a
+                                    href="#"
+                                    class="nav-link active"
+                                    aria-current="page"
+                                    style={{
+                                        border: "solid thin black",
+                                        borderRadius: "30px",
+                                        padding: 10,
+                                    }}
+                                    onClick={onLogout}
+                                >
+                                    <AiOutlineLogout size={40} />
+                                </a>
+                            </li>
+                        </ul>
+                    </header>
+                </div>
+
+                <main id="father">{user.role_id == 1 && <Outlet />}</main>
+
+                {/* Alert */}
+                {showAlert && alerts.type && (
+                    <div
+                        className="alert-admin"
+                        style={{
+                            backgroundColor: `${
+                                alerts.type == "info"
+                                    ? "#00ccff"
+                                    : alerts.type == "warming"
+                                    ? "#FFCC99"
+                                    : alerts.type == "error" && "#CC0000"
+                            }`,
+                        }}
+                    >
+                        <div className="alert-content">
+                            <p>{alerts.message}</p>
+                            <p className="alert-time">
+                                {formatDateTime(alerts.time)}
+                            </p>
+                        </div>
+                        <button
+                            className="alert-close-btn"
+                            onClick={handleAlertClose}
+                        >
+                            Close
+                        </button>
+                    </div>
                 )}
             </div>
         </div>

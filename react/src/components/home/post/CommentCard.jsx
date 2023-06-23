@@ -9,7 +9,6 @@ import { MdOutlineCancel, MdOutlineSettingsSuggest } from "react-icons/md";
 import RepliedCommentCard from "./RepliedCommentCard";
 
 const CommentCard = ({ cmt, getPostData, onReply }) => {
-    console.log(cmt);
     const { user } = useStateContext();
     const [reply_to, setreply_to] = useState([]);
     const [isLiked, setIsLiked] = useState(false);

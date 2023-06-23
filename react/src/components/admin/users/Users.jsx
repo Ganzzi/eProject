@@ -12,19 +12,19 @@ export default function Users() {
         getUsers();
     }, []);
 
-    const onDeleteClick = (user) => {
+    const onDeleteClick = async (user) => {
         if (!window.confirm("Are you sure you want to delete this user?")) {
             return;
         }
-        axiosClient.delete(`/admin/users/${user.id}`).then(() => {
-            setNotification("User was successfully deleted");
-            getUsers();
+        await axiosClient.delete(`/admin/users/${user.id}`).then(async () => {
+            // setNotification("User was successfully deleted");
+            await getUsers();
         });
     };
 
-    const getUsers = () => {
+    const getUsers = async () => {
         setLoading(true);
-        axiosClient
+        await axiosClient
             .get("/admin/users")
             .then(({ data }) => {
                 setLoading(false);
@@ -50,31 +50,25 @@ export default function Users() {
                         fontFamily: "fantasy",
                         justifycontent: "space-between",
                     }}
-                >
-                    Users
-                </h1>
+                ></h1>
                 <Link className="btn-add" to="/admin/users/new">
                     Add new
                 </Link>
             </div>
-            <div className="card animated fadeInDown">
-                <table>
-                    <thead>
-                        <tr
-                            style={{
-                                fontFamily: "cursive",
-                                textAlign: "center",
-                                padding: "40px",
-                            }}
-                        >
-                            <th>ID</th>
-                            <th>Image</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Gender</th>
-                            <th>Bio</th>
-
-                            <th>Create Date</th>
+            <div className="card animated fadeInDown" style={{ left: "5rem" }}>
+                <table
+                    className=""
+                    style={{ with: "100%", paddingRight: "3rem" }}
+                >
+                    <thead className="thead-dark" style={{ with: "100%" }}>
+                        <tr>
+                            <th style={{ paddingRight: "7rem" }}>ID</th>
+                            <th style={{ paddingRight: "7rem" }}>Image</th>
+                            <th style={{ paddingRight: "7rem" }}>Name</th>
+                            <th style={{ paddingRight: "7rem" }}>Email</th>
+                            <th style={{ paddingRight: "7rem" }}>
+                                Create Date
+                            </th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -105,8 +99,7 @@ export default function Users() {
                                     </td>
                                     <td>{u.name}</td>
                                     <td>{u.email}</td>
-                                    <td>{u.gender}</td>
-                                    <td>{u.bio}</td>
+
                                     <td>{u.created_at}</td>
                                     <td>
                                         <Link

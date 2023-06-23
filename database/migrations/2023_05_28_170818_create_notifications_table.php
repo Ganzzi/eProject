@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('receiver_id');
-            $table->foreign('receiver_id')->references('id')->on('users');
+            $table->foreign('receiver_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('type');
             $table->string('text');
-            $table->string('state');
+            $table->enum('state', ['read', 'unread'])->default('unread');
             $table->timestamps();
         });
     }

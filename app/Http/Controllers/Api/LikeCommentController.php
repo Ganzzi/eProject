@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\LikeComment;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\ActivityLogController;
+use App\Http\Controllers\Api\NotificationController;
 use Illuminate\Http\Request;
 
 class LikeCommentController extends Controller
@@ -35,7 +37,17 @@ class LikeCommentController extends Controller
             $like->liker_id = $user->id;
             $like->save();
 
-            return response()->json(['message' => 'Liked the comment.']);
+            // Create a notification
+            $notificationController = new NotificationController();
+            $receiverId = $like->comment->commentor_id;
+            $notificationController->store($receiverId, 'Like comment', 'Your comment has been liked.');
+
+            // Create a activity log
+            $activityLogController = new ActivityLogController();
+            $userId = $user->id;
+            $activityLogController->store($userId, 'Like comment', "You have liked someone else's comment.");
+
+            return response()->json(['like_comment' => $like, 'message' => 'Your comment has been liked.']);
         }
     }
 }

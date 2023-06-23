@@ -66,6 +66,7 @@ const PostCard = ({ post, post_creator, getPostData }) => {
         e.preventDefault();
         // Perform comment submission logic
         setComment("");
+        setRepliedId(null);
         const formData = new FormData();
         formData.append("post_id", post.id);
         formData.append("text", comment);

@@ -17,7 +17,7 @@ class NotificationsSeeder extends Seeder
             'receiver_id' => 1,
             'type' => 'Message',
             'text' => 'You have a new message',
-            'state' => 'new',
+            'state' => 'unread',
             // Add more columns and values as needed...
         ]);
 
@@ -25,7 +25,7 @@ class NotificationsSeeder extends Seeder
             'receiver_id' => 2,
             'type' => 'Follow',
             'text' => 'You have a new follower',
-            'state' => 'new',
+            'state' => 'unread',
             // Add more columns and values as needed...
         ]);
     }

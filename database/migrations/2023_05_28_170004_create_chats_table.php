@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('chats', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('chat_room_id');
-            $table->foreign('chat_room_id')->references('id')->on('chat_rooms');
+            $table->foreign('chat_room_id')->references('id')->on('chat_rooms')->onDelete('cascade');
             $table->string('text');
 
             $table->unsignedBigInteger('reply_to')->nullable();
             $table->foreign('reply_to')->references('id')->on('chats')->onDelete('cascade');
-            
+
             $table->unsignedBigInteger('sender_id');
-            $table->foreign('sender_id')->references('id')->on('users');
+            $table->foreign('sender_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

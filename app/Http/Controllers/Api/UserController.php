@@ -54,5 +54,14 @@ class UserController extends Controller
 
     public function searchByName(Request $request)
     {
+        $request->validate([
+            'name' => 'required|string',
+        ]);
+
+        $name = $request->input('name');
+
+        $users = User::where('name', 'like', "%$name%")->get();
+
+        return response()->json($users);
     }
 }

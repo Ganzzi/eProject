@@ -91,6 +91,18 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        // $user->role()->delete();
+        // $user->notifications()->delete();
+        // $user->activitylogs()->delete();
+        // $user->follows()->delete();
+        // $user->chatRooms()->detach();
+        // $user->likeChats()->delete();
+        // $user->chats()->delete();
+        // $user->likePosts()->delete();
+        // $user->likeComments()->delete();
+        // $user->comments()->delete();
+        // $user->posts()->delete();
+
         $user->delete();
 
         return response("", 204);

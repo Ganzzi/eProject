@@ -4,21 +4,27 @@ import { useStateContext } from "../../../contexts/ContextProvider";
 import axiosClient from "../../../axios-client";
 import { Link } from "react-router-dom";
 
-export default function ChatRooms(){
+export default function ChatRooms() {
     const [ChatRooms, setChatrooms] = useState([]);
     const [loading, setLoading] = useState(false);
-    const { setNotification } = useStateContext();
+    const { setAlerts } = useStateContext();
 
     useEffect(() => {
         getChatroom();
     }, []);
 
     const onDeleteClick = (ChatRooms_id) => {
-        if (!window.confirm("Are you sure you want to delete this chatrooms?")) {
+        if (
+            !window.confirm("Are you sure you want to delete this chatrooms?")
+        ) {
             return;
         }
         axiosClient.delete(`/admin/chatrooms/${ChatRooms_id}`).then(() => {
-            setNotification("chatrooms was successfully deleted");
+            setAlerts({
+                type: "info",
+                message: "chatrooms was successfully deleted",
+                time: new Date(),
+            });
             getChatroom();
         });
     };
@@ -46,25 +52,25 @@ export default function ChatRooms(){
                     alignItems: "center",
                 }}
             >
-                <h1 style={{fontFamily:"fantasy",
-           justifycontent: "space-between",
-            }}>chatrooms</h1>
+                <h1
+                    style={{
+                        fontFamily: "fantasy",
+                        justifycontent: "space-between",
+                    }}
+                ></h1>
                 {/* <Link className="btn-add" to="/admin/chatrooms/new">
                     Add new
                 </Link> */}
             </div>
-            <div className="card animated fadeInDown">
+            <div className="card animated fadeInDown" style={{ left: "3rem" }}>
                 <table>
                     <thead>
-                        <tr  style={{
-                            fontFamily:"cursive",textAlign:"center",padding:"40px",
-                        }}>
-                           
-                            <th>Id</th>
-                            <th>Chats</th>
-                            <th>Users</th>
-                            <th>Created at</th>
-                            <th>Updated at</th>
+                        <tr>
+                            <th style={{ paddingRight: "7rem" }}>Id</th>
+                            <th style={{ paddingRight: "7rem" }}>Chats</th>
+                            <th style={{ paddingRight: "7rem" }}>Users</th>
+                            <th style={{ paddingRight: "7rem" }}>Created at</th>
+                            <th style={{ paddingRight: "7rem" }}>Updated at</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -86,7 +92,7 @@ export default function ChatRooms(){
                                     <td>{m.users.length}</td>
                                     <td>{m.created_at}</td>
                                     <td>{m.updated_at}</td>
-                                    
+
                                     <td>
                                         {/* <Link
                                             className="btn-edit"
