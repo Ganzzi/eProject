@@ -13,9 +13,38 @@ class FollowController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    // public function index()
+    // {
+    //     $user_id = Auth::user()->id;
+
+    //     //    user id: 1 following_id: 1
+    //     $followers = Follow::where('following_id', $user_id)->get();
+
+    //     $followings = Follow::where('follower_id', $user_id)->get();
+
+    //     return response()->json([
+    //         'followers' => $followers->map(function ($fl) {
+    //             $user = User::find($fl->follower_id);
+    //             return [
+    //                 'image' => $user->image,
+    //                 'name' => $user->name,
+    //                 'id' => $user->id,
+    //             ];
+    //         }),
+    //         'followings' => $followings->map(function ($fl) {
+    //             $user = User::find($fl->following_id);
+    //             return [
+    //                 'image' => $user->image,
+    //                 'name' => $user->name,
+    //                 'id' => $user->id,
+    //             ];
+    //         }),
+    //     ]);
+    // }
+
+    public function show($follow)
     {
-        $user_id = Auth::user()->id;
+        $user_id = User::find($follow)->id;
 
         //    user id: 1 following_id: 1
         $followers = Follow::where('following_id', $user_id)->get();

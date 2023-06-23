@@ -97,15 +97,18 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
     return (
         <main className="chats">
             <div className="chat-header">
-                <img
-                    className="user-image"
-                    src={
-                        "http://127.0.0.1:8000/api/images/" + messagingTo.image
-                    }
-                    width={40}
-                    height={40}
-                    alt="Other User"
-                />
+                {messagingTo.image && (
+                    <img
+                        className="user-image"
+                        src={
+                            "http://127.0.0.1:8000/api/images/" +
+                            messagingTo.image
+                        }
+                        width={40}
+                        height={40}
+                        alt="Other User"
+                    />
+                )}
                 <h2 className="user-name">{messagingTo.name}</h2>
             </div>
             <div className="chat-content">
