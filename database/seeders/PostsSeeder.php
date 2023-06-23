@@ -16,13 +16,13 @@ class PostsSeeder extends Seeder
         Post::create([
             'creator_id' => 1,
             'description' => 'My first post',
-            'image' => 'HAdg89dezWCfLcwOyfNGiIDHO2zKBMzgsUTnS13R.png',
+            'image' => '8s3jbyA7dJxauXusZRcCENn8Akr4cjtw922NCPR7.png',
         ]);
 
         Post::create([
             'creator_id' => 2,
             'description' => 'Check out this amazing photo',
-            'image' => 'HAdg89dezWCfLcwOyfNGiIDHO2zKBMzgsUTnS13R.png',
+            'image' => 'A8nXni3kSIYKJ6o6iANtCxzPyGJLrV3ZqSGPxXeS.png',
         ]);
     }
 }
