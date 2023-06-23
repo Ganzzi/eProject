@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\LikePost;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\ActivityLogController;
 use Illuminate\Http\Request;
 
 class LikePostController extends Controller
@@ -34,12 +36,21 @@ class LikePostController extends Controller
             $like->liker_id = $user->id;
             $like->save();
 
+            // Create a notification
             $receiverId = $like->post->creator_id;
-            $type = 'like_post';
+            $type = 'Like post';
             $text = 'Someone liked your post.';
     
             $notificationController = new NotificationController();
             $notificationController->store($receiverId, $type, $text);
+
+            // Create a activity log
+            $userId = $like->liker_id;
+            $type = 'Like post';
+            $describe = "You have liked someone else's post.";
+    
+            $activityLogController = new ActivityLogController();
+            $activityLogController->store($userId, $type, $describe);
 
             return response()->json(['message' => 'Post liked successfully']);
         }
