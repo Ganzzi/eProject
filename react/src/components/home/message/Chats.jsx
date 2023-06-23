@@ -11,7 +11,9 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
     });
     const [repliedText, setRepliedText] = useState("");
 
-    const handleCreateChat = async () => {
+    const handleCreateChat = async (ev) => {
+        ev.preventDefault();
+
         if (chatRoomId == null) {
             const data = {
                 user_id: currentUser.id,
@@ -55,13 +57,11 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
     };
 
     const handleLikeChat = async (id) => {
-        axiosClient
+        await axiosClient
             .post(`likechats`, {
                 chat_id: id,
             })
             .then(async ({ data }) => {
-                console.log(data);
-
                 await fetchData();
             });
     };
@@ -85,17 +85,18 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
         // Fetch data initially
         fetchData();
 
-        // // Fetch data every 5 seconds
-        // const intervalId = setInterval(fetchData, 5000);
+        // Fetch data every 5 seconds
+        const intervalId = setInterval(fetchData, 5000);
 
-        // // Clean up the interval on component unmount
-        // return () => {
-        //     clearInterval(intervalId);
-        // };
+        // Clean up the interval on component unmount
+        return () => {
+            clearInterval(intervalId);
+        };
     }, [chatRoomId]);
 
     return (
         <main className="chats">
+            {/* chat header */}
             <div className="chat-header">
                 {messagingTo.image && (
                     <img
@@ -111,6 +112,8 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
                 )}
                 <h2 className="user-name">{messagingTo.name}</h2>
             </div>
+
+            {/* chat content */}
             <div className="chat-content">
                 {chatData.map((chat) => {
                     const isLikedByCurrentUser = chat.likes.some(
@@ -125,6 +128,7 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
                                     : "chat-left"
                             }`}
                         >
+                            {/* neu ng gui ko phai minh thi hien hinh anh */}
                             {chat.sender_id !== currentUser.id && (
                                 <img
                                     className="user-image"
@@ -137,59 +141,120 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
                                     alt="Other User"
                                 />
                             )}
+
+                            {chat.sender_id === currentUser.id && (
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "row",
+                                    }}
+                                >
+                                    <p>{chat?.likes.length} </p>
+                                    <AiFillLike
+                                        size={30}
+                                        color={
+                                            isLikedByCurrentUser
+                                                ? "red"
+                                                : "black"
+                                        }
+                                        onClick={() => {
+                                            handleLikeChat(chat.chat_id);
+                                        }}
+                                    />
+                                    <MdReply
+                                        size={30}
+                                        color={
+                                            newChat.reply_to == chat.chat_id
+                                                ? "red"
+                                                : "black"
+                                        }
+                                        onClick={() => {
+                                            setnewChat({
+                                                ...newChat,
+                                                reply_to: chat.chat_id,
+                                            });
+
+                                            for (
+                                                let i = 0;
+                                                i < chatData.length;
+                                                i++
+                                            ) {
+                                                if (
+                                                    chatData[i].chat_id ==
+                                                    chat.chat_id
+                                                ) {
+                                                    setRepliedText(
+                                                        chatData[i].text
+                                                    );
+                                                }
+                                            }
+                                        }}
+                                    />
+                                </div>
+                            )}
+
+                            {/* hien thi noi dung chat */}
                             <div className="each-chat">
                                 <p className="message-text">{chat.text}</p>
                             </div>
-                            <div
-                                style={{
-                                    display: "flex",
-                                    flexDirection: "row",
-                                }}
-                            >
-                                <p>{chat?.likes.length} </p>
-                                <AiFillLike
-                                    size={30}
-                                    color={
-                                        isLikedByCurrentUser ? "red" : "black"
-                                    }
-                                    onClick={() => {
-                                        handleLikeChat(chat.chat_id);
-                                    }}
-                                />
-                                <MdReply
-                                    size={30}
-                                    color={
-                                        newChat.reply_to == chat.chat_id
-                                            ? "red"
-                                            : "black"
-                                    }
-                                    onClick={() => {
-                                        setnewChat({
-                                            ...newChat,
-                                            reply_to: chat.chat_id,
-                                        });
 
-                                        for (
-                                            let i = 0;
-                                            i < chatData.length;
-                                            i++
-                                        ) {
-                                            if (
-                                                chatData[i].chat_id ==
-                                                chat.chat_id
-                                            ) {
-                                                setRepliedText(
-                                                    chatData[i].text
-                                                );
-                                            }
-                                        }
+                            {/* hien thi luot like, button de reply */}
+                            {chat.sender_id !== currentUser.id && (
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "row",
                                     }}
-                                />
-                            </div>
+                                >
+                                    <p>{chat?.likes.length} </p>
+                                    <AiFillLike
+                                        size={30}
+                                        color={
+                                            isLikedByCurrentUser
+                                                ? "red"
+                                                : "black"
+                                        }
+                                        onClick={() => {
+                                            handleLikeChat(chat.chat_id);
+                                        }}
+                                    />
+                                    <MdReply
+                                        size={30}
+                                        color={
+                                            newChat.reply_to == chat.chat_id
+                                                ? "red"
+                                                : "black"
+                                        }
+                                        onClick={() => {
+                                            setnewChat({
+                                                ...newChat,
+                                                reply_to: chat.chat_id,
+                                            });
+
+                                            for (
+                                                let i = 0;
+                                                i < chatData.length;
+                                                i++
+                                            ) {
+                                                if (
+                                                    chatData[i].chat_id ==
+                                                    chat.chat_id
+                                                ) {
+                                                    setRepliedText(
+                                                        chatData[i].text
+                                                    );
+                                                }
+                                            }
+                                        }}
+                                    />
+                                </div>
+                            )}
                         </div>
                     );
                 })}
             </div>
+
+            {/* chat input */}
             <div
                 className="chat-input"
                 style={{
@@ -207,18 +272,21 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
                         reply to {repliedText}
                     </p>
                 )}
-                <input
-                    type="text"
-                    placeholder="Type a message..."
-                    className="input-type-message"
-                    value={newChat.text}
-                    onChange={(ev) => {
-                        setnewChat({ ...newChat, text: ev.target.value });
-                    }}
-                />
-                <button className="btn btn-primary" onClick={handleCreateChat}>
-                    Send
-                </button>
+
+                <form action="" className="d-flex" onSubmit={handleCreateChat}>
+                    <input
+                        type="text"
+                        placeholder="Type a message..."
+                        className="input-type-message"
+                        value={newChat.text}
+                        onChange={(ev) => {
+                            setnewChat({ ...newChat, text: ev.target.value });
+                        }}
+                    />
+                    <button type="submig" className="btn btn-primary">
+                        Send
+                    </button>
+                </form>
             </div>
         </main>
     );

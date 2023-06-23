@@ -1,33 +1,34 @@
 import React, { useEffect, useState } from "react";
 import axiosClient from "../../../axios-client";
 import { useStateContext } from "../../../contexts/ContextProvider";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Chats from "./Chats";
 
 const Message = () => {
     const { user } = useStateContext();
     const location = useLocation();
-    const navigate = useNavigate();
 
     const [chatrooms, setChatrooms] = useState([]);
     const [selectedRoom, setSelectedRoom] = useState(-1);
+
+    // messagingTo and chatRoomId to check who user is messaging to
     const [messagingTo, setMessagingTo] = useState({
-        name: "",
+        name: location.state?.name,
         id: location.state?.id,
-        image: "",
+        image: location.state?.image,
     });
     const [chatRoomId, setChatRoomId] = useState(null);
-    const [isMessageExisted, setIsMessageExisted] = useState(false);
 
     useEffect(() => {
         getChatroom();
     }, []);
 
-    const getChatroom = () => {
-        axiosClient
+    console.log(messagingTo);
+
+    const getChatroom = async () => {
+        await axiosClient
             .get("/chatrooms")
             .then(({ data }) => {
-                // console.log(data);
                 let _selectedRoom = -1;
 
                 outerLoop: for (let i = 0; i < data.length; i++) {
@@ -37,8 +38,14 @@ const Message = () => {
                             data[i].participants[j].paticipator_id ==
                             location.state?.id
                         ) {
+                            console.log(data[i].participants[j]);
                             _selectedRoom = i;
                             setSelectedRoom(i);
+                            setMessagingTo({
+                                name: data[i].participants[j].name,
+                                id: data[i].participants[j].paticipator_id,
+                                image: data[i].participants[j].image,
+                            });
                             break outerLoop;
                         }
                     }
