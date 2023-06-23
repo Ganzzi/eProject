@@ -117,7 +117,7 @@ class FollowController extends Controller
             $userId = $followerId;
             $activityLogController->store($userId, 'Follow', 'You are following someone else.');
 
-            return response()->json(['message' => 'followed']);
+            return response()->json(['follow' => $follow, 'message' => 'You have a new follower.']);
         }
 
         // $validatedData = $request->validate([
