@@ -48,58 +48,58 @@ class User extends Authenticatable
 
     public function role()
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(Role::class)->onDelete('cascade');
     }
 
     public function posts()
     {
-        return $this->hasMany(Post::class);
+        return $this->hasMany(Post::class)->onDelete('cascade');
     }
 
     public function likePosts()
     {
-        return $this->hasMany(LikePost::class);
+        return $this->hasMany(LikePost::class)->onDelete('cascade');
     }
 
     public function conments()
     {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(Comment::class)->onDelete('cascade');
     }
 
     public function likeComments()
     {
-        return $this->hasMany(LikeComment::class);
+        return $this->hasMany(LikeComment::class)->onDelete('cascade');
     }
 
     public function notifications()
     {
-        return $this->hasMany(Notification::class);
+        return $this->hasMany(Notification::class)->onDelete('cascade');
     }
 
     public function activitylogs()
     {
-        return $this->hasMany(ActivityLog::class);
+        return $this->hasMany(ActivityLog::class)->onDelete('cascade');
     }
 
     public function follows()
     {
-        return $this->hasMany(Follow::class);
+        return $this->hasMany(Follow::class)->onDelete('cascade');
     }
 
     public function chatRooms()
     {
         return $this->belongsToMany(ChatRoom::class, 'chat_room_user', 'user_id', 'chat_room_id')->withPivot('join_at')
-            ->withTimestamps();
+            ->withTimestamps()->onDelete('cascade');
     }
 
 
     public function chats()
     {
-        return $this->hasMany(Chat::class);
+        return $this->hasMany(Chat::class)->onDelete('cascade');
     }
 
     public function likeChats()
     {
-        return $this->hasMany(LikeChat::class);
+        return $this->hasMany(LikeChat::class)->onDelete('cascade');
     }
 }

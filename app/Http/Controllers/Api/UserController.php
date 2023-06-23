@@ -57,11 +57,11 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string',
         ]);
-    
+
         $name = $request->input('name');
-    
+
         $users = User::where('name', 'like', "%$name%")->get();
-    
+
         return response()->json($users);
     }
 }
