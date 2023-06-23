@@ -19,6 +19,8 @@ class UserController extends Controller
      */
     public function index()
     {
+        // $user = User::with('user', 'posts.likes')->get();
+        // return response()->json($user);
         return UserResource::collection(User::query()->orderBy('id', 'desc')->paginate(10));
     }
 
@@ -93,7 +95,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $users = User::with('user', 'posts.likePosts')->find($user);
+       
 
         if (!$users) {
             return response()->json(['success' => false, 'message' => 'user not found'], 404);

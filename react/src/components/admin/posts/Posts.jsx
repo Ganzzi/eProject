@@ -13,28 +13,16 @@ export default function Posts() {
         getPost();
     }, []);
 
-    const onDeleteClick = (post_id) => {
+    const onDeleteClick = (post) => {
         if (!window.confirm("Are you sure you want to delete this post?")) {
             return;
         }
-        axiosClient.delete(`/admin/posts/${post_id}`).then(() => {
+        axiosClient.delete(`/admin/posts/${post}`).then(() => {
             setNotification("post was successfully deleted");
             getPost();
         });
     };
-    // setNotification({
-    //     title: "Wonderful!",
-    //     message: "teodosii@react-notifications-component",
-    //     type: "success",
-    //     insert: "top",
-    //     container: "top-right",
-    //     animationIn: ["animate__animated", "animate__fadeIn"],
-    //     animationOut: ["animate__animated", "animate__fadeOut"],
-    //     dismiss: {
-    //       duration: 5000,
-    //       onScreen: true
-    //     }
-    //   });
+   
 
     const getPost = () => {
         setLoading(true);

@@ -36,7 +36,7 @@ export default function ChatRooms(){
                 setLoading(false);
             });
     };
-
+   
     return (
         <div>
             <div
