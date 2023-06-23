@@ -124,6 +124,15 @@ class PostController extends Controller
 
         $post->save();
 
+        $receiverId = $post->creator_id;
+        $type = 'new_post';
+        $text = 'A new post has been created.';
+
+        // Create a notification
+        $notificationController = new NotificationController();
+        // $notificationController->store($data['creator_id'], 'new_post', 'A new post has been created.');
+        $notificationController->store($receiverId, $type, $text);
+
         return response()->json(['post' => $post], 202);
     }
 

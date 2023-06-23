@@ -35,6 +35,10 @@ class LikeCommentController extends Controller
             $like->liker_id = $user->id;
             $like->save();
 
+            $notificationController = new NotificationController();
+            $receiverId = $like->comment->commentor_id;
+            $notificationController->store($receiverId, 'new_like', 'Your comment has been liked.');
+
             return response()->json(['message' => 'Liked the comment.']);
         }
     }

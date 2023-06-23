@@ -35,7 +35,6 @@ class ChatRoomController extends Controller
         // Delete chats and associated like chats
         $room->chats()->each(function ($chat) {
             $chat->likes()->delete();
-            $chat->likes()->delete();
             $chat->delete();
         });
 

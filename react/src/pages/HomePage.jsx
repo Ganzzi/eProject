@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Outlet, Navigate, Link } from "react-router-dom";
+
 import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client";
-import {
-    BsChatRightText,
-    BsDoorClosed,
-    BsMenuApp,
-    BsFillBellFill,
-} from "react-icons/Bs";
+import { BsChatRightText, BsFillBellFill } from "react-icons/Bs";
 import {
     AiOutlineClose,
     AiOutlineLogout,
@@ -45,6 +41,11 @@ export default function Homescreen() {
         setShowAlert(true);
         const timer = setTimeout(() => {
             setShowAlert(false);
+            setAlerts({
+                type: null,
+                message: null,
+                time: null,
+            });
         }, 5000);
 
         return () => {
@@ -84,7 +85,7 @@ export default function Homescreen() {
         await axiosClient.get("/notifications").then(({ data }) => {
             let count = 0;
             for (let i = 0; i < data.length; i++) {
-                if (data[i]?.state == "new") {
+                if (data[i]?.state == "unread") {
                     count++;
                 }
             }
@@ -200,6 +201,12 @@ export default function Homescreen() {
                                 size={40}
                                 color={showNotification ? "blue" : "black"}
                                 onClick={() => {
+                                    setAlerts({
+                                        type: "warming",
+                                        message: "alerting",
+                                        time: new Date(),
+                                    });
+
                                     if (showNotification) {
                                         handleSeeNotificatitons();
                                     }
@@ -457,7 +464,7 @@ export default function Homescreen() {
                                 <div
                                     style={{
                                         backgroundColor: `${
-                                            notif?.state == "new"
+                                            notif?.state == "unread"
                                                 ? "#9FB6CD"
                                                 : "#CFCFCF"
                                         }`,
@@ -516,8 +523,10 @@ export default function Homescreen() {
                     }}
                 >
                     <div className="alert-content">
-                        <p>Alert message goes here</p>
-                        <p className="alert-time">10:30 AM</p>
+                        <p>{alerts.message}</p>
+                        <p className="alert-time">
+                            {formatDateTime(alerts.time)}
+                        </p>
                     </div>
                     <button
                         className="alert-close-btn"

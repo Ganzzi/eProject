@@ -2,12 +2,30 @@ import React, { useEffect, useState } from "react";
 import { Link, Navigate, Outlet } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client";
-import { AiOutlineUser, AiOutlineLogout } from "react-icons/Ai";
+import { AiOutlineUser, AiOutlineLogout } from "react-icons/ai";
 import { BsFillChatDotsFill, BsFillFilePostFill } from "react-icons/Bs";
+import { formatDateTime } from "../utils";
 
 export default function dashboard() {
-    const { user, token, setUser, setToken, notification } = useStateContext();
+    const { user, token, setUser, setToken, alerts, setAlerts } =
+        useStateContext();
     const [userDataFetched, setUserDataFetched] = useState(false);
+    const [showAlert, setShowAlert] = useState(true);
+
+    useEffect(() => {
+        setShowAlert(true);
+        const timer = setTimeout(() => {
+            setShowAlert(false);
+        }, 5000);
+
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [alerts]);
+
+    const handleAlertClose = () => {
+        setShowAlert(false);
+    };
 
     useEffect(() => {
         if (token) {
@@ -136,8 +154,34 @@ export default function dashboard() {
                 </div>
 
                 <main id="father">{user.role_id == 1 && <Outlet />}</main>
-                {notification && (
-                    <div className="notification">{notification}</div>
+
+                {/* Alert */}
+                {showAlert && alerts.type && (
+                    <div
+                        className="alert-admin"
+                        style={{
+                            backgroundColor: `${
+                                alerts.type == "info"
+                                    ? "#00ccff"
+                                    : alerts.type == "warming"
+                                    ? "#FFCC99"
+                                    : alerts.type == "error" && "#CC0000"
+                            }`,
+                        }}
+                    >
+                        <div className="alert-content">
+                            <p>{alerts.message}</p>
+                            <p className="alert-time">
+                                {formatDateTime(alerts.time)}
+                            </p>
+                        </div>
+                        <button
+                            className="alert-close-btn"
+                            onClick={handleAlertClose}
+                        >
+                            Close
+                        </button>
+                    </div>
                 )}
             </div>
         </div>

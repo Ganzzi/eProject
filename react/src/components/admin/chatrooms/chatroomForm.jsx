@@ -1,22 +1,21 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState ,} from "react";
-import { useStateContext } from "../../../contexts/ContextProvider.jsx"
+import { useEffect, useState } from "react";
+import { useStateContext } from "../../../contexts/ContextProvider.jsx";
 import axiosClient from "../../../axios-client.js";
 
-export default function  ChatRoomForm() { 
+export default function ChatRoomForm() {
     const navigate = useNavigate();
     let { id } = useParams();
-    
+
     const [chatrooms, setchatrooms] = useState({
         id: null,
         created_at: "",
-        updated_at:"",
-    
+        updated_at: "",
     });
     const [errors, setErrors] = useState(null);
     const [loading, setLoading] = useState(false);
-    const { setNotification } = useStateContext();
-    
+    const { setAlerts } = useStateContext();
+
     if (id) {
         useEffect(() => {
             setLoading(true);
@@ -39,7 +38,11 @@ export default function  ChatRoomForm() {
             axiosClient
                 .put(`/admin/chatrooms/${chatrooms.id}`, chatrooms)
                 .then(() => {
-                    setNotification("chatrooms was successfully updated");
+                    setAlerts({
+                        type: "Update",
+                        message: "chatrooms was successfully updated",
+                        time: new Date(),
+                    });
                     navigate("/admin/chatrooms");
                 })
                 .catch((err) => {
@@ -52,7 +55,11 @@ export default function  ChatRoomForm() {
             axiosClient
                 .post("/admin/chatrooms", chatrooms)
                 .then(() => {
-                    setNotification("chatrooms was successfully created");
+                    setAlerts({
+                        type: "Create",
+                        message: "chatrooms was successfully created",
+                        time: new Date(),
+                    });
                     navigate("/admin/chatrooms");
                 })
                 .catch((err) => {
@@ -63,7 +70,4 @@ export default function  ChatRoomForm() {
                 });
         }
     };
-     }
-
-
-
+}

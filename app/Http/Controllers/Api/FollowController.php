@@ -82,6 +82,8 @@ class FollowController extends Controller
         ]);
 
         $user = $request->user();
+        $followerId = $validatedData['follower_id'];
+        $followingId = $validatedData['following_id'];
 
         if ($validatedData['follower_id'] != $user->id) {
             return response()->json(['message' => 'Unauthorized'], 401);
@@ -97,13 +99,17 @@ class FollowController extends Controller
             return response()->json(['message' => 'Unfollowed.']);
         } else {
             $follow = new Follow;
-            $follow->follower_id = $validatedData['follower_id'];
-            $follow->following_id = $validatedData['following_id'];
+            $follow->follower_id = $followerId;
+            $follow->following_id = $followingId;
             $follow->follow_at = now();
 
             $follow->save();
 
-            return response()->json(['message' => 'Followed.']);
+            $notificationController = new NotificationController();
+            $receiverId = $followingId;
+            $notificationController->store($receiverId, 'new_follow', 'You have a new follower.');
+
+            return response()->json(['message' => 'followed']);
         }
 
         // $validatedData = $request->validate([

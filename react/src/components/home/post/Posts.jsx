@@ -26,20 +26,30 @@ const Posts = () => {
 
     const getPostData = async () => {
         await axiosClient.get("/posts").then(({ data }) => {
-            setPosts(data.reverse());
+            setPosts(data);
         });
     };
 
     useEffect(() => {
         getPostData();
-
-        axiosClient.get("/follows").then(({ data }) => {
-            setfollows({
-                followers: data?.followers,
-                followings: data?.followings,
-            });
-        });
     }, []);
+
+    useEffect(() => {
+        if (user.id) {
+            const getFollows = async () => {
+                await axiosClient
+                    .get(`/follows/${user.id}`)
+                    .then(({ data }) => {
+                        setfollows({
+                            followers: data?.followers,
+                            followings: data?.followings,
+                        });
+                    });
+            };
+
+            getFollows();
+        }
+    }, [user.id]);
 
     const getPostDataFromChil = async () => {
         await getPostData();
@@ -219,7 +229,7 @@ const Posts = () => {
                                     })
                                 }
                             />
-                            <label for="file">
+                            <label htmlFor="file">
                                 <HiOutlinePhotograph
                                     width={100}
                                     height={1000}

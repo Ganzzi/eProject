@@ -18,10 +18,21 @@ class NotificationController extends Controller
 
         // find all chatrooms belong to a user
         $notifications = Notification::where('receiver_id', $user_id)
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return response($notifications);
     }
+
+    public function store($receiver_id, $type, $text)
+    {
+        $notification = new Notification();
+        $notification->receiver_id = $receiver_id;
+        $notification->type = $type;
+        $notification->text = $text;
+        $notification->save();
+    }
+
 
     /**
      * Remove the specified resource from storage.
@@ -42,12 +53,10 @@ class NotificationController extends Controller
     {
         $receiverId = auth()->user()->id;
 
-        // Update notifications where receiver_id matches the authenticated user's ID
         Notification::where('receiver_id', $receiverId)
-            ->where('state', 'new')
-            ->update(['state' => 'old']);
+            ->where('state', 'unread')
+            ->update(['state' => 'read']);
 
-        // Check the number of updated notifications
         return response()->json(['message' => 'Notifications state updated successfully'], 202);
     }
 }
