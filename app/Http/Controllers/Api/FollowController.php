@@ -77,6 +77,10 @@ class FollowController extends Controller
 
             $follow->save();
 
+            $notificationController = new NotificationController();
+            $receiverId = $followingId;
+            $notificationController->store($receiverId, 'new_follow', 'You have a new follower.');
+
             return response()->json(['message' => 'followed']);
         }
     }
