@@ -18,7 +18,7 @@ export default function UserForm() {
     });
     const [errors, setErrors] = useState(null);
     const [loading, setLoading] = useState(false);
-    const { setNotification } = useStateContext();
+    const { setAlerts } = useStateContext();
    
     if (id) {
         useEffect(() => {
@@ -41,7 +41,11 @@ export default function UserForm() {
             axiosClient
                 .put(`/admin/users/${id}`, user)
                 .then(() => {
-                    setNotification("User was successfully updated");
+                    setAlerts({
+                        type: "info",
+                        message: "user was successfully deleted",
+                        time: new Date(),
+                    });
                     navigate("/admin/users");
                     
                 })
@@ -170,7 +174,7 @@ export default function UserForm() {
                         >
                           Save 
                         </button> */}
-                 <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                 {/* <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
   <div class="btn-group me-2" role="group" aria-label="First group">
     <button type="button" class="btn btn-outline-success" onClick={()=>navigate('/admin/users')}></button>
     <button
@@ -180,8 +184,8 @@ export default function UserForm() {
                             
                         >
                           Save 
-                        </button></div>
-    </div>
+                        </button></div> */}
+    {/* </div> */}
                        
                     </form>
                     

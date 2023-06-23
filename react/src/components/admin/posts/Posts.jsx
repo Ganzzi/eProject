@@ -13,7 +13,7 @@ export default function Posts() {
         getPost();
     }, []);
 
-    const onDeleteClick = (post) => {
+    const onDeleteClick = (post_id) => {
         if (!window.confirm("Are you sure you want to delete this post?")) {
             return;
         }
