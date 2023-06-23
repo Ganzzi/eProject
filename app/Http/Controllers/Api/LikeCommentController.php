@@ -47,7 +47,7 @@ class LikeCommentController extends Controller
             $userId = $like->liker_id;
             $activityLogController->store($userId, 'Like comment', "You have liked someone else's comment.");
 
-            return response()->json(['message' => 'Liked the comment.']);
+            return response()->json(['like_comment' => $like, 'message' => 'Your comment has been liked.']);
         }
     }
 }

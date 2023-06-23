@@ -143,8 +143,7 @@ class PostController extends Controller
         $activityLogController = new ActivityLogController();
         $activityLogController->store($userId, $type, $describe);
 
-        return response()->json(['post' => $post, 'message' => 'Notification state updated successfully']);
-        // return response()->json(['message' => 'Notification state updated successfully']);
+        return response()->json(['post' => $post, 'message' => 'You have created a new post']);
     }
 
     /**

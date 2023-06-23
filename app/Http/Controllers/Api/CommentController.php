@@ -38,6 +38,7 @@ class CommentController extends Controller
         // Save the comment to the database
         $comment->save();
 
+        // Create a notification
         $receiverId = $comment->post->creator_id;
 
         if (!$replyToComment && $receiverId !== $user->id) {
@@ -58,7 +59,7 @@ class CommentController extends Controller
         }
 
         // Return a response or redirect as needed
-        return response()->json(['message' => 'Comment created successfully']);
+        return response()->json(['comment' => $comment, 'message' => 'Comment created successfully']);
     }
 
     /**
