@@ -23,25 +23,29 @@ export default function UserForm() {
     if (id) {
         useEffect(() => {
             setLoading(true);
-            axiosClient
-                .get(`/admin/users/${id}`)
-                .then(({ data }) => {
-                    setLoading(false);
-                    setUser(data);
-                })
-                .catch(() => {
-                    setLoading(false);
-                });
+            const getUserData = async () => {
+                await axiosClient
+                    .get(`/admin/users/${id}`)
+                    .then(({ data }) => {
+                        setLoading(false);
+                        setUser(data);
+                    })
+                    .catch(() => {
+                        setLoading(false);
+                    });
+            };
+
+            getUserData();
         }, []);
     }
 
-    const onSubmit = (ev) => {
+    const onSubmit = async (ev) => {
         ev.preventDefault();
         if (id) {
-            axiosClient
+            await axiosClient
                 .put(`/admin/users/${id}`, user)
                 .then(() => {
-                    setNotification("User was successfully updated");
+                    // setNotification("User was successfully updated");
                     navigate("/admin/users");
                 })
                 .catch((err) => {
@@ -62,10 +66,10 @@ export default function UserForm() {
                 user.password_confirmation
             );
 
-            axiosClient
+            await axiosClient
                 .post("/admin/users", formdata)
                 .then(() => {
-                    setNotification("User was successfully created");
+                    // setNotification("User was successfully created");
                     navigate("/admin/users");
                 })
                 .catch((err) => {
