@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Follow;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\ActivityLogController;
+use App\Http\Controllers\Api\NotificationController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -105,9 +107,15 @@ class FollowController extends Controller
 
             $follow->save();
 
+            // Create a notification
             $notificationController = new NotificationController();
             $receiverId = $followingId;
-            $notificationController->store($receiverId, 'new_follow', 'You have a new follower.');
+            $notificationController->store($receiverId, 'Follow', 'You have a new follower.');
+
+            // Create a activity log
+            $activityLogController = new ActivityLogController();
+            $userId = $followerId;
+            $activityLogController->store($userId, 'Follow', 'You are following someone else.');
 
             return response()->json(['message' => 'followed']);
         }

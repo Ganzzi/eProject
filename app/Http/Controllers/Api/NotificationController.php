@@ -24,15 +24,14 @@ class NotificationController extends Controller
         return response($notifications);
     }
 
-    public function store($receiver_id, $type, $text)
+    public function store($receiverId, $type, $text)
     {
         $notification = new Notification();
-        $notification->receiver_id = $receiver_id;
+        $notification->receiver_id = $receiverId;
         $notification->type = $type;
         $notification->text = $text;
         $notification->save();
     }
-
 
     /**
      * Remove the specified resource from storage.

@@ -25,6 +25,15 @@ class ActivityLogController extends Controller
         return response($activities);
     }
 
+    public function store($userId, $type, $describe)
+    {
+        $activityLog = new ActivityLog();
+        $activityLog->user_id = $userId;
+        $activityLog->type = $type;
+        $activityLog->describe = $describe;
+        $activityLog->save();
+    }
+
     /**
      * Remove the specified resource from storage.
      */

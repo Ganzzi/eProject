@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Comment;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\ActivityLogController;
+use App\Http\Controllers\Api\NotificationController;
 use App\Models\LikeComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -40,7 +42,7 @@ class CommentController extends Controller
 
         if (!$replyToComment && $receiverId !== $user->id) {
             $notificationController = new NotificationController();
-            $notificationController->store($receiverId, 'new_comment', 'A new comment has been posted on your post.');
+            $notificationController->store($receiverId, 'Comment', 'A new comment has been posted on your post.');
         }
 
         // Check if the comment is a reply and get the original comment's owner
@@ -52,7 +54,7 @@ class CommentController extends Controller
         // Send notification to the original comment's owner if available
         if ($originalCommentOwner && $originalCommentOwner !== $user->id && $originalCommentOwner !== $receiverId) {
             $notificationController = new NotificationController();
-            $notificationController->store($originalCommentOwner, 'new_comment', 'A new comment has been posted on your comment.');
+            $notificationController->store($originalCommentOwner, 'Comment', 'A new comment has been posted on your comment.');
         }
 
         // Return a response or redirect as needed
