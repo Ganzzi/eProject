@@ -18,10 +18,21 @@ class NotificationController extends Controller
 
         // find all chatrooms belong to a user
         $notifications = Notification::where('receiver_id', $user_id)
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return response($notifications);
     }
+
+    public function store($receiver_id, $type, $text)
+    {
+        $notification = new Notification();
+        $notification->receiver_id = $receiver_id;
+        $notification->type = $type;
+        $notification->text = $text;
+        $notification->save();
+    }
+
 
     /**
      * Remove the specified resource from storage.
@@ -40,14 +51,23 @@ class NotificationController extends Controller
 
     public function updateNotificationState(Request $request)
     {
-        $receiverId = auth()->user()->id;
+        $user = Auth::user();
+        $request->validate([
+            'notification_id' => 'required|exists:notifications,id',
+            'state' => 'required|in:read,unread',
+        ]);
 
-        // Update notifications where receiver_id matches the authenticated user's ID
-        Notification::where('receiver_id', $receiverId)
-            ->where('state', 'new')
-            ->update(['state' => 'old']);
+        $notification = Notification::findOrFail($request->input('notification_id'));
 
-        // Check the number of updated notifications
-        return response()->json(['message' => 'Notifications state updated successfully'], 202);
+        // Chỉ cho phép người dùng sở hữu thông báo cập nhật trạng thái
+        if ($notification->receiver_id !== $user->id) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        $notification->state = $request->input('state');
+        $notification->save();
+
+        return response()->json(['message' => 'Notification state updated successfully']);
     }
+
 }
