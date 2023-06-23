@@ -34,6 +34,13 @@ class LikePostController extends Controller
             $like->liker_id = $user->id;
             $like->save();
 
+            $receiverId = $like->post->creator_id;
+            $type = 'like_post';
+            $text = 'Someone liked your post.';
+    
+            $notificationController = new NotificationController();
+            $notificationController->store($receiverId, $type, $text);
+
             return response()->json(['message' => 'Post liked successfully']);
         }
     }
