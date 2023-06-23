@@ -80,6 +80,7 @@ export default function UserForm() {
     };
 
     return (
+        <>
    
        <>
        
@@ -130,7 +131,7 @@ export default function UserForm() {
                                 setUser({ ...user, image: ev.target.files[0] })
                             }
                         />
-                        <label for="file">
+                        <label htmlFor="file">
                             <HiOutlinePhotograph />
                         </label>
 
@@ -151,6 +152,14 @@ export default function UserForm() {
                             }
                             placeholder="Password Confirmation"
                         />
+
+                        <button
+                            className="btn btn-outline-success"
+                            style={{ width: "100px" }}
+                        >
+                            Save
+                        </button>
+
                         
                         
                         {/* <button
@@ -178,6 +187,7 @@ export default function UserForm() {
                     
                 )}
             </div>
+        </>
            
             </>
             

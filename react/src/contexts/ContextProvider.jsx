@@ -10,7 +10,7 @@ export const ContextProvider = ({ children }) => {
         email: "",
         email_verified_at: null,
         gender: "",
-        id: 0,
+        id: null,
         image: "",
         name: "",
         updated_at: "",

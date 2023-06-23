@@ -32,7 +32,7 @@ class UsersSeeder extends Seeder
             'name' => 'Jane Smith',
             'password' => bcrypt('user123'),
             'email' => 'user1@gmail.com',
-            'image' => '6NUvqmFzwp3Y4L7n3AXbPnptPma2mPxKpFjYEcbB.jpg',
+            'image' => '6xhXec0Fa3bNmzvCFHS8qOSfHHzGiovkeapRloKe.png',
             'bio' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
             'gender' => 'female',
             'created_at' => now(),

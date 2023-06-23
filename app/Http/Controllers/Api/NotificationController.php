@@ -50,23 +50,12 @@ class NotificationController extends Controller
 
     public function updateNotificationState(Request $request)
     {
-        $user = Auth::user();
-        $request->validate([
-            'notification_id' => 'required|exists:notifications,id',
-            'state' => 'required|in:read,unread',
-        ]);
+        $receiverId = auth()->user()->id;
 
-        $notification = Notification::findOrFail($request->input('notification_id'));
+        Notification::where('receiver_id', $receiverId)
+            ->where('state', 'unread')
+            ->update(['state' => 'read']);
 
-        // Chỉ cho phép người dùng sở hữu thông báo cập nhật trạng thái
-        if ($notification->receiver_id !== $user->id) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
-
-        $notification->state = $request->input('state');
-        $notification->save();
-
-        return response()->json(['message' => 'Notification state updated successfully']);
+        return response()->json(['message' => 'Notifications state updated successfully'], 202);
     }
-
 }

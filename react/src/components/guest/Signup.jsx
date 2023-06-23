@@ -73,7 +73,7 @@ export default function Signup() {
                         onChange={(ev) => setImage(ev.target.files[0])}
                         placeholder="image"
                     />
-                    <label for="file-signup">
+                    <label htmlFor="file-signup">
                         <HiOutlinePhotograph size={40} color="black" />
                     </label>
                     <button className="btn btn-block btn-primary" type="submit">
