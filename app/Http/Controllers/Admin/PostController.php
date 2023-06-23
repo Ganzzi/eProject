@@ -141,9 +141,10 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        if (!$post) {
-            return response()->json(['success' => false, 'message' => 'not found'], 404);
-        }
+     
+        // if (!$post) {
+        //     return response()->json(['success' => false, 'message' => 'not found'], 404);
+        // }
 
         $post->likes()->delete();
 
@@ -153,9 +154,11 @@ class PostController extends Controller
             $comment->delete();
         });
 
-        // Delete the chat room
+       
         $post->delete();
 
         return response()->json(['success' => true, 'message' => 'Post deleted successfully']);
+        
+        
     }
 }

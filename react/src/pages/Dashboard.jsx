@@ -5,7 +5,7 @@ import axiosClient from "../axios-client";
 // import { AiOutlineUser } from "react-icons/Ai";
 // import { BsFillChatDotsFill } from "react-icons/Bs";
 // import { BsFillFilePostFill } from "react-icons/Bs";
-// import { AiOutlineLogout } from "react-icons/Ai";
+ import { AiOutlineLogout } from "react-icons/Ai";
 
 
 export default function dashboard() {
@@ -57,15 +57,15 @@ export default function dashboard() {
                 ,border:"solid thin black",borderRadius:"3rem"
                 }}>
                    
-                        <Link to={"/admin/users"}> <AiOutlineUser size={30} color="black" /> user</Link></div>
+                        <Link to={"/admin/users"}>  user</Link></div>
 <br />
                     <div className="w3-col"  style={{ width: "100%" 
                 ,border:"solid thin black",borderRadius:"3rem"
-                }}><Link to={"/admin/chatrooms"}><BsFillChatDotsFill size={30} color="black"/>Chat</Link></div>
+                }}><Link to={"/admin/chatrooms"}>Chat</Link></div>
                 <br />
                     <div className="w3-col"  style={{ width: "100%" 
                 ,border:"solid thin black",borderRadius:"3rem"
-                }}><Link to={"/admin/posts"}><BsFillFilePostFill size={30} color="black"/>Posts</Link></div>
+                }}><Link to={"/admin/posts"}>Posts</Link></div>
                 </div>
 
             </aside>
@@ -114,4 +114,3 @@ export default function dashboard() {
 
     );
 }
-

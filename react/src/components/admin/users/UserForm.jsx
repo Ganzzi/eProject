@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import {   Link, useNavigate,  useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosClient from "../../../axios-client.js";
 import { useStateContext } from "../../../contexts/ContextProvider.jsx";
@@ -19,7 +19,7 @@ export default function UserForm() {
     const [errors, setErrors] = useState(null);
     const [loading, setLoading] = useState(false);
     const { setNotification } = useStateContext();
-
+   
     if (id) {
         useEffect(() => {
             setLoading(true);
@@ -43,6 +43,7 @@ export default function UserForm() {
                 .then(() => {
                     setNotification("User was successfully updated");
                     navigate("/admin/users");
+                    
                 })
                 .catch((err) => {
                     const response = err.response;
@@ -67,6 +68,7 @@ export default function UserForm() {
                 .then(() => {
                     setNotification("User was successfully created");
                     navigate("/admin/users");
+                    
                 })
                 .catch((err) => {
                     const response = err.response;
@@ -81,9 +83,9 @@ export default function UserForm() {
    
        <>
        
-        
+       
             {user.id && <h1>Update User: {user.name}</h1>}
-            {!user.id && <h1>New User</h1>}
+            {!user.id &&  <h1>New User</h1>}
             <div className="card animated fadeInDown">
                 {loading && <div className="text-center">Loading...</div>}
                 {errors && (
@@ -93,6 +95,7 @@ export default function UserForm() {
                         ))}
                     </div>
                 )}
+               
                 {!loading && (
                     <form onSubmit={onSubmit}>
                         <input
@@ -149,19 +152,38 @@ export default function UserForm() {
                             placeholder="Password Confirmation"
                         />
                         
-                        <button className="btn btn-outline-success"style={{width:"100px"}}>Save</button>
-                        <button
+                        
+                        {/* <button
+                         
                             className="btn btn-outline-success"
-                            style={{ width: "100px" }}
+                            style={{ width: "100px" }}  
+                            
                         >
-                            Save
-                        </button>
+                          Save 
+                        </button> */}
+                 <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+  <div class="btn-group me-2" role="group" aria-label="First group">
+    <button type="button" class="btn btn-outline-success" onClick={()=>navigate('/admin/users')}></button>
+    <button
+                         
+                            className="btn btn-outline-success"
+                            style={{ width: "100px" }}  
+                            
+                        >
+                          Save 
+                        </button></div>
+    </div>
+                       
                     </form>
+                    
                 )}
             </div>
+           
             </>
+            
           
           
      
     );
-}
+                    }
+                    

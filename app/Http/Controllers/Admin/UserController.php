@@ -51,7 +51,9 @@ class UserController extends Controller
             'image' => basename($filePath)
         ]);
 
-        return response(new UserResource($user), 201);
+      
+        return response()->json(['message' => 'Update success'], 202);
+       
     }
 
     /**
@@ -79,8 +81,8 @@ class UserController extends Controller
             $data['password'] = bcrypt($data['password']);
         }
         $user->update($data);
-
-        return new UserResource($user);
+        
+         return new UserResource($user);
     }
 
     /**
@@ -91,9 +93,27 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        $users = User::with('user', 'posts.likePosts')->find($user);
+
+        if (!$users) {
+            return response()->json(['success' => false, 'message' => 'user not found'], 404);
+        }
+
+        // Detach user from the post
+        $users->user()->detach();
+        $post->likePosts()->delete();
+        // Delete chats and associated like chats
+       
+        $users->conments()->each(function ($comment) {
+            $comment->likeComments()->delete();
+            $comment->delete();
+        });
+
+        // Delete the user
         $user->delete();
 
-        return response("", 204);
+        return response()->json(['message' => 'user deleted.']);
+    }
     }
 
     // public function sendResetPassword(Request $request)
@@ -117,4 +137,4 @@ class UserController extends Controller
     // {
     //     return Password::broker();
     // }
-}
+

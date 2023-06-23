@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import axiosClient from "../../../axios-client";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 export default function ChatRooms(){
     const [ChatRooms, setChatrooms] = useState([]);

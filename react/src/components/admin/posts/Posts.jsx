@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import { useState } from "react";
+import { useState ,} from "react";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import axiosClient from "../../../axios-client";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 export default function Posts() {
     const [posts, setPost] = useState([]);
@@ -22,6 +22,19 @@ export default function Posts() {
             getPost();
         });
     };
+    // setNotification({
+    //     title: "Wonderful!",
+    //     message: "teodosii@react-notifications-component",
+    //     type: "success",
+    //     insert: "top",
+    //     container: "top-right",
+    //     animationIn: ["animate__animated", "animate__fadeIn"],
+    //     animationOut: ["animate__animated", "animate__fadeOut"],
+    //     dismiss: {
+    //       duration: 5000,
+    //       onScreen: true
+    //     }
+    //   });
 
     const getPost = () => {
         setLoading(true);
@@ -56,9 +69,8 @@ export default function Posts() {
             <div className="card animated fadeInDown" style={{left:"2rem"}}>
                 <table>
                     <thead>
-                        <tr  style={{
-                            fontFamily:"cursive",textAlign:"center",padding:"40px",
-                        }}>
+                        <tr 
+                        >
                             <th style={{paddingRight:"5rem"}}>ID</th>
                             <th  style={{paddingRight:"5rem"}}>Creator</th>
                             <th  style={{paddingRight:"5rem"}}>Description</th>
@@ -98,13 +110,13 @@ export default function Posts() {
                                     </td>
                                     <td>{p.updated_at}</td>
                                     <td>
-                                        <Link
+                                        {/* <Link
                                             className="btn-edit"
                                             to={"/admin/posts/" + p.id}
                                         >
                                             Edit
                                         </Link>
-                                        &nbsp;
+                                        &nbsp; */}
                                         <button
                                             className="btn-delete"
                                             onClick={() => onDeleteClick(p.id)}

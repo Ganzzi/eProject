@@ -18,7 +18,7 @@ export default function Users() {
             if (!window.confirm("Are you sure you want to delete this user?")) {
                 return;
             }
-            axiosClient.delete(`/admin/users/${user.id}`).then(() => {
+            axiosClient.delete(`/admin/users/${user}`).then(() => {
                 setNotification("User was successfully deleted");
                 getUsers();
             });
@@ -98,17 +98,18 @@ export default function Users() {
 
                                         <td>{u.created_at}</td>
                                         <td>
-                                            <Link
+                                            {/* <Link
                                                 className="btn-edit"
                                                 to={"/admin/users/" + u.id}
                                             >
                                                 Edit
-                                            </Link>
+                                            </Link> */}
                                             &nbsp;
                                             <button
                                                 className="btn-delete"
-                                                onClick={() => onDeleteClick(u)}
+                                                onClick={() => onDeleteClick(u.id)}
                                             >
+                                                
                                                 Delete
                                             </button>
                                         </td>
