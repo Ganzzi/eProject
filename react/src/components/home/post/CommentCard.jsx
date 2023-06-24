@@ -45,9 +45,7 @@ const CommentCard = ({ cmt, getPostData, onReply }) => {
             });
     };
 
-    const handleUpdateComment = async (id) => {
-
-    }
+    const handleUpdateComment = async (id) => {};
 
     return (
         <div className="card">
