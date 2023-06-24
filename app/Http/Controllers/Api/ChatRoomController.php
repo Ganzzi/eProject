@@ -43,6 +43,7 @@ class ChatRoomController extends Controller
                     'last_message' => $lastMessage ? [
                         'chat_id' => $lastMessage->id,
                         'created_at' => $lastMessage->created_at->toISOString(),
+                        'image' => $lastMessage->image,
                         'text' => $lastMessage->text,
                         'sender_id' => $lastMessage->sender_id,
                         'likes' => $lastMessage->likes->map(function ($like) {
@@ -105,6 +106,7 @@ class ChatRoomController extends Controller
                 return [
                     'chat_id' => $chat->id,
                     'created_at' => $chat->created_at->toISOString(),
+                    'image' => $chat->image,
                     'text' => $chat->text,
                     'sender_id' => $chat->sender_id,
                     'reply_to' => $chat->reply_to,
