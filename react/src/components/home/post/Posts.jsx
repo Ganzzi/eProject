@@ -26,7 +26,7 @@ const Posts = () => {
 
     const getPostData = async () => {
         await axiosClient.get("/posts").then(({ data }) => {
-            setPosts(data);
+            setPosts(data.reverse());
         });
     };
 
