@@ -79,6 +79,14 @@ export default function Homescreen() {
 
     useEffect(() => {
         getNotifications();
+
+        // Fetch data every 5 seconds
+        const intervalId = setInterval(getNotifications, 5000);
+
+        // Clean up the interval on component unmount
+        return () => {
+            clearInterval(intervalId);
+        };
     }, []);
 
     const getNotifications = async () => {
@@ -197,16 +205,11 @@ export default function Homescreen() {
                                 padding: 10,
                             }}
                         >
+                            {/* notification button */}
                             <BsFillBellFill
                                 size={40}
                                 color={showNotification ? "blue" : "black"}
                                 onClick={() => {
-                                    setAlerts({
-                                        type: "warming",
-                                        message: "alerting",
-                                        time: new Date(),
-                                    });
-
                                     if (showNotification) {
                                         handleSeeNotificatitons();
                                     }

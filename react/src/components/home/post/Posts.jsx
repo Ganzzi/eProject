@@ -26,7 +26,7 @@ const Posts = () => {
 
     const getPostData = async () => {
         await axiosClient.get("/posts").then(({ data }) => {
-            setPosts(data);
+            setPosts(data.reverse());
         });
     };
 
@@ -238,12 +238,13 @@ const Posts = () => {
                                 />
                             </label>
                         </div>
-                        <div>
-                            <button
+                        <div className="submitpost">
+                            <button 
                                 style={{
-                                    padding: "25px",
-                                    backgroundColor: "purple",
-                                    color: "white",
+                                    padding: "20px",
+                                    // marginTop: " 0.8rem",
+                                    backgroundColor: "pink",
+                                    color: "black",
                                     border: "3px",
                                 }}
                                 type="submit"
@@ -265,7 +266,7 @@ const Posts = () => {
                         />
                     ))}
                 </div>
-            </div>
+            </div >
 
             <div className="col-xl-2 justify-content-center align-items-start d-none d-xl-flex row">
                 <div className="col-12 row">
@@ -323,7 +324,7 @@ const Posts = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

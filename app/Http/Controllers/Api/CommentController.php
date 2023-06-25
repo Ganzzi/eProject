@@ -38,27 +38,47 @@ class CommentController extends Controller
         // Save the comment to the database
         $comment->save();
 
+        // Create a notification
         $receiverId = $comment->post->creator_id;
 
-        if (!$replyToComment && $receiverId !== $user->id) {
-            $notificationController = new NotificationController();
-            $notificationController->store($receiverId, 'Comment', 'A new comment has been posted on your post.');
-        }
+        $notificationController = new NotificationController();
+        $notificationController->store($receiverId, 'Comment', 'A new comment has been commented on your post.');
 
-        // Check if the comment is a reply and get the original comment's owner
-        $originalCommentOwner = null;
         if ($replyToComment) {
-            $originalCommentOwner = $replyToComment->commentor_id;
+            $notificationController = new NotificationController();
+            $receiverId2 = $replyToComment->commentor_id;
+
+            $notificationController->store($receiverId2, 'Comment', 'Someone reply your comment');
+
+            // create activity
+            $activityLogController2 = new ActivityLogController();
+            $activityLogController2->store($user->id, 'Comment', 'You have replied a comment on a post.');
+        } else {
+            $activityLogController = new ActivityLogController();
+            $activityLogController->store($user->id, 'Comment', 'You have Commented on a post.');
         }
 
-        // Send notification to the original comment's owner if available
-        if ($originalCommentOwner && $originalCommentOwner !== $user->id && $originalCommentOwner !== $receiverId) {
-            $notificationController = new NotificationController();
-            $notificationController->store($originalCommentOwner, 'Comment', 'A new comment has been posted on your comment.');
-        }
+
+
+        // if (!$replyToComment && $receiverId !== $user->id) {
+        //     $notificationController = new NotificationController();
+        //     $notificationController->store($receiverId, 'Comment', 'A new comment has been posted on your post.');
+        // }
+
+        // // Check if the comment is a reply and get the original comment's owner
+        // $originalCommentOwner = null;
+        // if ($replyToComment) {
+        //     $originalCommentOwner = $replyToComment->commentor_id;
+        // }
+
+        // // Send notification to the original comment's owner if available
+        // if ($originalCommentOwner && $originalCommentOwner !== $user->id && $originalCommentOwner !== $receiverId) {
+        //     $notificationController = new NotificationController();
+        //     $notificationController->store($originalCommentOwner, 'Comment', 'A new comment has been posted on your comment.');
+        // }
 
         // Return a response or redirect as needed
-        return response()->json(['message' => 'Comment created successfully']);
+        return response()->json(['comment' => $comment, 'message' => 'Comment created successfully']);
     }
 
     /**

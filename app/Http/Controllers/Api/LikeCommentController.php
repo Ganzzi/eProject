@@ -44,10 +44,10 @@ class LikeCommentController extends Controller
 
             // Create a activity log
             $activityLogController = new ActivityLogController();
-            $userId = $like->liker_id;
+            $userId = $user->id;
             $activityLogController->store($userId, 'Like comment', "You have liked someone else's comment.");
 
-            return response()->json(['message' => 'Liked the comment.']);
+            return response()->json(['like_comment' => $like, 'message' => 'Your comment has been liked.']);
         }
     }
 }

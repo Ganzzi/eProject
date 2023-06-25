@@ -52,7 +52,7 @@ class LikePostController extends Controller
             $activityLogController = new ActivityLogController();
             $activityLogController->store($userId, $type, $describe);
 
-            return response()->json(['message' => 'Post liked successfully']);
+            return response()->json(['like_post' => $like, 'message' => 'Someone liked your post.']);
         }
     }
 }

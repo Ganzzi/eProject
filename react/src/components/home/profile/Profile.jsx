@@ -186,7 +186,13 @@ const Profile = () => {
                         variant="dark"
                         className="mx-1 btn btn-outline-secondary"
                         onClick={() => {
-                            navigate(`/messages/`, { state: { id: id } });
+                            navigate(`/messages/`, {
+                                state: {
+                                    id: id,
+                                    name: profileContent.name,
+                                    image: profileContent.image,
+                                },
+                            });
                         }}
                     >
                         Message

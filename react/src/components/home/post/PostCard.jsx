@@ -11,6 +11,7 @@ import { useStateContext } from "../../../contexts/ContextProvider";
 // import UpdatePostModal from "./UpdatePostModal";
 
 const PostCard = ({ post, post_creator, getPostData }) => {
+    console.log(post);
     const { user } = useStateContext();
     const [comments, setcomments] = useState([]);
     const [isReplying, setIsReplying] = useState(false);
@@ -66,6 +67,7 @@ const PostCard = ({ post, post_creator, getPostData }) => {
         e.preventDefault();
         // Perform comment submission logic
         setComment("");
+        setRepliedId(null);
         const formData = new FormData();
         formData.append("post_id", post.id);
         formData.append("text", comment);
@@ -104,7 +106,21 @@ const PostCard = ({ post, post_creator, getPostData }) => {
             });
     };
 
-    const handleUpdatePost = async () => {};
+    const handleUpdatePost = async () => {
+        const postUppdate = {
+            description: newPostForm?.description,
+            creator_id: post_creator.id
+        }
+    
+       try {
+        await axiosClient.put(`posts/${post.id}`, postUppdate).then(async ({ data }) => {
+            await getPostData();
+            setIsUpdating(false)
+        });
+       } catch (error) {
+        console.log(error);
+       }
+    };
 
     return (
         <div className="card">
