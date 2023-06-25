@@ -13,25 +13,25 @@ export default function ChatRooms() {
         getChatroom();
     }, []);
 
-    const onDeleteClick = (ChatRooms_id) => {
+    const onDeleteClick =async (ChatRooms_id) => {
         if (
             !window.confirm("Are you sure you want to delete this chatrooms?")
         ) {
             return;
         }
-        axiosClient.delete(`/admin/chatrooms/${ChatRooms_id}`).then(() => {
+       await axiosClient.delete(`/admin/chatrooms/${ChatRooms_id}`).then(async() => {
             setAlerts({
                 type: "info",
                 message: "chatrooms was successfully deleted",
                 time: new Date(),
             });
-            getChatroom();
+           await getChatroom();
         });
     };
 
-    const getChatroom = () => {
+    const getChatroom = async() => {
         setLoading(true);
-        axiosClient
+       await axiosClient
             .get("/admin/chatrooms")
             .then(({ data }) => {
                 setLoading(false);

@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Link, Navigate, Outlet } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client";
-import { AiOutlineUser } from "react-icons/Ai";
-import { BsFillChatDotsFill } from "react-icons/Bs";
-import { BsFillFilePostFill } from "react-icons/Bs";
-import { AiOutlineLogout } from "react-icons/Ai";
+import { AiOutlineUser,AiOutlineLogout } from "react-icons/Ai";
+import { BsFillChatDotsFill,BsFillFilePostFill } from "react-icons/Bs";
+
 
 export default function dashboard() {
     const { user, token, setUser, setToken, alerts,showAlert } =

@@ -13,24 +13,24 @@ export default function Posts() {
         getPost();
     }, []);
 
-    const onDeleteClick = (post_id) => {
+    const onDeleteClick = async (post_id) => {
         if (!window.confirm("Are you sure you want to delete this post?")) {
             return;
         }
-        axiosClient.delete(`/admin/posts/${post_id}`).then(() => {
+       await axiosClient.delete(`/admin/posts/${post_id}`).then(async() => {
             setAlerts({
                 type: "info",
                 message: "post was successfully deleted",
                 time: new Date(),
             });
-            getPost();
+           await getPost();
         });
     };
    
 
-    const getPost = () => {
+    const getPost = async () => {
         setLoading(true);
-        axiosClient
+        await  axiosClient
             .get("/admin/posts")
             .then(({ data }) => {
                 setLoading(false);

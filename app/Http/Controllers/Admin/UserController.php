@@ -19,8 +19,6 @@ class UserController extends Controller
      */
     public function index()
     {
-        // $user = User::with('user', 'posts.likes')->get();
-        // return response()->json($user);
         return UserResource::collection(User::query()->orderBy('id', 'desc')->paginate(10));
     }
 
@@ -53,9 +51,7 @@ class UserController extends Controller
             'image' => basename($filePath)
         ]);
 
-      
-        return response()->json(['message' => 'Update success'], 202);
-       
+        return response(new UserResource($user), 201);
     }
 
     /**
@@ -83,8 +79,8 @@ class UserController extends Controller
             $data['password'] = bcrypt($data['password']);
         }
         $user->update($data);
-        
-         return new UserResource($user);
+
+        return new UserResource($user);
     }
 
     /**
@@ -95,27 +91,21 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-       
+        // $user->role()->delete();
+        // $user->notifications()->delete();
+        // $user->activitylogs()->delete();
+        // $user->follows()->delete();
+        // $user->chatRooms()->detach();
+        // $user->likeChats()->delete();
+        // $user->chats()->delete();
+        // $user->likePosts()->delete();
+        // $user->likeComments()->delete();
+        // $user->comments()->delete();
+        // $user->posts()->delete();
 
-        if (!$users) {
-            return response()->json(['success' => false, 'message' => 'user not found'], 404);
-        }
-
-        // Detach user from the post
-        $users->user()->detach();
-        $post->likePosts()->delete();
-        // Delete chats and associated like chats
-       
-        $users->conments()->each(function ($comment) {
-            $comment->likeComments()->delete();
-            $comment->delete();
-        });
-
-        // Delete the user
         $user->delete();
 
-        return response()->json(['message' => 'user deleted.']);
-    }
+        return response("", 204);
     }
 
     // public function sendResetPassword(Request $request)
@@ -139,4 +129,4 @@ class UserController extends Controller
     // {
     //     return Password::broker();
     // }
-
+}

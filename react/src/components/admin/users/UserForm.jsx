@@ -1,4 +1,4 @@
-import {   Link, useNavigate,  useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosClient from "../../../axios-client.js";
 import { useStateContext } from "../../../contexts/ContextProvider.jsx";
@@ -18,27 +18,43 @@ export default function UserForm() {
     });
     const [errors, setErrors] = useState(null);
     const [loading, setLoading] = useState(false);
-    const { setAlerts } = useStateContext();
-   
+    const {setAlerts } = useStateContext();
+    const [selectedImage,setselectedImage]
+    = useState(null);
+    const handleImageChange = (event)=>{
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onloadend =()=>{
+            setselectedImage(reader.result);
+
+        };
+        if(file){
+            reader.readAsDataURL(file);
+        }
+    };
     if (id) {
         useEffect(() => {
             setLoading(true);
-            axiosClient
-                .get(`/admin/users/${id}`)
-                .then(({ data }) => {
-                    setLoading(false);
-                    setUser(data);
-                })
-                .catch(() => {
-                    setLoading(false);
-                });
+            const getUserData = async () => {
+                await axiosClient
+                    .get(`/admin/users/${id}`)
+                    .then(({ data }) => {
+                        setLoading(false);
+                        setUser(data);
+                    })
+                    .catch(() => {
+                        setLoading(false);
+                    });
+            };
+
+            getUserData();
         }, []);
     }
 
-    const onSubmit = (ev) => {
+    const onSubmit = async (ev) => {
         ev.preventDefault();
         if (id) {
-            axiosClient
+            await axiosClient
                 .put(`/admin/users/${id}`, user)
                 .then(() => {
                     setAlerts({
@@ -47,7 +63,6 @@ export default function UserForm() {
                         time: new Date(),
                     });
                     navigate("/admin/users");
-                    
                 })
                 .catch((err) => {
                     const response = err.response;
@@ -67,12 +82,15 @@ export default function UserForm() {
                 user.password_confirmation
             );
 
-            axiosClient
+            await axiosClient
                 .post("/admin/users", formdata)
                 .then(() => {
-                    setNotification("User was successfully created");
+                    setAlerts({
+                        type: "info",
+                        message: "user was successfully deleted",
+                        time: new Date(),
+                    });
                     navigate("/admin/users");
-                    
                 })
                 .catch((err) => {
                     const response = err.response;
@@ -85,12 +103,8 @@ export default function UserForm() {
 
     return (
         <>
-   
-       <>
-       
-       
             {user.id && <h1>Update User: {user.name}</h1>}
-            {!user.id &&  <h1>New User</h1>}
+            {!user.id && <h1>New User</h1>}
             <div className="card animated fadeInDown">
                 {loading && <div className="text-center">Loading...</div>}
                 {errors && (
@@ -100,7 +114,6 @@ export default function UserForm() {
                         ))}
                     </div>
                 )}
-               
                 {!loading && (
                     <form onSubmit={onSubmit}>
                         <input
@@ -127,14 +140,19 @@ export default function UserForm() {
                             }
                             placeholder="Role id"
                         />
-
-                        <input
+{selectedImage &&
+ (
+    
+        <img src="{selectedImage}" alt="Selected" />
+   
+ )              }         <input
                             type="file"
                             id="file"
                             onChange={(ev) =>
                                 setUser({ ...user, image: ev.target.files[0] })
                             }
                         />
+                        <input type="file" onChange={handleImageChange}/>
                         <label htmlFor="file">
                             <HiOutlinePhotograph />
                         </label>
@@ -163,41 +181,10 @@ export default function UserForm() {
                         >
                             Save
                         </button>
-
                         
-                        
-                        {/* <button
-                         
-                            className="btn btn-outline-success"
-                            style={{ width: "100px" }}  
-                            
-                        >
-                          Save 
-                        </button> */}
-                 {/* <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-  <div class="btn-group me-2" role="group" aria-label="First group">
-    <button type="button" class="btn btn-outline-success" onClick={()=>navigate('/admin/users')}></button>
-    <button
-                         
-                            className="btn btn-outline-success"
-                            style={{ width: "100px" }}  
-                            
-                        >
-                          Save 
-                        </button></div> */}
-    {/* </div> */}
-                       
                     </form>
-                    
                 )}
             </div>
         </>
-           
-            </>
-            
-          
-          
-     
     );
-                    }
-                    
+}
