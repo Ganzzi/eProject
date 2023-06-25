@@ -3,8 +3,8 @@ import axiosClient from "../../../axios-client";
 import { MdReply } from "react-icons/md";
 import { AiFillLike } from "react-icons/ai";
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
 
 
 const Chats = ({ messagingTo, chatRoomId, currentUser }) =>

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Link, Navigate, Outlet } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client";
-import { AiOutlineUser,AiOutlineLogout } from "react-icons/Ai";
+import { BiUser} from "react-icons/Bi";
 import { BsFillChatDotsFill,BsFillFilePostFill } from "react-icons/Bs";
-
+import { BiLogOut} from "react-icons/Bi";
 
 export default function dashboard() {
     const { user, token, setUser, setToken, alerts,showAlert } =
@@ -54,13 +54,13 @@ export default function dashboard() {
                 </div>
                 <div></div>
                 <br />
-                <div class="w3-row">
+                { <div class="w3-row">
                     
                     <div className="w3-col" style={{ width: "100%" 
                 ,border:"solid thin black",borderRadius:"3rem"
                 }}>
                    
-                        <Link to={"/admin/users"}> <AiOutlineUser size={30} color="black" /> user</Link></div>
+                        <Link to={"/admin/users"}> <BiUser size={30} color="black" /> user</Link></div>
 <br />
                     <div className="w3-col"  style={{ width: "100%" 
                 ,border:"solid thin black",borderRadius:"3rem"
@@ -69,7 +69,7 @@ export default function dashboard() {
                     <div className="w3-col"  style={{ width: "100%" 
                 ,border:"solid thin black",borderRadius:"3rem"
                 }}><Link to={"/admin/posts"}><BsFillFilePostFill size={30} color="black"/>Posts</Link></div>
-                </div>
+                </div> }
             </aside>
             <div className="container" style={{}}>
                 <div id="head">
@@ -104,7 +104,7 @@ export default function dashboard() {
                                     }}
                                     onClick={onLogout}
                                 >
-                                    <AiOutlineLogout size={40} />
+                                    <BiLogOut size={40} />
                                 </a>
                             </li>
                         </ul>

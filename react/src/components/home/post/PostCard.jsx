@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CommentCard from "./CommentCard";
 import { AiFillHeart } from "react-icons/ai";
-import { BiCommentDetail } from "react-icons/bi";
+// import { BiCommentDetail } from "react-icons/bi";
 import { TiDeleteOutline } from "react-icons/Ti";
 import { MdOutlineCancel, MdOutlineSettingsSuggest } from "react-icons/md";
 import { formatDateTime } from "../../../utils";

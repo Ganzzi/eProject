@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosClient from "../../../axios-client.js";
 import { useStateContext } from "../../../contexts/ContextProvider.jsx";
-import { HiOutlinePhotograph } from "react-icons/Hi";
+// import { HiOutlinePhotograph } from "react-icons/Hi";
 
 export default function UserForm() {
     const navigate = useNavigate();
@@ -18,20 +18,24 @@ export default function UserForm() {
     });
     const [errors, setErrors] = useState(null);
     const [loading, setLoading] = useState(false);
-    const {setAlerts } = useStateContext();
-    const [selectedImage,setselectedImage]
-    = useState(null);
-    const handleImageChange = (event)=>{
-        const file = event.target.files[0];
-        const reader = new FileReader();
-        reader.onloadend =()=>{
-            setselectedImage(reader.result);
+    const { setAlerts } = useStateContext();
+const [selectedImage,setSlectedImage] = useState();
+const handleImageChange = (e) =>{
+     const file = e.target.files[0];
+    //  console.log(URL.createObjectURL(file));
+     file.preview=URL.createObjectURL(file);
+     setSlectedImage(file);
+    //  file.preview = URL.c
+    // const reader = new FileReader();
+    // reader.onloadend =()=>{
+    //     setSlectedImage(reader.result);
+      
+    // };
+    // if(file){
+    //     reader.readAsDataURL(file);
+    // }
 
-        };
-        if(file){
-            reader.readAsDataURL(file);
-        }
-    };
+};
     if (id) {
         useEffect(() => {
             setLoading(true);
@@ -59,7 +63,7 @@ export default function UserForm() {
                 .then(() => {
                     setAlerts({
                         type: "info",
-                        message: "user was successfully deleted",
+                        message: "user was successfully updated",
                         time: new Date(),
                     });
                     navigate("/admin/users");
@@ -87,7 +91,7 @@ export default function UserForm() {
                 .then(() => {
                     setAlerts({
                         type: "info",
-                        message: "user was successfully deleted",
+                        message: "user was successfully updated",
                         time: new Date(),
                     });
                     navigate("/admin/users");
@@ -140,23 +144,29 @@ export default function UserForm() {
                             }
                             placeholder="Role id"
                         />
-{selectedImage &&
- (
+{selectedImage &&(
     
-        <img src="{selectedImage}" alt="Selected" />
-   
- )              }         <input
+        <img src={selectedImage.preview} alt="" />
+    
+)}
+                        {/* <input
                             type="file"
                             id="file"
+                            
                             onChange={(ev) =>
                                 setUser({ ...user, image: ev.target.files[0] })
                             }
-                        />
-                        <input type="file" onChange={handleImageChange}/>
-                        <label htmlFor="file">
-                            <HiOutlinePhotograph />
-                        </label>
-
+                        /> */}
+                        <input type="file" onChangeCapture={handleImageChange}
+                      
+                      onChange={(ev) =>
+                        setUser({ ...user, image: ev.target.files[0] })
+                    }
+                            />
+                         {/* <label htmlFor="file"  onChange={handleImageChange}>
+                        //     <HiOutlinePhotograph />
+                        // </label> */}
+                    
                         <input
                             type="password"
                             onChange={(ev) =>
@@ -181,7 +191,7 @@ export default function UserForm() {
                         >
                             Save
                         </button>
-                        
+                       
                     </form>
                 )}
             </div>
