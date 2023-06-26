@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { AiFillHeart } from "react-icons/ai";
-import { BiCommentDetail } from "react-icons/bi";
+import { AiFillHeart, AiOutlineComment } from "react-icons/ai";
 import { ImReply } from "react-icons/im";
 import { formatDateTime } from "../../../utils";
 import axiosClient from "../../../axios-client";
@@ -137,7 +136,7 @@ const CommentCard = ({ cmt, getPostData, onReply }) => {
                         </span>
                         <span style={{}}>
                             {cmt?.reply_to?.length}
-                            <BiCommentDetail size={24} color={"blue"} />
+                            <AiOutlineComment size={24} color={"blue"} />
                             {cmt.replierComments.length}
                         </span>
                     </div>
