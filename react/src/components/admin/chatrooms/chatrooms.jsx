@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import axiosClient from "../../../axios-client";
 // import { Link } from "react-router-dom";
-
+import { formatDateTime } from "../../../utils";
 export default function ChatRooms() {
     const [ChatRooms, setChatrooms] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -90,8 +90,8 @@ export default function ChatRooms() {
                                     <td>{m.id}</td>
                                     <td>{m.chats.length}</td>
                                     <td>{m.users.length}</td>
-                                    <td>{m.created_at}</td>
-                                    <td>{m.updated_at}</td>
+                                    <td> {formatDateTime(m.created_at)}</td>
+                                    <td> {formatDateTime(m.updated_at)}</td>
 
                                     <td>
                                         {/* <Link
