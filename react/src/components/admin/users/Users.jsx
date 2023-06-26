@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axiosClient from "../../../axios-client.js";
 import { Link } from "react-router-dom";
 import { useStateContext } from "../../../contexts/ContextProvider.jsx";
-
+import { formatDateTime } from "../../../utils";
 export default function Users() {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -105,7 +105,7 @@ export default function Users() {
                                     <td>{u.name}</td>
                                     <td>{u.email}</td>
 
-                                    <td>{u.created_at}</td>
+                                    <td> <td> {formatDateTime(u.created_at)}</td></td>
                                     <td>
                                         <Link
                                             className="btn-edit"

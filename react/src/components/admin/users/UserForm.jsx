@@ -16,6 +16,7 @@ export default function UserForm() {
         password: "",
         password_confirmation: "",
     });
+    
     const [errors, setErrors] = useState(null);
     const [loading, setLoading] = useState(false);
     const { setAlerts } = useStateContext();
@@ -25,15 +26,7 @@ const handleImageChange = (e) =>{
     //  console.log(URL.createObjectURL(file));
      file.preview=URL.createObjectURL(file);
      setSlectedImage(file);
-    //  file.preview = URL.c
-    // const reader = new FileReader();
-    // reader.onloadend =()=>{
-    //     setSlectedImage(reader.result);
-      
-    // };
-    // if(file){
-    //     reader.readAsDataURL(file);
-    // }
+    
 
 };
     if (id) {
@@ -158,15 +151,14 @@ const handleImageChange = (e) =>{
                             }
                         /> */}
                         <input type="file" onChangeCapture={handleImageChange}
-                      
+                      width={50}
+                      height={50}
                       onChange={(ev) =>
                         setUser({ ...user, image: ev.target.files[0] })
                     }
                             />
-                         {/* <label htmlFor="file"  onChange={handleImageChange}>
-                        //     <HiOutlinePhotograph />
-                        // </label> */}
-                    
+                      
+                   
                         <input
                             type="password"
                             onChange={(ev) =>
