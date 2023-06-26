@@ -115,7 +115,9 @@ export default function Homescreen() {
             });
     };
 
-    const handleSearchUsers = async () => {
+    const handleSearchUsers = async (e) => {
+        e.preventDefault();
+
         await axiosClient
             .post("/search-user", {
                 name: searchRequest,
@@ -189,6 +191,7 @@ export default function Homescreen() {
                             flexDirection: "row",
                             alignItems: "center",
                         }}
+                        onSubmit={handleSearchUsers}
                     >
                         <input
                             type="text"
@@ -198,16 +201,15 @@ export default function Homescreen() {
                                 setSearchRequest(ev.target.value);
                             }}
                         />
-                        <AiOutlineSearch
-                            size={50}
+                        <button
+                            type="submit"
                             className="btn btn-outline-primary"
                             style={{
                                 borderRadius: 50,
                             }}
-                            onClick={() => {
-                                handleSearchUsers();
-                            }}
-                        />
+                        >
+                            <AiOutlineSearch size={35} />
+                        </button>
                     </form>
                 </div>
 

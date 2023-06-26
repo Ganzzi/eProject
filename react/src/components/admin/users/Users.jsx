@@ -6,9 +6,9 @@ import { useStateContext } from "../../../contexts/ContextProvider.jsx";
 export default function Users() {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
-    const { setNotification } = useStateContext();
+    const { setAlerts } = useStateContext();
 
-    useEffect(() => {
+     useEffect(() => {
         getUsers();
     }, []);
 
@@ -18,6 +18,11 @@ export default function Users() {
         }
         await axiosClient.delete(`/admin/users/${user.id}`).then(async () => {
             // setNotification("User was successfully deleted");
+          setAlerts({
+                type: "info",
+                message: "user was successfully deleted",
+                time: new Date(),
+            });
             await getUsers();
         });
     };

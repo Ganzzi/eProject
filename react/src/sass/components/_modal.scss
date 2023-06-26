@@ -1,4 +1,13 @@
 .update-profile-modal {
-    max-height: 700px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.activity-log-modal {
+    max-height: 80vh;
+    overflow: auto;
+}
+
+.modal-body {
     overflow-y: auto;
 }

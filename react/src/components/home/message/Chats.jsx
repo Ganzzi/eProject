@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import axiosClient from "../../../axios-client";
 import { MdReply } from "react-icons/md";
-import { AiFillLike } from "react-icons/ai";
+import { AiFillLike, AiOutlinePaperClip } from "react-icons/ai";
+import React from "react";
+// import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
 
 const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
     const [chatData, setChatData] = useState([]);
     const [newChat, setnewChat] = useState({
+        image: null,
         text: "",
         reply_to: null,
     });
@@ -30,6 +33,7 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
             await axiosClient
                 .post("/chats", {
                     chat_room_id: room_id,
+                    image: newChat.image,
                     text: newChat.text,
                     reply_to: newChat.reply_to,
                 })
@@ -40,6 +44,7 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
             await axiosClient
                 .post("/chats", {
                     chat_room_id: chatRoomId,
+                    image: newChat.image,
                     text: newChat.text,
                     reply_to: newChat.reply_to,
                 })
@@ -49,6 +54,7 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
         }
 
         setnewChat({
+            image: null,
             text: "",
             reply_to: null,
         });
@@ -79,6 +85,7 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
 
     useEffect(() => {
         setnewChat({
+            image: null,
             text: "",
             reply_to: null,
         });
@@ -274,18 +281,85 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
                 )}
 
                 <form action="" className="d-flex" onSubmit={handleCreateChat}>
-                    <input
-                        type="text"
-                        placeholder="Type a message..."
-                        className="input-type-message"
-                        value={newChat.text}
-                        onChange={(ev) => {
-                            setnewChat({ ...newChat, text: ev.target.value });
-                        }}
-                    />
-                    <button type="submig" className="btn btn-primary">
-                        Send
-                    </button>
+                    <div className="message-input-container">
+                        <div className="file-upload-container">
+                            <input
+                                type="file"
+                                id="file-input"
+                                className="file-input"
+                                onChange={(ev) => {
+                                    setnewChat({
+                                        ...newChat,
+                                        image: ev.target.files[0],
+                                    });
+                                }}
+                            />
+                            <label htmlFor="file-input">
+                                <AiOutlinePaperClip size={24} />
+                            </label>
+                        </div>
+                        <input
+                            type="text"
+                            placeholder="Type a message..."
+                            className="input-type-message"
+                            value={newChat.text}
+                            onChange={(ev) => {
+                                setnewChat({
+                                    ...newChat,
+                                    text: ev.target.value,
+                                });
+                            }}
+                        />
+                        <button type="submig" className="btn btn-primary">
+                            Send
+                        </button>
+                    </div>
+
+                    <style>
+                        {`
+                        .message-input-container {
+                            display: flex;
+                            align-items: center;
+                            // border: 1px solid #ccc;
+                            // // border-radius: 20px;
+                            // padding: 0px;
+                          }
+                          
+                          .input-type-message {
+                            width: 50%;
+                            flex: 1;
+                            border: none;
+                            outline: none;
+                            padding: 6px;
+                          }
+                          
+                          .file-upload-container {
+                            position: relative;
+                          }
+                          
+                          .file-input {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            opacity: 0;
+                            height: 100%;
+                            width: 100%;
+                            cursor: pointer;
+                          }
+                          
+                          .file-input-label {
+                            display: flex;
+                            align-items: center;
+                            padding: 4px;
+                            cursor: pointer;
+                          }
+                          
+                          .file-input-label:hover {
+                            background-color: #f2f2f2;
+                            border-radius: 50%;
+                          }                          
+                        `}
+                    </style>
                 </form>
             </div>
         </main>

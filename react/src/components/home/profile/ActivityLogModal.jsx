@@ -31,7 +31,7 @@ const ActivityLogModal = ({ closeModal }) => {
     };
 
     return (
-        <div className="activity-log-modal">
+        <div className="activity-log-modal" style={{}}>
             <div className="modal-header">
                 <h2 className="modal-title">Activity Log</h2>
                 <button

@@ -227,7 +227,7 @@ const Profile = () => {
 
                         <div className="col-6 col-lg-12">
                             <h3>{profileContent.followers?.length} Follower</h3>
-                            <div className="d-flex">
+                            <div className="d-flex flex-column">
                                 {profileContent.followers &&
                                     profileContent.followers.map((fl) => (
                                         <div

@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import CommentCard from "./CommentCard";
 import { AiFillHeart } from "react-icons/ai";
-import { BiCommentDetail } from "react-icons/bi";
 import { TiDeleteOutline } from "react-icons/Ti";
 import { MdOutlineCancel, MdOutlineSettingsSuggest } from "react-icons/md";
 import { formatDateTime } from "../../../utils";
 import axiosClient from "../../../axios-client";
 import { useNavigate } from "react-router-dom";
 import { useStateContext } from "../../../contexts/ContextProvider";
-// import UpdatePostModal from "./UpdatePostModal";
+import { BiCommentDetail } from "react-icons/Bi";
 
 const PostCard = ({ post, post_creator, getPostData }) => {
+    console.log(post);
     const { user } = useStateContext();
     const [comments, setcomments] = useState([]);
     const [isReplying, setIsReplying] = useState(false);
@@ -105,7 +105,23 @@ const PostCard = ({ post, post_creator, getPostData }) => {
             });
     };
 
-    const handleUpdatePost = async () => {};
+    const handleUpdatePost = async () => {
+        const postUppdate = {
+            description: newPostForm?.description,
+            creator_id: post_creator.id,
+        };
+
+        try {
+            await axiosClient
+                .put(`posts/${post.id}`, postUppdate)
+                .then(async ({ data }) => {
+                    await getPostData();
+                    setIsUpdating(false);
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <div className="card">

@@ -14,7 +14,7 @@ class FollowsSeeder extends Seeder
     public function run(): void
     {
         Follow::create([
-            'follower_id' => 1,
+            'follower_id' => 3,
             'following_id' => 2,
             'follow_at' => now(),
             // Add more columns and values as needed...
@@ -22,7 +22,21 @@ class FollowsSeeder extends Seeder
 
         Follow::create([
             'follower_id' => 2,
-            'following_id' => 1,
+            'following_id' => 3,
+            'follow_at' => now(),
+            // Add more columns and values as needed...
+        ]);
+
+        Follow::create([
+            'follower_id' => 2,
+            'following_id' => 4,
+            'follow_at' => now(),
+            // Add more columns and values as needed...
+        ]);
+
+        Follow::create([
+            'follower_id' => 3,
+            'following_id' => 4,
             'follow_at' => now(),
             // Add more columns and values as needed...
         ]);

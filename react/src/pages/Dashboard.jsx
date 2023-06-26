@@ -2,30 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Link, Navigate, Outlet } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client";
-import { AiOutlineUser, AiOutlineLogout } from "react-icons/ai";
+import { BiUser, BiLogOut } from "react-icons/Bi";
 import { BsFillChatDotsFill, BsFillFilePostFill } from "react-icons/Bs";
-import { formatDateTime } from "../utils";
 
 export default function dashboard() {
-    const { user, token, setUser, setToken, alerts, setAlerts } =
+    const { user, token, setUser, setToken, alerts, showAlert } =
         useStateContext();
     const [userDataFetched, setUserDataFetched] = useState(false);
-    const [showAlert, setShowAlert] = useState(true);
-
-    useEffect(() => {
-        setShowAlert(true);
-        const timer = setTimeout(() => {
-            setShowAlert(false);
-        }, 5000);
-
-        return () => {
-            clearTimeout(timer);
-        };
-    }, [alerts]);
-
-    const handleAlertClose = () => {
-        setShowAlert(false);
-    };
 
     useEffect(() => {
         if (token) {
@@ -74,48 +57,51 @@ export default function dashboard() {
                 </div>
                 <div></div>
                 <br />
-                <div className="w3-row">
-                    <div
-                        className="w3-col"
-                        style={{
-                            width: "100%",
-                            border: "solid thin black",
-                            borderRadius: "3rem",
-                        }}
-                    >
-                        <Link to={"/admin/users"}>
-                            <AiOutlineUser size={30} color="black" /> user
-                        </Link>
+                {
+                    <div class="w3-row">
+                        <div
+                            className="w3-col"
+                            style={{
+                                width: "100%",
+                                border: "solid thin black",
+                                borderRadius: "3rem",
+                            }}
+                        >
+                            <Link to={"/admin/users"}>
+                                {" "}
+                                <BiUser size={30} color="black" /> user
+                            </Link>
+                        </div>
+                        <br />
+                        <div
+                            className="w3-col"
+                            style={{
+                                width: "100%",
+                                border: "solid thin black",
+                                borderRadius: "3rem",
+                            }}
+                        >
+                            <Link to={"/admin/chatrooms"}>
+                                <BsFillChatDotsFill size={30} color="black" />
+                                Chat
+                            </Link>
+                        </div>
+                        <br />
+                        <div
+                            className="w3-col"
+                            style={{
+                                width: "100%",
+                                border: "solid thin black",
+                                borderRadius: "3rem",
+                            }}
+                        >
+                            <Link to={"/admin/posts"}>
+                                <BsFillFilePostFill size={30} color="black" />
+                                Posts
+                            </Link>
+                        </div>
                     </div>
-                    <br />
-                    <div
-                        className="w3-col"
-                        style={{
-                            width: "100%",
-                            border: "solid thin black",
-                            borderRadius: "3rem",
-                        }}
-                    >
-                        <Link to={"/admin/chatrooms"}>
-                            <BsFillChatDotsFill size={30} color="black" />
-                            Chat
-                        </Link>
-                    </div>
-                    <br />
-                    <div
-                        className="w3-col"
-                        style={{
-                            width: "100%",
-                            border: "solid thin black",
-                            borderRadius: "3rem",
-                        }}
-                    >
-                        <Link to={"/admin/posts"}>
-                            <BsFillFilePostFill size={30} color="black" />
-                            Posts
-                        </Link>
-                    </div>
-                </div>
+                }
             </aside>
             <div className="container" style={{}}>
                 <div id="head">
@@ -150,7 +136,7 @@ export default function dashboard() {
                                     }}
                                     onClick={onLogout}
                                 >
-                                    <AiOutlineLogout size={40} />
+                                    <BiLogOut size={40} />
                                 </a>
                             </li>
                         </ul>

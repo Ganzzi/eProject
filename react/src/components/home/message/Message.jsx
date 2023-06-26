@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axiosClient from "../../../axios-client";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import { useLocation } from "react-router-dom";
+// import { ListGroup } from "react-bootstrap";
 import Chats from "./Chats";
 
 const Message = () => {
@@ -21,6 +22,13 @@ const Message = () => {
 
     useEffect(() => {
         getChatroom();
+
+        const intervalId = setInterval(getChatroom, 5000);
+
+        // Clean up the interval on component unmount
+        return () => {
+            clearInterval(intervalId);
+        };
     }, []);
 
     const getChatroom = async () => {
@@ -58,13 +66,15 @@ const Message = () => {
     };
 
     return (
-        <div className="main-content d-flex">
+        <div className="main-content d-flex flex-grow-1">
             {/* Sidebar */}
             <aside className="sidebar bg-light">
                 <h2>Rooms</h2>
                 <ul className="list-group">
+                    {/* <ListGroup> */}
                     {chatrooms.map((room, index) => (
                         <li
+                            // <ListGroup.Item
                             key={index}
                             className={`list-group-item ${
                                 index === selectedRoom ? "active" : ""
@@ -93,7 +103,7 @@ const Message = () => {
                             }}
                         >
                             {room?.participants.map((participant, i) => {
-                                if (user.id != participant.paticipator_id) {
+                                if (user.id !== participant.paticipator_id) {
                                     return (
                                         <div
                                             className="d-flex justify-content-start flex-row items-center bg-gray"
@@ -112,7 +122,7 @@ const Message = () => {
                                             </div>
 
                                             <div
-                                                className="d-flex"
+                                                className="d-flex participant-details"
                                                 style={{
                                                     flexDirection: "column",
                                                     flex: 1,
@@ -130,8 +140,10 @@ const Message = () => {
                                 }
                                 return null; // Add this to handle the missing return statement warning
                             })}
+                            {/* </ListGroup.Item> */}
                         </li>
                     ))}
+                    {/* </ListGroup> */}
                 </ul>
             </aside>
 
