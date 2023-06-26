@@ -10,7 +10,8 @@ import { formatDateTime } from "../../../utils";
 
 // import { BorderAll } from "@material-ui/icons";
 
-const Posts = () => {
+const Posts = () =>
+{
     const [posts, setPosts] = useState([]);
     const [follows, setfollows] = useState({
         followers: [],
@@ -24,22 +25,29 @@ const Posts = () => {
 
     const [description, setdescription] = useState(null);
 
-    const getPostData = async () => {
-        await axiosClient.get("/posts").then(({ data }) => {
+    const getPostData = async () =>
+    {
+        await axiosClient.get("/posts").then(({ data }) =>
+        {
             setPosts(data.reverse());
         });
     };
 
-    useEffect(() => {
+    useEffect(() =>
+    {
         getPostData();
     }, []);
 
-    useEffect(() => {
-        if (user.id) {
-            const getFollows = async () => {
+    useEffect(() =>
+    {
+        if (user.id)
+        {
+            const getFollows = async () =>
+            {
                 await axiosClient
                     .get(`/follows/${user.id}`)
-                    .then(({ data }) => {
+                    .then(({ data }) =>
+                    {
                         setfollows({
                             followers: data?.followers,
                             followings: data?.followings,
@@ -51,11 +59,13 @@ const Posts = () => {
         }
     }, [user.id]);
 
-    const getPostDataFromChil = async () => {
+    const getPostDataFromChil = async () =>
+    {
         await getPostData();
     };
 
-    const handleCreatePost = async (e) => {
+    const handleCreatePost = async (e) =>
+    {
         e.preventDefault();
 
         const formData = new FormData();
@@ -63,11 +73,16 @@ const Posts = () => {
         formData.append("creator_id", user.id);
         formData.append("description", description);
 
+<<<<<<< HEAD
         await axiosClient.post("/posts", formData).then(async ({ data }) => {
             setPostForm({
                 image: null,
             })
             setdescription('')
+=======
+        await axiosClient.post("/posts", formData).then(async ({ data }) =>
+        {
+>>>>>>> a514bb2ffde93ad26a7f35e5bc21f1b4714e92bb
             // console.log(data);
             await getPostData();
         });
@@ -97,7 +112,7 @@ const Posts = () => {
                     >
                         <img
                             src={
-                                "http://127.0.0.1:8000/api/images/" + user.image
+                                "http://127.0.0.1:8001/api/images/" + user.image
                             }
                             alt=""
                             style={{
@@ -118,7 +133,8 @@ const Posts = () => {
                                 follows.followers.map((fl) => (
                                     <div
                                         className="d-flex"
-                                        onClick={() => {
+                                        onClick={() =>
+                                        {
                                             navigate(`/profile/${fl.id}`);
                                         }}
                                     >
@@ -144,7 +160,8 @@ const Posts = () => {
                                 follows.followings.map((fl) => (
                                     <div
                                         className="d-flex"
-                                        onClick={() => {
+                                        onClick={() =>
+                                        {
                                             navigate(`/profile/${fl.id}`);
                                         }}
                                     >
@@ -221,7 +238,8 @@ const Posts = () => {
                                     resize: "none",
                                 }}
                                 placeholder="What's on your mind?"
-                                onChange={(ev) => {
+                                onChange={(ev) =>
+                                {
                                     setdescription(ev.target.value);
                                 }}
                             />
@@ -245,7 +263,11 @@ const Posts = () => {
                                 />
                             </label>
                         </div>
+<<<<<<< HEAD
                         <div>
+=======
+                        <div className="submitpost">
+>>>>>>> a514bb2ffde93ad26a7f35e5bc21f1b4714e92bb
                             <button
                                 style={{
                                     padding: "25px",
@@ -282,7 +304,8 @@ const Posts = () => {
                             follows.followers.map((fl) => (
                                 <div
                                     className="d-flex"
-                                    onClick={() => {
+                                    onClick={() =>
+                                    {
                                         navigate(`/profile/${fl.id}`);
                                     }}
                                 >
@@ -308,7 +331,8 @@ const Posts = () => {
                             follows.followings.map((fl) => (
                                 <div
                                     className="d-flex"
-                                    onClick={() => {
+                                    onClick={() =>
+                                    {
                                         navigate(`/profile/${fl.id}`);
                                     }}
                                 >

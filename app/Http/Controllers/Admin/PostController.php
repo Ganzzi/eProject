@@ -33,6 +33,7 @@ class PostController extends Controller
             return [
                 "id" => $_post->id,
                 "creator_id" => $_post->creator_id,
+                'lock' => $_post->lock,
                 "description" => $_post->description,
                 "image" => $_post->image,
                 "created_at" => $_post->created_at,

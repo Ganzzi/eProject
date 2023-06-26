@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('gender')->nullable();
 
             $table->string('password');
+            $table->string('lock')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

@@ -36,13 +36,19 @@ const RepliedCommentCard = ({ cmt, getPostData }) => {
         })
     }
 
+<<<<<<< HEAD
+=======
+const RepliedCommentCard = ({ cmt, onUpdate }) =>
+{
+    // onUpdate(id);
+>>>>>>> a514bb2ffde93ad26a7f35e5bc21f1b4714e92bb
     return (
         <div className="card" style={{ opacity: "0.7" }}>
             <div className="card-body p-2">
                 <div className="d-flex align-items-center mb-2">
                     <img
                         src={
-                            "http://127.0.0.1:8000/api/images/" + cmt.user_image
+                            "http://127.0.0.1:8001/api/images/" + cmt.user_image
                         }
                         alt="Replied Commentor Image"
                         className="rounded-circle"
