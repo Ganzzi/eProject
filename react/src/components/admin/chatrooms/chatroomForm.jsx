@@ -12,9 +12,9 @@ export default function ChatRoomForm() {
         created_at: "",
         updated_at: "",
     });
-    const [errors, setErrors] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const { setAlerts } = useStateContext();
+    // const [errors, setErrors] = useState(null);
+    // const [loading, setLoading] = useState(false);
+    // const { setAlerts } = useStateContext();
 
     if (id) {
         useEffect(() => {
@@ -32,42 +32,42 @@ export default function ChatRoomForm() {
         }, []);
     }
 
-    const onSubmit = (ev) => {
-        ev.preventDefault();
-        if (chatrooms.id) {
-            axiosClient
-                .put(`/admin/chatrooms/${chatrooms.id}`, chatrooms)
-                .then(() => {
-                    setAlerts({
-                        type: "Update",
-                        message: "chatrooms was successfully updated",
-                        time: new Date(),
-                    });
-                    navigate("/admin/chatrooms");
-                })
-                .catch((err) => {
-                    const response = err.response;
-                    if (response && response.status === 422) {
-                        setErrors(response.data.errors);
-                    }
-                });
-        } else {
-            axiosClient
-                .post("/admin/chatrooms", chatrooms)
-                .then(() => {
-                    setAlerts({
-                        type: "Create",
-                        message: "chatrooms was successfully created",
-                        time: new Date(),
-                    });
-                    navigate("/admin/chatrooms");
-                })
-                .catch((err) => {
-                    const response = err.response;
-                    if (response && response.status === 422) {
-                        setErrors(response.data.errors);
-                    }
-                });
-        }
-    };
+//     const onSubmit = (ev) => {
+//         ev.preventDefault();
+//         if (chatrooms.id) {
+//             axiosClient
+//                 .put(`/admin/chatrooms/${chatrooms.id}`, chatrooms)
+//                 .then(() => {
+//                     setAlerts({
+//                         type: "Update",
+//                         message: "chatrooms was successfully updated",
+//                         time: new Date(),
+//                     });
+//                     navigate("/admin/chatrooms");
+//                 })
+//                 .catch((err) => {
+//                     const response = err.response;
+//                     if (response && response.status === 422) {
+//                         setErrors(response.data.errors);
+//                     }
+//                 });
+//         } else {
+//             axiosClient
+//                 .post("/admin/chatrooms", chatrooms)
+//                 .then(() => {
+//                     setAlerts({
+//                         type: "Create",
+//                         message: "chatrooms was successfully created",
+//                         time: new Date(),
+//                     });
+//                     navigate("/admin/chatrooms");
+//                 })
+//                 .catch((err) => {
+//                     const response = err.response;
+//                     if (response && response.status === 422) {
+//                         setErrors(response.data.errors);
+//                     }
+//                 });
+//         }
+//     };
 }

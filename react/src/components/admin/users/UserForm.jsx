@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosClient from "../../../axios-client.js";
 import { useStateContext } from "../../../contexts/ContextProvider.jsx";
-import { HiOutlinePhotograph } from "react-icons/Hi";
+// import { HiOutlinePhotograph } from "react-icons/Hi";
 
 export default function UserForm() {
     const navigate = useNavigate();
@@ -18,8 +18,24 @@ export default function UserForm() {
     });
     const [errors, setErrors] = useState(null);
     const [loading, setLoading] = useState(false);
-    const { setNotification } = useStateContext();
+    const { setAlerts } = useStateContext();
+const [selectedImage,setSlectedImage] = useState();
+const handleImageChange = (e) =>{
+     const file = e.target.files[0];
+    //  console.log(URL.createObjectURL(file));
+     file.preview=URL.createObjectURL(file);
+     setSlectedImage(file);
+    //  file.preview = URL.c
+    // const reader = new FileReader();
+    // reader.onloadend =()=>{
+    //     setSlectedImage(reader.result);
+      
+    // };
+    // if(file){
+    //     reader.readAsDataURL(file);
+    // }
 
+};
     if (id) {
         useEffect(() => {
             setLoading(true);
@@ -45,7 +61,11 @@ export default function UserForm() {
             await axiosClient
                 .put(`/admin/users/${id}`, user)
                 .then(() => {
-                    // setNotification("User was successfully updated");
+                    setAlerts({
+                        type: "info",
+                        message: "user was successfully updated",
+                        time: new Date(),
+                    });
                     navigate("/admin/users");
                 })
                 .catch((err) => {
@@ -69,7 +89,11 @@ export default function UserForm() {
             await axiosClient
                 .post("/admin/users", formdata)
                 .then(() => {
-                    // setNotification("User was successfully created");
+                    setAlerts({
+                        type: "info",
+                        message: "user was successfully updated",
+                        time: new Date(),
+                    });
                     navigate("/admin/users");
                 })
                 .catch((err) => {
@@ -120,18 +144,29 @@ export default function UserForm() {
                             }
                             placeholder="Role id"
                         />
-
-                        <input
+{selectedImage &&(
+    
+        <img src={selectedImage.preview} alt="" />
+    
+)}
+                        {/* <input
                             type="file"
                             id="file"
+                            
                             onChange={(ev) =>
                                 setUser({ ...user, image: ev.target.files[0] })
                             }
-                        />
-                        <label htmlFor="file">
-                            <HiOutlinePhotograph />
-                        </label>
-
+                        /> */}
+                        <input type="file" onChangeCapture={handleImageChange}
+                      
+                      onChange={(ev) =>
+                        setUser({ ...user, image: ev.target.files[0] })
+                    }
+                            />
+                         {/* <label htmlFor="file"  onChange={handleImageChange}>
+                        //     <HiOutlinePhotograph />
+                        // </label> */}
+                    
                         <input
                             type="password"
                             onChange={(ev) =>
@@ -156,12 +191,7 @@ export default function UserForm() {
                         >
                             Save
                         </button>
-                        <button
-                            className="btn btn-outline-success"
-                            style={{ width: "100px" }}
-                        >
-                            Save
-                        </button>
+                       
                     </form>
                 )}
             </div>

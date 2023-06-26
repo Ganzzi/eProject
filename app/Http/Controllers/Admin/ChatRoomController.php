@@ -41,6 +41,6 @@ class ChatRoomController extends Controller
         // Delete the chat room
         $room->delete();
 
-        return response()->json(['success' => true, 'message' => 'Chat room deleted successfully']);
+        return response()->json(['message' => 'Chatrooms deleted.']);
     }
 }
