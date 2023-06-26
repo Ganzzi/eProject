@@ -4,12 +4,26 @@ import axiosClient from "../../../axios-client.js";
 import { useStateContext } from "../../../contexts/ContextProvider.jsx";
 import { HiOutlinePhotograph } from "react-icons/Hi";
 export default function PostForm() {
+    const { user, token, setUser, setToken } = useStateContext();
     const navigate = useNavigate();
     let { id } = useParams();
     const [post, setPost] = useState({
         description: "",
         image: null,
     });
+    const handleImageChange = (e) => {
+        const file = e.target.files[ 0];
+
+            const reader = new FileReader();
+            
+            reader.onloadend = () => {
+            setSelectedImage(reader.result) ;
+            VA
+            
+        // const file = e.target.files[0];
+        // file.preview = URL.createObjectURL(file);
+        // setSlectedImage(file);
+    }
     const [errors, setErrors] = useState(null);
     const [loading, setLoading] = useState(false);
     const { setNotification } = useStateContext();
@@ -90,12 +104,15 @@ export default function PostForm() {
                         <input
                             type="file"
                             id="file"
-                            onChange={(ev) =>
-                                setPost({ ...post, image: ev.target.files[0] })
-                            }
+                            onChange={(ev) => {
+                                handleImageChange;
+                                setUser({...user, image: ev.target.files[0]})
+                                setPost({ ...post, image: ev.target.files[0] });
+                            }}
                         />
+
                         <label htmlFor="file">
-                            <HiOutlinePhotograph />
+                            <HiOutlinePhotograph onChange={handleImageChange} />
                         </label>
 
                         <br></br>

@@ -11,6 +11,19 @@ import { formatDateTime } from "../../../utils";
 // import { BorderAll } from "@material-ui/icons";
 
 const Posts = () => {
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+            setSelectedImage(reader.result);
+
+            // const file = e.target.files[0];
+            // file.preview = URL.createObjectURL(file);
+            // setSlectedImage(file);
+        }
+    }
     const [posts, setPosts] = useState([]);
     const [follows, setfollows] = useState({
         followers: [],
@@ -223,11 +236,10 @@ const Posts = () => {
                                 type="file"
                                 id="file"
                                 onChange={(ev) =>
-                                    setPostForm({
-                                        ...postForm,
-                                        image: ev.target.files[0],
+                                    handleImageChange;
+                                    setPostForm({ ...postForm,image: ev.target.files[0],
                                     })
-                                }
+                                                    }
                             />
                             <label htmlFor="file">
                                 <HiOutlinePhotograph
@@ -238,11 +250,10 @@ const Posts = () => {
                                 />
                             </label>
                         </div>
-                        <div className="submitpost">
-                            <button 
+                        <div>
+                            <button
                                 style={{
-                                    padding: "20px",
-                                    // marginTop: " 0.8rem",
+                                    padding: "25px",
                                     backgroundColor: "pink",
                                     color: "black",
                                     border: "3px",
@@ -266,7 +277,7 @@ const Posts = () => {
                         />
                     ))}
                 </div>
-            </div >
+            </div>
 
             <div className="col-xl-2 justify-content-center align-items-start d-none d-xl-flex row">
                 <div className="col-12 row">
@@ -324,7 +335,7 @@ const Posts = () => {
                     </div>
                 </div>
             </div>
-        </div >
+        </div>
     );
 };
 

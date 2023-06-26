@@ -45,7 +45,23 @@ const CommentCard = ({ cmt, getPostData, onReply }) => {
             });
     };
 
-    const handleUpdateComment = async (id) => {};
+    const handleUpdateComment = async (id) => {
+
+        const commentUppdate = {
+            text: newComment?.text,
+            post: comment_commentor.id
+        }
+
+        try {
+            await axiosClient.put(`posts/${post.id}`, commentUppdate).then(async ({ data }) => {
+                await getPostData();
+                setIsUpdating(false)
+            });
+        } catch (error) {
+            console.log(error);
+        }
+
+    };
 
     return (
         <div className="card">
@@ -108,7 +124,10 @@ const CommentCard = ({ cmt, getPostData, onReply }) => {
                             type="text"
                             defaultValue={cmt.text}
                             onChange={(ev) => {
-                                setNewComment(ev.target.value);
+                                setNewComment({
+                                    ...newComment,
+                                    text: ev.target.value,
+                                });
                             }}
                         />
                         <button

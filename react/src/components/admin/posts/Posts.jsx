@@ -39,7 +39,7 @@ export default function Posts() {
             .catch(() => {
                 setLoading(false);
             });
-    };
+    };[]
 
     return (
         <div>

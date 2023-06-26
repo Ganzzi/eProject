@@ -3,6 +3,7 @@ import CommentCard from "./CommentCard";
 import { AiFillHeart } from "react-icons/ai";
 import { BiCommentDetail } from "react-icons/bi";
 import { TiDeleteOutline } from "react-icons/Ti";
+import {RiDeleteBinLine  } from "react-icons/Ri";
 import { MdOutlineCancel, MdOutlineSettingsSuggest } from "react-icons/md";
 import { formatDateTime } from "../../../utils";
 import axiosClient from "../../../axios-client";
@@ -23,6 +24,18 @@ const PostCard = ({ post, post_creator, getPostData }) => {
     const [newPostForm, setNewPostForm] = useState({
         description: "",
     });
+    
+    const DeletePost=(post_id)=>{
+        if (!window.confirm("Are you sure you want to delete this post?")) {
+            return;
+        }
+        axiosClient.delete(`/home/PostCard/${post_id}`).then(() => {
+            setAlerts({
+               
+            });
+            getPostData();
+        });
+    }
 
     useEffect(() => {
         const checkRepliedCmt = () => {
@@ -71,7 +84,6 @@ const PostCard = ({ post, post_creator, getPostData }) => {
         const formData = new FormData();
         formData.append("post_id", post.id);
         formData.append("text", comment);
-        // formData.append("commentor_id", post_creator.id);
         formData.append("reply_to", repliedId);
 
         await axiosClient.post("/comments", formData).then(async ({ data }) => {
@@ -156,6 +168,10 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                         {/* update post button */}
                         {user.id === post.creator_id && (
                             <>
+                             <RiDeleteBinLine size={30}
+                              onClick={() => DeletePost(p.id)}
+                             
+                             />
                                 {isUpdating ? (
                                     <MdOutlineCancel
                                         size={40}
@@ -169,8 +185,10 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                                         onClick={() => {
                                             setIsUpdating(true);
                                         }}
-                                    />
-                                )}
+                                    />      
+                                )
+                                }
+                                {/* <RiDeleteBinLine/> */}
                             </>
                         )}
                     </div>
@@ -278,11 +296,7 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                                 placeholder="Add a comment"
                                 value={comment}
                                 onChange={handleCommentChange}
-                                // onChange={(e) =>{
-                                //     setComment(e.target.value);
-                                //     console.log(description);
-                                // }}
-                            />
+                               />
                         </div>
                         <button
                             type="submit"
