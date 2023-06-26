@@ -52,8 +52,8 @@ const CommentCard = ({ cmt, getPostData, onReply }) =>
             });
     };
 
-<<<<<<< HEAD
-    const handleUpdateComment = async () => {
+
+    const handleUpdateComment = async (id) => {
 
         const commentUppdate = {
             text: newComment,
@@ -79,9 +79,9 @@ const CommentCard = ({ cmt, getPostData, onReply }) =>
 
         })
     }
-=======
-    const handleUpdateComment = async (id) => { };
->>>>>>> a514bb2ffde93ad26a7f35e5bc21f1b4714e92bb
+
+    // const handleUpdateComment = async (id) => { };
+
 
     return (
         <div className="card">
@@ -152,26 +152,26 @@ const CommentCard = ({ cmt, getPostData, onReply }) =>
                         <input
                             type="text"
                             defaultValue={cmt.text}
-<<<<<<< HEAD
+
                             onChange={(ev) => {
                                 setNewComment(
                                     ev.target.value);
                             }}
                         />
-                        <button
+                        {/* <button
                             onClick={() => {
                                 handleUpdateComment();
-=======
+
                             onChange={(ev) =>
                             {
                                 setNewComment(ev.target.value);
                             }}
-                        />
+                        /> */}
                         <button
                             onClick={() =>
                             {
                                 handleUpdateComment(cmt.id);
->>>>>>> a514bb2ffde93ad26a7f35e5bc21f1b4714e92bb
+
                             }}
                         >
                             update
@@ -206,14 +206,14 @@ const CommentCard = ({ cmt, getPostData, onReply }) =>
                 <div className="replied-comments">
                     {cmt.replierComments.map((cmt, index) => (
                         <RepliedCommentCard
-<<<<<<< HEAD
+
                         getPostData={getPostData}
-=======
+
                             onUpdate={(id) =>
                             {
                                 handleUpdateComment(id);
                             }}
->>>>>>> a514bb2ffde93ad26a7f35e5bc21f1b4714e92bb
+
                             cmt={cmt}
                             key={index}
                         />
