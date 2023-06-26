@@ -19,7 +19,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with('likes', 'comments.likes')->get();
+        $posts = Post::with('likes', 'comments.likes')->where('lock', 0)->get();
 
         return response()->json($posts->map(function ($_post) {
 
@@ -60,9 +60,7 @@ class PostController extends Controller
 
     public function getPostProfile($userid)
     {
-        // return response()->json('dmm');
-
-        $posts = Post::with('likes', 'comments.likes')->where('creator_id', $userid)->get();
+        $posts = Post::with('likes', 'comments.likes')->where('creator_id', $userid)->where('lock', 0)->get();
 
         return response()->json($posts->map(function ($_post) {
 
