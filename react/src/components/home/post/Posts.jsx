@@ -64,9 +64,15 @@ const Posts = () => {
         formData.append("description", description);
 
         await axiosClient.post("/posts", formData).then(async ({ data }) => {
+            setPostForm({
+                image: null,
+            })
+            setdescription('')
             // console.log(data);
             await getPostData();
         });
+
+        
     };
 
     return (
@@ -204,6 +210,7 @@ const Posts = () => {
                     >
                         <div className="d-flex col-12">
                             <input
+                            value={description}
                                 style={{
                                     display: "flex",
                                     width: "100%",

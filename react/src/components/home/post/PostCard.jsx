@@ -11,7 +11,6 @@ import { useStateContext } from "../../../contexts/ContextProvider";
 import { BiCommentDetail } from "react-icons/Bi";
 
 const PostCard = ({ post, post_creator, getPostData }) => {
-    console.log(post);
     const { user } = useStateContext();
     const [comments, setcomments] = useState([]);
     const [isReplying, setIsReplying] = useState(false);
@@ -24,15 +23,19 @@ const PostCard = ({ post, post_creator, getPostData }) => {
         description: "",
     });
     
-    const DeletePost=(post_id)=>{
+    const DeletePost=async ()=>{
         if (!window.confirm("Are you sure you want to delete this post?")) {
             return;
         }
-        axiosClient.delete(`/home/PostCard/${post_id}`).then(() => {
-            setAlerts({
+        await axiosClient.delete(`/admin/posts/${post.id}`).then(async() => {
+            console.log('deleted');
+            // setAlerts({
                
-            });
-            getPostData();
+            // });
+
+            setIsUpdating(false);
+
+            await getPostData();
         });
     }
 
@@ -80,6 +83,7 @@ const PostCard = ({ post, post_creator, getPostData }) => {
         // Perform comment submission logic
         setComment("");
         setRepliedId(null);
+        setIsReplying(false)
         const formData = new FormData();
         formData.append("post_id", post.id);
         formData.append("text", comment);
@@ -169,17 +173,20 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                         {/* update post button */}
                         {user.id === post.creator_id && (
                             <>
-                             <RiDeleteBinLine size={30}
-                              onClick={() => DeletePost(p.id)}
                              
-                             />
                                 {isUpdating ? (
+                                    <>
+                                    <RiDeleteBinLine size={30}
+                              onClick={() => DeletePost(post.id)}
+
+                             />
                                     <MdOutlineCancel
                                         size={40}
                                         onClick={() => {
                                             setIsUpdating(false);
                                         }}
-                                    />
+                                        />
+                                        </>
                                 ) : (
                                     <MdOutlineSettingsSuggest
                                         size={40}
@@ -271,7 +278,7 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                                             color: "gray",
                                         }}
                                     >
-                                        reply to
+                                        reply to {}
                                     </p>
                                     <p
                                         className="absolute-text"

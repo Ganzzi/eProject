@@ -14,34 +14,34 @@ input {
     }
 }
 
-// [type="file"] {
-//     display: none;
-//     height: 0;
-//     overflow: hidden;
-//     width: 0;
-// }
+[type="file"] {
+    display: none;
+    height: 0;
+    overflow: hidden;
+    width: 0;
+}
 
-[type="file"] + label {
-//     // background: #11fa95;
-//     // border: none;
-//     // border-radius: 5px;
-//     // color: #fff;
-//     // cursor: pointer;
-//     // display: inline-block;
-//     // font-family: "Rubik", sans-serif;
-//     // font-size: inherit;
-//     // font-weight: 500;
-    margin-bottom: 0.5rem;
-    margin-top: 0.5rem;
+[type="file"] +label {
+    // background: #11fa95;
+    // border: none;
+    // border-radius: 5px;
+    // color: #fff;
+    // cursor: pointer;
+    // display: inline-block;
+    // font-family: "Rubik", sans-serif;
+    // font-size: inherit;
+    // font-weight: 500;
+    // margin-bottom: 0.5rem;
+    // margin-top: 0.5rem;
 //     // outline: none;
     padding: 0.5rem;
     position: relative;
     transition: all 0.3s;
     vertical-align: middle;
 
-//     // &:hover {
-//     //     background-color: darken(#f15d22, 10%);
-//     // }
+    &:hover {
+        background-color: darken(#f15d22, 10%);
+    }
 
     &.btn-2 {
         background-color: #99c793;

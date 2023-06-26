@@ -6,6 +6,7 @@ import axiosClient from "../../../axios-client";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import { MdOutlineCancel, MdOutlineSettingsSuggest } from "react-icons/md";
 import RepliedCommentCard from "./RepliedCommentCard";
+import { RiDeleteBinLine } from "react-icons/Ri";
 
 const CommentCard = ({ cmt, getPostData, onReply }) => {
     const { user } = useStateContext();
@@ -44,15 +45,15 @@ const CommentCard = ({ cmt, getPostData, onReply }) => {
             });
     };
 
-    const handleUpdateComment = async (id) => {
+    const handleUpdateComment = async () => {
 
         const commentUppdate = {
-            text: newComment?.text,
-            post: comment_commentor.id
+            text: newComment,
+            // post: comment_commentor.id
         }
 
         try {
-            await axiosClient.put(`posts/${commentor.id}`, commentUppdate).then(async ({ data }) => {
+            await axiosClient.put(`comments/${cmt.id}`, commentUppdate).then(async ({ data }) => {
                 await getPostData();
                 setIsUpdating(false)
             });
@@ -61,6 +62,15 @@ const CommentCard = ({ cmt, getPostData, onReply }) => {
         }
 
     };
+
+    const deleteComment = async () => {
+        await axiosClient.delete(`comments/${cmt.id}`).then(async({data}) => {
+            console.log('deleted');
+
+            await getPostData();
+
+        })
+    }
 
     return (
         <div className="card">
@@ -100,12 +110,18 @@ const CommentCard = ({ cmt, getPostData, onReply }) => {
                     {user.id === cmt.commentor_id && (
                         <>
                             {isUpdating ? (
+                                <>
+                                <RiDeleteBinLine size={30}
+                              onClick={() => deleteComment()}
+
+                             />
                                 <MdOutlineCancel
                                     size={20}
                                     onClick={() => {
                                         setIsUpdating(false);
                                     }}
-                                />
+                                    />
+                                    </>
                             ) : (
                                 <MdOutlineSettingsSuggest
                                     size={20}
@@ -123,15 +139,13 @@ const CommentCard = ({ cmt, getPostData, onReply }) => {
                             type="text"
                             defaultValue={cmt.text}
                             onChange={(ev) => {
-                                setNewComment({
-                                    ...newComment,
-                                    text: ev.target.value,
-                                });
+                                setNewComment(
+                                    ev.target.value);
                             }}
                         />
                         <button
                             onClick={() => {
-                                handleUpdateComment(cmt.id);
+                                handleUpdateComment();
                             }}
                         >
                             update
@@ -165,9 +179,7 @@ const CommentCard = ({ cmt, getPostData, onReply }) => {
                 <div className="replied-comments">
                     {cmt.replierComments.map((cmt, index) => (
                         <RepliedCommentCard
-                            onUpdate={(id) => {
-                                handleUpdateComment(id);
-                            }}
+                        getPostData={getPostData}
                             cmt={cmt}
                             key={index}
                         />
