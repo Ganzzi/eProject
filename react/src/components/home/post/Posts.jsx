@@ -64,10 +64,21 @@ const Posts = () => {
         formData.append("description", description);
 
         await axiosClient.post("/posts", formData).then(async ({ data }) => {
-            // console.log(data);
-            await getPostData();
-        });
-    };
+            setPostForm({
+                image: null,
+            })
+            setdescription('')
+
+            await axiosClient.post("/posts", formData).then(async ({ data }) => {
+
+                // console.log(data);
+                await getPostData();
+            });
+        })
+
+
+    }
+
 
     return (
         <div style={{}} className="row">
@@ -91,7 +102,7 @@ const Posts = () => {
                     >
                         <img
                             src={
-                                "http://127.0.0.1:8000/api/images/" + user.image
+                                "http://127.0.0.1:8001/api/images/" + user.image
                             }
                             alt=""
                             style={{
@@ -204,6 +215,7 @@ const Posts = () => {
                     >
                         <div className="d-flex col-12">
                             <input
+                                value={description}
                                 style={{
                                     display: "flex",
                                     width: "100%",
@@ -238,11 +250,14 @@ const Posts = () => {
                                 />
                             </label>
                         </div>
+
+
+
                         <div className="submitpost">
-                            <button 
+
+                            <button
                                 style={{
-                                    padding: "20px",
-                                    // marginTop: " 0.8rem",
+                                    padding: "25px",
                                     backgroundColor: "pink",
                                     color: "black",
                                     border: "3px",
@@ -266,7 +281,7 @@ const Posts = () => {
                         />
                     ))}
                 </div>
-            </div >
+            </div>
 
             <div className="col-xl-2 justify-content-center align-items-start d-none d-xl-flex row">
                 <div className="col-12 row">
@@ -324,8 +339,10 @@ const Posts = () => {
                     </div>
                 </div>
             </div>
-        </div >
+        </div>
     );
 };
+
+
 
 export default Posts;

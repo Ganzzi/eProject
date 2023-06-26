@@ -24,9 +24,15 @@ const Message = () =>
     useEffect(() =>
     {
         getChatroom();
-    }, []);
 
-    console.log(messagingTo);
+        const intervalId = setInterval(getChatroom, 5000);
+
+        // Clean up the interval on component unmount
+        return () =>
+        {
+            clearInterval(intervalId);
+        };
+    }, []);
 
     const getChatroom = async () =>
     {
@@ -118,7 +124,7 @@ const Message = () =>
                                             <div className="">
                                                 <img
                                                     src={
-                                                        "http://127.0.0.1:8000/api/images/" +
+                                                        "http://127.0.0.1:8001/api/images/" +
                                                         participant.image
                                                     }
                                                     width={80}

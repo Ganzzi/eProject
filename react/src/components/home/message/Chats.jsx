@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import axiosClient from "../../../axios-client";
 import { MdReply } from "react-icons/md";
-import { AiFillLike } from "react-icons/ai";
-import React from 'react';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { AiFillLike, AiOutlinePaperClip } from "react-icons/ai";
+import React from "react";
 // import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
-
 
 const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
 {
@@ -125,7 +123,7 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
                     <img
                         className="user-image"
                         src={
-                            "http://127.0.0.1:8000/api/images/" +
+                            "http://127.0.0.1:8001/api/images/" +
                             messagingTo.image
                         }
                         width={40}
@@ -156,7 +154,7 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
                                 <img
                                     className="user-image"
                                     src={
-                                        "http://127.0.0.1:8000/api/images/" +
+                                        "http://127.0.0.1:8001/api/images/" +
                                         messagingTo.image
                                     }
                                     width={30}
@@ -307,13 +305,20 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
                 <form action="" className="d-flex" onSubmit={handleCreateChat}>
                     <div className="message-input-container">
                         <div className="file-upload-container">
-                            <input type="file" id="file-input" className="file-input"
+                            <input
+                                type="file"
+                                id="file-input"
+                                className="file-input"
                                 onChange={(ev) =>
                                 {
-                                    setnewChat({ ...newChat, image: ev.target.files[0] });
-                                }} />
+                                    setnewChat({
+                                        ...newChat,
+                                        image: ev.target.files[0],
+                                    });
+                                }}
+                            />
                             <label htmlFor="file-input">
-                                <FontAwesomeIcon icon={faPaperclip} />
+                                <AiOutlinePaperClip size={24} />
                             </label>
                         </div>
                         <input
@@ -323,7 +328,10 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
                             value={newChat.text}
                             onChange={(ev) =>
                             {
-                                setnewChat({ ...newChat, text: ev.target.value });
+                                setnewChat({
+                                    ...newChat,
+                                    text: ev.target.value,
+                                });
                             }}
                         />
                         <button type="submig" className="btn btn-primary">
@@ -342,12 +350,11 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
                           }
                           
                           .input-type-message {
-                            flex-grow: 1;
+                            width: 50%;
+                            flex: 1;
                             border: none;
                             outline: none;
                             padding: 6px;
-                            padding-left: 400px;
-                            padding-right: 400px;
                           }
                           
                           .file-upload-container {
@@ -377,7 +384,6 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
                           }                          
                         `}
                     </style>
-
                 </form>
             </div>
         </main>

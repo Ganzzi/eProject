@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
 import CommentCard from "./CommentCard";
 import { AiFillHeart } from "react-icons/ai";
-// import { BiCommentDetail } from "react-icons/bi";
 import { TiDeleteOutline } from "react-icons/Ti";
+import { RiDeleteBinLine } from "react-icons/Ri";
 import { MdOutlineCancel, MdOutlineSettingsSuggest } from "react-icons/md";
 import { formatDateTime } from "../../../utils";
 import axiosClient from "../../../axios-client";
 import { useNavigate } from "react-router-dom";
 import { useStateContext } from "../../../contexts/ContextProvider";
-// import UpdatePostModal from "./UpdatePostModal";
+import { BiCommentDetail } from "react-icons/Bi";
+
 
 const PostCard = ({ post, post_creator, getPostData }) => {
     console.log(post);
+
     const { user } = useStateContext();
     const [comments, setcomments] = useState([]);
     const [isReplying, setIsReplying] = useState(false);
@@ -23,6 +25,22 @@ const PostCard = ({ post, post_creator, getPostData }) => {
     const [newPostForm, setNewPostForm] = useState({
         description: "",
     });
+
+    const DeletePost = async () => {
+        if (!window.confirm("Are you sure you want to delete this post?")) {
+            return;
+        }
+        await axiosClient.delete(`/admin/posts/${post.id}`).then(async () => {
+            console.log('deleted');
+            // setAlerts({
+
+            // });
+
+            setIsUpdating(false);
+
+            await getPostData();
+        });
+    }
 
     useEffect(() => {
         const checkRepliedCmt = () => {
@@ -68,10 +86,10 @@ const PostCard = ({ post, post_creator, getPostData }) => {
         // Perform comment submission logic
         setComment("");
         setRepliedId(null);
+        setIsReplying(false)
         const formData = new FormData();
         formData.append("post_id", post.id);
         formData.append("text", comment);
-        // formData.append("commentor_id", post_creator.id);
         formData.append("reply_to", repliedId);
 
         await axiosClient.post("/comments", formData).then(async ({ data }) => {
@@ -109,17 +127,19 @@ const PostCard = ({ post, post_creator, getPostData }) => {
     const handleUpdatePost = async () => {
         const postUppdate = {
             description: newPostForm?.description,
-            creator_id: post_creator.id
+            creator_id: post_creator.id,
+        };
+
+        try {
+            await axiosClient
+                .put(`posts/${post.id}`, postUppdate)
+                .then(async ({ data }) => {
+                    await getPostData();
+                    setIsUpdating(false);
+                });
+        } catch (error) {
+            console.log(error);
         }
-    
-       try {
-        await axiosClient.put(`posts/${post.id}`, postUppdate).then(async ({ data }) => {
-            await getPostData();
-            setIsUpdating(false)
-        });
-       } catch (error) {
-        console.log(error);
-       }
     };
 
     return (
@@ -129,7 +149,7 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                     <div className="d-flex align-items-center">
                         <img
                             src={
-                                "http://127.0.0.1:8000/api/images/" +
+                                "http://127.0.0.1:8001/api/images/" +
                                 post_creator.image
                             }
                             alt="Creator Image"
@@ -156,13 +176,20 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                         {/* update post button */}
                         {user.id === post.creator_id && (
                             <>
+
                                 {isUpdating ? (
-                                    <MdOutlineCancel
-                                        size={40}
-                                        onClick={() => {
-                                            setIsUpdating(false);
-                                        }}
-                                    />
+                                    <>
+                                        <RiDeleteBinLine size={30}
+                                            onClick={() => DeletePost(post.id)}
+
+                                        />
+                                        <MdOutlineCancel
+                                            size={40}
+                                            onClick={() => {
+                                                setIsUpdating(false);
+                                            }}
+                                        />
+                                    </>
                                 ) : (
                                     <MdOutlineSettingsSuggest
                                         size={40}
@@ -170,7 +197,9 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                                             setIsUpdating(true);
                                         }}
                                     />
-                                )}
+                                )
+                                }
+                                {/* <RiDeleteBinLine/> */}
                             </>
                         )}
                     </div>
@@ -252,7 +281,7 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                                             color: "gray",
                                         }}
                                     >
-                                        reply to
+                                        reply to { }
                                     </p>
                                     <p
                                         className="absolute-text"
@@ -278,11 +307,14 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                                 placeholder="Add a comment"
                                 value={comment}
                                 onChange={handleCommentChange}
-                                // onChange={(e) =>{
-                                //     setComment(e.target.value);
-                                //     console.log(description);
-                                // }}
+
+
+                            // onChange={(e) =>{
+                            //     setComment(e.target.value);
+                            //     console.log(description);
+                            // }}
                             />
+
                         </div>
                         <button
                             type="submit"
