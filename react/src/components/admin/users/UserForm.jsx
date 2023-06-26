@@ -19,23 +19,23 @@ export default function UserForm() {
     const [errors, setErrors] = useState(null);
     const [loading, setLoading] = useState(false);
     const { setAlerts } = useStateContext();
-const [selectedImage,setSlectedImage] = useState();
-const handleImageChange = (e) =>{
-     const file = e.target.files[0];
-    //  console.log(URL.createObjectURL(file));
-     file.preview=URL.createObjectURL(file);
-     setSlectedImage(file);
-    //  file.preview = URL.c
-    // const reader = new FileReader();
-    // reader.onloadend =()=>{
-    //     setSlectedImage(reader.result);
-      
-    // };
-    // if(file){
-    //     reader.readAsDataURL(file);
-    // }
+    const [selectedImage, setSlectedImage] = useState();
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        //  console.log(URL.createObjectURL(file));
+        file.preview = URL.createObjectURL(file);
+        setSlectedImage(file);
+        //  file.preview = URL.c
+        // const reader = new FileReader();
+        // reader.onloadend =()=>{
+        //     setSlectedImage(reader.result);
 
-};
+        // };
+        // if(file){
+        //     reader.readAsDataURL(file);
+        // }
+
+    };
     if (id) {
         useEffect(() => {
             setLoading(true);
@@ -144,11 +144,11 @@ const handleImageChange = (e) =>{
                             }
                             placeholder="Role id"
                         />
-{selectedImage &&(
-    
-        <img src={selectedImage.preview} alt="" />
-    
-)}
+                        {selectedImage && (
+
+                            <img src={selectedImage.preview} alt="" />
+
+                        )}
                         {/* <input
                             type="file"
                             id="file"
@@ -158,15 +158,15 @@ const handleImageChange = (e) =>{
                             }
                         /> */}
                         <input type="file" onChangeCapture={handleImageChange}
-                      
-                      onChange={(ev) =>
-                        setUser({ ...user, image: ev.target.files[0] })
-                    }
-                            />
-                         {/* <label htmlFor="file"  onChange={handleImageChange}>
+
+                            onChange={(ev) =>
+                                setUser({ ...user, image: ev.target.files[0] })
+                            }
+                        />
+                        {/* <label htmlFor="file"  onChange={handleImageChange}>
                         //     <HiOutlinePhotograph />
                         // </label> */}
-                    
+
                         <input
                             type="password"
                             onChange={(ev) =>
@@ -191,7 +191,7 @@ const handleImageChange = (e) =>{
                         >
                             Save
                         </button>
-                       
+
                     </form>
                 )}
             </div>

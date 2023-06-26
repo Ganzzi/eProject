@@ -342,6 +342,5 @@ const PostCard = ({ post, post_creator, getPostData }) => {
             </div>
         </div>
     );
-};
-
+}
 export default PostCard;

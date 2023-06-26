@@ -78,6 +78,22 @@ const Posts = () => {
 
 
     }
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        //  console.log(URL.createObjectURL(file));
+        file.preview = URL.createObjectURL(file);
+        setSlectedImage(file);
+        //  file.preview = URL.c
+        // const reader = new FileReader();
+        // reader.onloadend =()=>{
+        //     setSlectedImage(reader.result);
+
+        // };
+        // if(file){
+        //     reader.readAsDataURL(file);
+        // }
+
+    };
 
 
     return (
@@ -203,17 +219,20 @@ const Posts = () => {
                         <p>{user.name}</p>
                     </div>
                     <form
-                        className="col-9 d-flex"
-                        style={{
-                            display: "flex",
-                            flexDirection: "col",
-                            alignItems: "flex-start",
-                            marginBottom: "30px",
-                            padding: "10px",
-                        }}
+                        className="col-12 d-flex"
+                        // style={{
+                        //     display: "flex",
+                        //     flexDirection: "col",
+                        //     alignItems: "flex-start",
+                        //     marginBottom: "30px",
+                        //     padding: "10px",
+                        // }}
                         onSubmit={handleCreatePost}
                     >
-                        <div className="d-flex col-12">
+                        <div className="d-flex col-9"
+
+                        >
+
                             <input
                                 value={description}
                                 style={{
@@ -230,30 +249,41 @@ const Posts = () => {
                                     setdescription(ev.target.value);
                                 }}
                             />
-
+                        </div >
+                        <div className="d-fex"
+                            style={{
+                                display: "none",
+                                height: 0,
+                                overflow: "hidden",
+                                width: 0,
+                            }}
+                        >
                             <input
                                 type="file"
                                 id="file"
+                                onChangeCapture={handleImageChange}
                                 onChange={(ev) =>
                                     setPostForm({
                                         ...postForm,
                                         image: ev.target.files[0],
                                     })
                                 }
-                            />
-                            <label htmlFor="file">
+                            /></div>
+                        <div>
+                            <label htmlFor="file" >
                                 <HiOutlinePhotograph
                                     width={100}
                                     height={1000}
                                     size={40}
                                     color="black"
+                                    onChangeCapture={handleImageChange}
+                                    onChange={(ev) =>
+                                        setPosts({ ...posts, image: ev.target.files[0] })
+                                    }
                                 />
                             </label>
                         </div>
-
-
-
-                        <div className="submitpost">
+                        <div className="d-flex ">
 
                             <button
                                 style={{
@@ -341,7 +371,7 @@ const Posts = () => {
             </div>
         </div>
     );
-};
+}
 
 
 

@@ -60,22 +60,22 @@ class CommentController extends Controller
 
 
 
-        // if (!$replyToComment && $receiverId !== $user->id) {
-        //     $notificationController = new NotificationController();
-        //     $notificationController->store($receiverId, 'Comment', 'A new comment has been posted on your post.');
-        // }
+        if (!$replyToComment && $receiverId !== $user->id) {
+            $notificationController = new NotificationController();
+            $notificationController->store($receiverId, 'Comment', 'A new comment has been posted on your post.');
+        }
 
-        // // Check if the comment is a reply and get the original comment's owner
-        // $originalCommentOwner = null;
-        // if ($replyToComment) {
-        //     $originalCommentOwner = $replyToComment->commentor_id;
-        // }
+        // Check if the comment is a reply and get the original comment's owner
+        $originalCommentOwner = null;
+        if ($replyToComment) {
+            $originalCommentOwner = $replyToComment->commentor_id;
+        }
 
-        // // Send notification to the original comment's owner if available
-        // if ($originalCommentOwner && $originalCommentOwner !== $user->id && $originalCommentOwner !== $receiverId) {
-        //     $notificationController = new NotificationController();
-        //     $notificationController->store($originalCommentOwner, 'Comment', 'A new comment has been posted on your comment.');
-        // }
+        // Send notification to the original comment's owner if available
+        if ($originalCommentOwner && $originalCommentOwner !== $user->id && $originalCommentOwner !== $receiverId) {
+            $notificationController = new NotificationController();
+            $notificationController->store($originalCommentOwner, 'Comment', 'A new comment has been posted on your comment.');
+        }
 
         // Return a response or redirect as needed
         return response()->json(['comment' => $comment, 'message' => 'Comment created successfully']);
