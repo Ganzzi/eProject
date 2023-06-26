@@ -2,12 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Link, Navigate, Outlet } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client";
-import { BiUser} from "react-icons/Bi";
-import { BsFillChatDotsFill,BsFillFilePostFill } from "react-icons/Bs";
-import { BiLogOut} from "react-icons/Bi";
+import { BiUser, BiLogOut } from "react-icons/Bi";
+import { BsFillChatDotsFill, BsFillFilePostFill } from "react-icons/Bs";
 
 export default function dashboard() {
-    const { user, token, setUser, setToken, alerts,showAlert } =
+    const { user, token, setUser, setToken, alerts, showAlert } =
         useStateContext();
     const [userDataFetched, setUserDataFetched] = useState(false);
 
@@ -45,38 +44,71 @@ export default function dashboard() {
                         paddingLeft: "0px",
                     }}
                 >
-                    <img
-                        src={"http://127.0.0.1:8000/api/images/" + user.image}
-                        alt=""
-                        style={{ width: "80px", height: "80px" }}
-                    />{" "}
+                    {user?.image && (
+                        <img
+                            src={
+                                "http://127.0.0.1:8000/api/images/" + user.image
+                            }
+                            alt=""
+                            style={{ width: "80px", height: "80px" }}
+                        />
+                    )}
                     ADMIN
                 </div>
                 <div></div>
                 <br />
-                { <div class="w3-row">
-                    
-                    <div className="w3-col" style={{ width: "100%" 
-                ,border:"solid thin black",borderRadius:"3rem"
-                }}>
-                   
-                        <Link to={"/admin/users"}> <BiUser size={30} color="black" /> user</Link></div>
-<br />
-                    <div className="w3-col"  style={{ width: "100%" 
-                ,border:"solid thin black",borderRadius:"3rem"
-                }}><Link to={"/admin/chatrooms"}><BsFillChatDotsFill size={30} color="black"/>Chat</Link></div>
-                <br />
-                    <div className="w3-col"  style={{ width: "100%" 
-                ,border:"solid thin black",borderRadius:"3rem"
-                }}><Link to={"/admin/posts"}><BsFillFilePostFill size={30} color="black"/>Posts</Link></div>
-                </div> }
+                {
+                    <div class="w3-row">
+                        <div
+                            className="w3-col"
+                            style={{
+                                width: "100%",
+                                border: "solid thin black",
+                                borderRadius: "3rem",
+                            }}
+                        >
+                            <Link to={"/admin/users"}>
+                                {" "}
+                                <BiUser size={30} color="black" /> user
+                            </Link>
+                        </div>
+                        <br />
+                        <div
+                            className="w3-col"
+                            style={{
+                                width: "100%",
+                                border: "solid thin black",
+                                borderRadius: "3rem",
+                            }}
+                        >
+                            <Link to={"/admin/chatrooms"}>
+                                <BsFillChatDotsFill size={30} color="black" />
+                                Chat
+                            </Link>
+                        </div>
+                        <br />
+                        <div
+                            className="w3-col"
+                            style={{
+                                width: "100%",
+                                border: "solid thin black",
+                                borderRadius: "3rem",
+                            }}
+                        >
+                            <Link to={"/admin/posts"}>
+                                <BsFillFilePostFill size={30} color="black" />
+                                Posts
+                            </Link>
+                        </div>
+                    </div>
+                }
             </aside>
             <div className="container" style={{}}>
                 <div id="head">
                     <header className="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
                         <a className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
                             <svg className="bi me-2" width="80" height="32">
-                                <use xlink:href="#bootstrap" />
+                                <use xlinkHref="#bootstrap" />
                             </svg>
                             <span
                                 className="fs-2"
@@ -91,11 +123,11 @@ export default function dashboard() {
                                 spaceshare
                             </span>
                         </a>
-                        <ul class="nav nav-pills">
-                            <li class="nav-item">
+                        <ul className="nav nav-pills">
+                            <li className="nav-item">
                                 <a
                                     href="#"
-                                    class="nav-link active"
+                                    className="nav-link active"
                                     aria-current="page"
                                     style={{
                                         border: "solid thin black",

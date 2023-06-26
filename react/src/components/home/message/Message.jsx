@@ -5,8 +5,7 @@ import { useLocation } from "react-router-dom";
 // import { ListGroup } from "react-bootstrap";
 import Chats from "./Chats";
 
-const Message = () =>
-{
+const Message = () => {
     const { user } = useStateContext();
     const location = useLocation();
 
@@ -21,31 +20,30 @@ const Message = () =>
     });
     const [chatRoomId, setChatRoomId] = useState(null);
 
-    useEffect(() =>
-    {
+    useEffect(() => {
         getChatroom();
+
+        const intervalId = setInterval(getChatroom, 5000);
+
+        // Clean up the interval on component unmount
+        return () => {
+            clearInterval(intervalId);
+        };
     }, []);
 
-    console.log(messagingTo);
-
-    const getChatroom = async () =>
-    {
+    const getChatroom = async () => {
         await axiosClient
             .get("/chatrooms")
-            .then(({ data }) =>
-            {
+            .then(({ data }) => {
                 let _selectedRoom = -1;
 
-                outerLoop: for (let i = 0; i < data.length; i++)
-                {
-                    for (let j = 0; j < data[i].participants.length; j++)
-                    {
+                outerLoop: for (let i = 0; i < data.length; i++) {
+                    for (let j = 0; j < data[i].participants.length; j++) {
                         // console.log(i);
                         if (
                             data[i].participants[j].paticipator_id ==
                             location.state?.id
-                        )
-                        {
+                        ) {
                             console.log(data[i].participants[j]);
                             _selectedRoom = i;
                             setSelectedRoom(i);
@@ -64,7 +62,7 @@ const Message = () =>
                 setChatrooms(data);
                 setChatRoomId(data[_selectedRoom].id);
             })
-            .catch(() => { });
+            .catch(() => {});
     };
 
     return (
@@ -78,21 +76,19 @@ const Message = () =>
                         <li
                             // <ListGroup.Item
                             key={index}
-                            className={`list-group-item ${index === selectedRoom ? "active" : ""
-                                }`}
-                            onClick={() =>
-                            {
+                            className={`list-group-item ${
+                                index === selectedRoom ? "active" : ""
+                            }`}
+                            onClick={() => {
                                 for (
                                     let i = 0;
                                     i < room.participants.length;
                                     i++
-                                )
-                                {
+                                ) {
                                     if (
                                         room.participants[i].paticipator_id !=
                                         user.id
-                                    )
-                                    {
+                                    ) {
                                         setMessagingTo({
                                             id: room.participants[i]
                                                 .paticipator_id,
@@ -106,10 +102,8 @@ const Message = () =>
                                 setChatRoomId(room.id);
                             }}
                         >
-                            {room?.participants.map((participant, i) =>
-                            {
-                                if (user.id !== participant.paticipator_id)
-                                {
+                            {room?.participants.map((participant, i) => {
+                                if (user.id !== participant.paticipator_id) {
                                     return (
                                         <div
                                             className="d-flex justify-content-start flex-row items-center bg-gray"

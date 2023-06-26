@@ -45,7 +45,18 @@ const UpdateProfileModal = ({ closeModal, profileContent, onUpdate }) => {
                         }}
                     >
                         <div>
-                            {!profile.image && (
+                            {profile.image ? (
+                                <img
+                                    src={URL.createObjectURL(profile.image)}
+                                    alt=""
+                                    style={{
+                                        width: 200,
+                                        height: 200,
+                                        borderRadius: 200,
+                                    }}
+                                    className="my-2"
+                                />
+                            ) : (
                                 <img
                                     src={
                                         "http://127.0.0.1:8000/api/images/" +
@@ -78,12 +89,12 @@ const UpdateProfileModal = ({ closeModal, profileContent, onUpdate }) => {
                                 className="form-control"
                                 id="image"
                                 accept="image/*"
-                                onChange={(e) =>
+                                onChange={(e) => {
                                     setProfile({
                                         ...profile,
                                         image: e.target.files[0],
-                                    })
-                                }
+                                    });
+                                }}
                                 hidden
                             />
                         </div>

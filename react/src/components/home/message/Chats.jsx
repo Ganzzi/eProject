@@ -1,14 +1,11 @@
 import { useEffect, useState } from "react";
 import axiosClient from "../../../axios-client";
 import { MdReply } from "react-icons/md";
-import { AiFillLike } from "react-icons/ai";
-import React from 'react';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { AiFillLike, AiOutlinePaperClip } from "react-icons/ai";
+import React from "react";
 // import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
 
-
-const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
-{
+const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
     const [chatData, setChatData] = useState([]);
     const [newChat, setnewChat] = useState({
         image: null,
@@ -17,12 +14,10 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
     });
     const [repliedText, setRepliedText] = useState("");
 
-    const handleCreateChat = async (ev) =>
-    {
+    const handleCreateChat = async (ev) => {
         ev.preventDefault();
 
-        if (chatRoomId == null)
-        {
+        if (chatRoomId == null) {
             const data = {
                 user_id: currentUser.id,
                 user_id2: messagingTo.id,
@@ -31,8 +26,7 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
 
             await axiosClient
                 .post("/chatrooms", data)
-                .then(async ({ data }) =>
-                {
+                .then(async ({ data }) => {
                     room_id = data.chat_room_id;
                 });
 
@@ -43,12 +37,10 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
                     text: newChat.text,
                     reply_to: newChat.reply_to,
                 })
-                .then(async ({ data }) =>
-                {
+                .then(async ({ data }) => {
                     // console.log(data);
                 });
-        } else
-        {
+        } else {
             await axiosClient
                 .post("/chats", {
                     chat_room_id: chatRoomId,
@@ -56,8 +48,7 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
                     text: newChat.text,
                     reply_to: newChat.reply_to,
                 })
-                .then(async ({ data }) =>
-                {
+                .then(async ({ data }) => {
                     // console.log(data);
                 });
         }
@@ -71,34 +62,28 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
         await fetchData();
     };
 
-    const handleLikeChat = async (id) =>
-    {
+    const handleLikeChat = async (id) => {
         await axiosClient
             .post(`likechats`, {
                 chat_id: id,
             })
-            .then(async ({ data }) =>
-            {
+            .then(async ({ data }) => {
                 await fetchData();
             });
     };
 
-    const fetchData = async () =>
-    {
-        if (chatRoomId)
-        {
+    const fetchData = async () => {
+        if (chatRoomId) {
             // Fetch chat data
             await axiosClient
                 .get(`/chatrooms/${chatRoomId}`)
-                .then(({ data }) =>
-                {
+                .then(({ data }) => {
                     setChatData(data?.chats);
                 });
         }
     };
 
-    useEffect(() =>
-    {
+    useEffect(() => {
         setnewChat({
             image: null,
             text: "",
@@ -111,8 +96,7 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
         const intervalId = setInterval(fetchData, 5000);
 
         // Clean up the interval on component unmount
-        return () =>
-        {
+        return () => {
             clearInterval(intervalId);
         };
     }, [chatRoomId]);
@@ -138,18 +122,18 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
 
             {/* chat content */}
             <div className="chat-content">
-                {chatData.map((chat) =>
-                {
+                {chatData.map((chat) => {
                     const isLikedByCurrentUser = chat.likes.some(
                         (like) => like.liker === currentUser.id
                     );
                     return (
                         <div
                             key={chat.chat_id}
-                            className={`chat-image ${chat.sender_id === currentUser.id
-                                ? "chat-right"
-                                : "chat-left"
-                                }`}
+                            className={`chat-image ${
+                                chat.sender_id === currentUser.id
+                                    ? "chat-right"
+                                    : "chat-left"
+                            }`}
                         >
                             {/* neu ng gui ko phai minh thi hien hinh anh */}
                             {chat.sender_id !== currentUser.id && (
@@ -180,8 +164,7 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
                                                 ? "red"
                                                 : "black"
                                         }
-                                        onClick={() =>
-                                        {
+                                        onClick={() => {
                                             handleLikeChat(chat.chat_id);
                                         }}
                                     />
@@ -192,8 +175,7 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
                                                 ? "red"
                                                 : "black"
                                         }
-                                        onClick={() =>
-                                        {
+                                        onClick={() => {
                                             setnewChat({
                                                 ...newChat,
                                                 reply_to: chat.chat_id,
@@ -203,13 +185,11 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
                                                 let i = 0;
                                                 i < chatData.length;
                                                 i++
-                                            )
-                                            {
+                                            ) {
                                                 if (
                                                     chatData[i].chat_id ==
                                                     chat.chat_id
-                                                )
-                                                {
+                                                ) {
                                                     setRepliedText(
                                                         chatData[i].text
                                                     );
@@ -241,8 +221,7 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
                                                 ? "red"
                                                 : "black"
                                         }
-                                        onClick={() =>
-                                        {
+                                        onClick={() => {
                                             handleLikeChat(chat.chat_id);
                                         }}
                                     />
@@ -253,8 +232,7 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
                                                 ? "red"
                                                 : "black"
                                         }
-                                        onClick={() =>
-                                        {
+                                        onClick={() => {
                                             setnewChat({
                                                 ...newChat,
                                                 reply_to: chat.chat_id,
@@ -264,13 +242,11 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
                                                 let i = 0;
                                                 i < chatData.length;
                                                 i++
-                                            )
-                                            {
+                                            ) {
                                                 if (
                                                     chatData[i].chat_id ==
                                                     chat.chat_id
-                                                )
-                                                {
+                                                ) {
                                                     setRepliedText(
                                                         chatData[i].text
                                                     );
@@ -307,13 +283,19 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
                 <form action="" className="d-flex" onSubmit={handleCreateChat}>
                     <div className="message-input-container">
                         <div className="file-upload-container">
-                            <input type="file" id="file-input" className="file-input"
-                                onChange={(ev) =>
-                                {
-                                    setnewChat({ ...newChat, image: ev.target.files[0] });
-                                }} />
+                            <input
+                                type="file"
+                                id="file-input"
+                                className="file-input"
+                                onChange={(ev) => {
+                                    setnewChat({
+                                        ...newChat,
+                                        image: ev.target.files[0],
+                                    });
+                                }}
+                            />
                             <label htmlFor="file-input">
-                                <FontAwesomeIcon icon={faPaperclip} />
+                                <AiOutlinePaperClip size={24} />
                             </label>
                         </div>
                         <input
@@ -321,9 +303,11 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
                             placeholder="Type a message..."
                             className="input-type-message"
                             value={newChat.text}
-                            onChange={(ev) =>
-                            {
-                                setnewChat({ ...newChat, text: ev.target.value });
+                            onChange={(ev) => {
+                                setnewChat({
+                                    ...newChat,
+                                    text: ev.target.value,
+                                });
                             }}
                         />
                         <button type="submig" className="btn btn-primary">
@@ -342,12 +326,11 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
                           }
                           
                           .input-type-message {
-                            flex-grow: 1;
+                            width: 50%;
+                            flex: 1;
                             border: none;
                             outline: none;
                             padding: 6px;
-                            padding-left: 400px;
-                            padding-right: 400px;
                           }
                           
                           .file-upload-container {
@@ -377,7 +360,6 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
                           }                          
                         `}
                     </style>
-
                 </form>
             </div>
         </main>
