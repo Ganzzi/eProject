@@ -1,7 +1,8 @@
 import React from "react";
 import { formatDateTime } from "../../../utils";
 
-const RepliedCommentCard = ({ cmt, onUpdate }) => {
+const RepliedCommentCard = ({ cmt, onUpdate }) =>
+{
     // onUpdate(id);
     return (
         <div className="card" style={{ opacity: "0.7" }}>
@@ -9,7 +10,7 @@ const RepliedCommentCard = ({ cmt, onUpdate }) => {
                 <div className="d-flex align-items-center mb-2">
                     <img
                         src={
-                            "http://127.0.0.1:8000/api/images/" + cmt.user_image
+                            "http://127.0.0.1:8001/api/images/" + cmt.user_image
                         }
                         alt="Replied Commentor Image"
                         className="rounded-circle"

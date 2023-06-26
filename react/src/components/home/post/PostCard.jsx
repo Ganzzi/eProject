@@ -9,7 +9,8 @@ import { useNavigate } from "react-router-dom";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import { BiCommentDetail } from "react-icons/Bi";
 
-const PostCard = ({ post, post_creator, getPostData }) => {
+const PostCard = ({ post, post_creator, getPostData }) =>
+{
     console.log(post);
     const { user } = useStateContext();
     const [comments, setcomments] = useState([]);
@@ -23,24 +24,32 @@ const PostCard = ({ post, post_creator, getPostData }) => {
         description: "",
     });
 
-    useEffect(() => {
-        const checkRepliedCmt = () => {
+    useEffect(() =>
+    {
+        const checkRepliedCmt = () =>
+        {
             const cmt = [];
             const repliedCmt = [];
 
-            for (let i = 0; i < post.comments.length; i++) {
-                if (post.comments[i].reply_to == null) {
+            for (let i = 0; i < post.comments.length; i++)
+            {
+                if (post.comments[i].reply_to == null)
+                {
                     cmt.push(post.comments[i]);
-                } else {
+                } else
+                {
                     repliedCmt.push(post.comments[i]);
                 }
             }
 
-            for (let i = 0; i < cmt.length; i++) {
+            for (let i = 0; i < cmt.length; i++)
+            {
                 cmt[i].replierComments = [];
 
-                for (let j = 0; j < repliedCmt.length; j++) {
-                    if (cmt[i].id == repliedCmt[j].reply_to) {
+                for (let j = 0; j < repliedCmt.length; j++)
+                {
+                    if (cmt[i].id == repliedCmt[j].reply_to)
+                    {
                         cmt[i].replierComments.push(repliedCmt[j]);
                     }
                 }
@@ -57,11 +66,13 @@ const PostCard = ({ post, post_creator, getPostData }) => {
     const [comment, setComment] = useState("");
     const navigate = useNavigate();
 
-    const handleCommentChange = (e) => {
+    const handleCommentChange = (e) =>
+    {
         setComment(e.target.value);
     };
 
-    const handleCommentSubmit = async (e) => {
+    const handleCommentSubmit = async (e) =>
+    {
         console.log(repliedId);
         e.preventDefault();
         // Perform comment submission logic
@@ -73,31 +84,38 @@ const PostCard = ({ post, post_creator, getPostData }) => {
         // formData.append("commentor_id", post_creator.id);
         formData.append("reply_to", repliedId);
 
-        await axiosClient.post("/comments", formData).then(async ({ data }) => {
+        await axiosClient.post("/comments", formData).then(async ({ data }) =>
+        {
             await getPostData();
         });
     };
-    const checkIsLikedPost = () => {
+    const checkIsLikedPost = () =>
+    {
         let _isLikedPost = false;
-        for (let i = 0; i < post.likes.length; i++) {
-            if (user.id == post.likes[i].liker_id) {
+        for (let i = 0; i < post.likes.length; i++)
+        {
+            if (user.id == post.likes[i].liker_id)
+            {
                 _isLikedPost = true;
             }
         }
         setIsLikedPost(_isLikedPost ? true : false);
     };
 
-    useEffect(() => {
+    useEffect(() =>
+    {
         checkIsLikedPost();
     }, [post, post_creator]);
 
-    const handleLikePost = async () => {
+    const handleLikePost = async () =>
+    {
         console.log(post.id);
         await axiosClient
             .post("/likeposts", {
                 post_id: post.id,
             })
-            .then(async () => {
+            .then(async () =>
+            {
                 setisLikeOrUnlike(true);
                 await getPostData();
                 setIsLikedPost(!isLikedPost);
@@ -105,20 +123,24 @@ const PostCard = ({ post, post_creator, getPostData }) => {
             });
     };
 
-    const handleUpdatePost = async () => {
+    const handleUpdatePost = async () =>
+    {
         const postUppdate = {
             description: newPostForm?.description,
             creator_id: post_creator.id,
         };
 
-        try {
+        try
+        {
             await axiosClient
                 .put(`posts/${post.id}`, postUppdate)
-                .then(async ({ data }) => {
+                .then(async ({ data }) =>
+                {
                     await getPostData();
                     setIsUpdating(false);
                 });
-        } catch (error) {
+        } catch (error)
+        {
             console.log(error);
         }
     };
@@ -130,7 +152,7 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                     <div className="d-flex align-items-center">
                         <img
                             src={
-                                "http://127.0.0.1:8000/api/images/" +
+                                "http://127.0.0.1:8001/api/images/" +
                                 post_creator.image
                             }
                             alt="Creator Image"
@@ -141,7 +163,8 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                         <div>
                             <h5
                                 className="card-title ml-3"
-                                onClick={() => {
+                                onClick={() =>
+                                {
                                     console.log(post);
                                     navigate(`/profile/${post.creator_id}`);
                                 }}
@@ -160,14 +183,16 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                                 {isUpdating ? (
                                     <MdOutlineCancel
                                         size={40}
-                                        onClick={() => {
+                                        onClick={() =>
+                                        {
                                             setIsUpdating(false);
                                         }}
                                     />
                                 ) : (
                                     <MdOutlineSettingsSuggest
                                         size={40}
-                                        onClick={() => {
+                                        onClick={() =>
+                                        {
                                             setIsUpdating(true);
                                         }}
                                     />
@@ -181,7 +206,8 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                         <input
                             type="text"
                             defaultValue={post.description}
-                            onChange={(ev) => {
+                            onChange={(ev) =>
+                            {
                                 setNewPostForm({
                                     ...newPostForm,
                                     description: ev.target.value,
@@ -189,7 +215,8 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                             }}
                         />
                         <button
-                            onClick={() => {
+                            onClick={() =>
+                            {
                                 handleUpdatePost();
                             }}
                         >
@@ -210,7 +237,8 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                         <AiFillHeart
                             size={24}
                             color={isLikedPost ? "red" : "gray"}
-                            onClick={async () => {
+                            onClick={async () =>
+                            {
                                 await handleLikePost(post.id);
                             }}
                         />
@@ -279,10 +307,10 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                                 placeholder="Add a comment"
                                 value={comment}
                                 onChange={handleCommentChange}
-                                // onChange={(e) =>{
-                                //     setComment(e.target.value);
-                                //     console.log(description);
-                                // }}
+                            // onChange={(e) =>{
+                            //     setComment(e.target.value);
+                            //     console.log(description);
+                            // }}
                             />
                         </div>
                         <button
@@ -294,12 +322,14 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                             Comment
                         </button>
                     </form>
-                    {comments.map((cmt) => {
+                    {comments.map((cmt) =>
+                    {
                         return (
                             <CommentCard
                                 cmt={cmt}
                                 getPostData={getPostData}
-                                onReply={(id) => {
+                                onReply={(id) =>
+                                {
                                     setIsReplying(true);
                                     setRepliedId(id);
                                 }}
