@@ -53,7 +53,7 @@ const CommentCard = ({ cmt, getPostData, onReply }) => {
         }
 
         try {
-            await axiosClient.put(`posts/${post.id}`, commentUppdate).then(async ({ data }) => {
+            await axiosClient.put(`posts/${commentor.id}`, commentUppdate).then(async ({ data }) => {
                 await getPostData();
                 setIsUpdating(false)
             });

@@ -11,19 +11,6 @@ import { formatDateTime } from "../../../utils";
 // import { BorderAll } from "@material-ui/icons";
 
 const Posts = () => {
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-
-        const reader = new FileReader();
-
-        reader.onloadend = () => {
-            setSelectedImage(reader.result);
-
-            // const file = e.target.files[0];
-            // file.preview = URL.createObjectURL(file);
-            // setSlectedImage(file);
-        }
-    }
     const [posts, setPosts] = useState([]);
     const [follows, setfollows] = useState({
         followers: [],
@@ -236,10 +223,11 @@ const Posts = () => {
                                 type="file"
                                 id="file"
                                 onChange={(ev) =>
-                                    handleImageChange;
-                                    setPostForm({ ...postForm,image: ev.target.files[0],
+                                    setPostForm({
+                                        ...postForm,
+                                        image: ev.target.files[0],
                                     })
-                                                    }
+                                }
                             />
                             <label htmlFor="file">
                                 <HiOutlinePhotograph
