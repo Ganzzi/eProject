@@ -23,8 +23,6 @@ const Message = () => {
         getChatroom();
     }, []);
 
-    console.log(messagingTo);
-
     const getChatroom = async () => {
         await axiosClient
             .get("/chatrooms")

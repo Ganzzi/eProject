@@ -28,7 +28,6 @@ export default function Users() {
             .get("/admin/users")
             .then(({ data }) => {
                 setLoading(false);
-                console.log(data);
                 setUsers(data.data);
             })
             .catch(() => {

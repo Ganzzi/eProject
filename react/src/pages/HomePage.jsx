@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Outlet, Navigate, Link } from "react-router-dom";
+import { Outlet, Navigate, Link, useNavigate } from "react-router-dom";
 
 import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client";
@@ -10,6 +10,7 @@ import {
     AiOutlineLogout,
     AiOutlineMenu,
     AiOutlineSearch,
+    AiFillHome,
 } from "react-icons/ai";
 
 import { formatDateTime } from "../utils";
@@ -29,6 +30,10 @@ export default function Homescreen() {
     const [showNotification, setshowNotification] = useState(false);
     const [newNotifNumber, setNewNotifNumber] = useState(0);
     const [showMenu, setShowMenu] = useState(false);
+    const [searchRequest, setSearchRequest] = useState("");
+    const [showSearchResponse, setShowSearchResponse] = useState(false);
+    const [searchData, setSearchData] = useState([]);
+    const navigate = useNavigate();
 
     const handleMenuClick = () => {
         setShowMenu(!showMenu);
@@ -110,6 +115,17 @@ export default function Homescreen() {
             });
     };
 
+    const handleSearchUsers = async () => {
+        await axiosClient
+            .post("/search-user", {
+                name: searchRequest,
+            })
+            .then(({ data }) => {
+                setSearchData(data);
+                setShowSearchResponse(true);
+            });
+    };
+
     if (!token) {
         return <Navigate to={"/"} />;
     } else if (token && user.role_id == 1 && userDataFetched) {
@@ -178,6 +194,9 @@ export default function Homescreen() {
                             type="text"
                             id="search-text"
                             placeholder="search.."
+                            onChange={(ev) => {
+                                setSearchRequest(ev.target.value);
+                            }}
                         />
                         <AiOutlineSearch
                             size={50}
@@ -185,10 +204,88 @@ export default function Homescreen() {
                             style={{
                                 borderRadius: 50,
                             }}
-                            onClick={() => {}}
+                            onClick={() => {
+                                handleSearchUsers();
+                            }}
                         />
                     </form>
                 </div>
+
+                {/* Searcch Result */}
+                {showSearchResponse && (
+                    <div
+                        style={{
+                            position: "absolute",
+                            width: 400,
+                            maxHeight: 600,
+                            zIndex: 10,
+                            top: 100,
+                            overflow: "auto",
+                            border: "solid thin black",
+                        }}
+                        className="start-50 translate-middle-x"
+                    >
+                        <div className=" justify-content-end d-flex">
+                            <button
+                                className="btn btn-outline-danger m-2"
+                                onClick={() => {
+                                    setShowSearchResponse(false);
+                                }}
+                            >
+                                close
+                            </button>
+                        </div>
+                        {searchData?.length != 0 ? (
+                            searchData.map((user, index) => {
+                                return (
+                                    <div
+                                        style={{
+                                            backgroundColor: "#B9D3EE",
+                                            padding: 7,
+                                            borderRadius: 10,
+                                            margin: 4,
+                                        }}
+                                        className="d-flex justify-content-between align-items-center bg-info"
+                                        onClick={() => {
+                                            navigate("/profile/" + user.id);
+                                            setShowSearchResponse(false);
+                                        }}
+                                    >
+                                        <img
+                                            src={
+                                                "http://127.0.0.1:8000/api/images/" +
+                                                user.image
+                                            }
+                                            width={70}
+                                            height={70}
+                                            alt=""
+                                        />
+                                        <p
+                                            style={{
+                                                fontSize: "1.2rem",
+                                            }}
+                                        >
+                                            {user.name}
+                                        </p>
+                                    </div>
+                                );
+                            })
+                        ) : (
+                            <div
+                                style={{
+                                    backgroundColor: "#B9D3EE",
+                                    padding: 7,
+                                    borderRadius: 10,
+                                    margin: 4,
+                                }}
+                                className="d-flex justify-content-between align-items-center bg-info"
+                                onClick={() => {}}
+                            >
+                                <p>none result</p>
+                            </div>
+                        )}
+                    </div>
+                )}
 
                 {/* Menu in large screen **/}
                 <div className="d-lg-flex d-none ">
@@ -340,12 +437,30 @@ export default function Homescreen() {
                         />
 
                         <div className="d-flex">
+                            <div
+                                style={{
+                                    border: "solid thin black",
+                                    borderRadius: "30px",
+                                    padding: 10,
+                                }}
+                                className="d-flex d-sm-none"
+                            >
+                                <AiFillHome
+                                    size={40}
+                                    onClick={() => {
+                                        navigate("/posts");
+                                        setShowMenu(false);
+                                    }}
+                                />
+                            </div>
+
                             <div className="d-flex justify-content-end align-items-center">
                                 <div
                                     style={{
                                         border: "solid thin black",
                                         borderRadius: "30px",
                                         padding: 10,
+                                        marginLeft: "0.5rem",
                                     }}
                                 >
                                     <BsFillBellFill
@@ -363,10 +478,22 @@ export default function Homescreen() {
                                         }}
                                     />
                                     <p
+                                        className="d-sm-none"
                                         style={{
                                             position: "absolute",
                                             top: 12,
-                                            left: 17,
+                                            left: 87,
+                                            fontSize: "1.2rem",
+                                        }}
+                                    >
+                                        {newNotifNumber != 0 && newNotifNumber}
+                                    </p>
+                                    <p
+                                        className="d-none d-sm-block"
+                                        style={{
+                                            position: "absolute",
+                                            top: 12,
+                                            left: 27,
                                             fontSize: "1.2rem",
                                         }}
                                     >
@@ -376,7 +503,7 @@ export default function Homescreen() {
                             </div>
 
                             <div
-                                className=" d-flex justify-content-end align-items-center"
+                                className="d-flex justify-content-end align-items-center"
                                 style={{
                                     marginLeft: "0.5rem",
                                 }}
@@ -388,7 +515,12 @@ export default function Homescreen() {
                                         padding: 10,
                                     }}
                                 >
-                                    <Link to={"/messages"}>
+                                    <Link
+                                        to={"/messages"}
+                                        onClick={() => {
+                                            setShowMenu(false);
+                                        }}
+                                    >
                                         <BsChatRightText
                                             size={40}
                                             color="black"
@@ -410,7 +542,12 @@ export default function Homescreen() {
                                         padding: 3,
                                     }}
                                 >
-                                    <Link to={"/profile/" + user.id}>
+                                    <Link
+                                        to={"/profile/" + user.id}
+                                        onClick={() => {
+                                            setShowMenu(false);
+                                        }}
+                                    >
                                         <img
                                             src={
                                                 "http://127.0.0.1:8000/api/images/" +

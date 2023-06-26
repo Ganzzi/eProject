@@ -61,16 +61,20 @@ export default function dashboard() {
                         paddingLeft: "0px",
                     }}
                 >
-                    <img
-                        src={"http://127.0.0.1:8000/api/images/" + user.image}
-                        alt=""
-                        style={{ width: "80px", height: "80px" }}
-                    />{" "}
+                    {user?.image && (
+                        <img
+                            src={
+                                "http://127.0.0.1:8000/api/images/" + user.image
+                            }
+                            alt=""
+                            style={{ width: "80px", height: "80px" }}
+                        />
+                    )}
                     ADMIN
                 </div>
                 <div></div>
                 <br />
-                <div class="w3-row">
+                <div className="w3-row">
                     <div
                         className="w3-col"
                         style={{
@@ -118,7 +122,7 @@ export default function dashboard() {
                     <header className="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
                         <a className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
                             <svg className="bi me-2" width="80" height="32">
-                                <use xlink:href="#bootstrap" />
+                                <use xlinkHref="#bootstrap" />
                             </svg>
                             <span
                                 className="fs-2"
@@ -133,11 +137,11 @@ export default function dashboard() {
                                 spaceshare
                             </span>
                         </a>
-                        <ul class="nav nav-pills">
-                            <li class="nav-item">
+                        <ul className="nav nav-pills">
+                            <li className="nav-item">
                                 <a
                                     href="#"
-                                    class="nav-link active"
+                                    className="nav-link active"
                                     aria-current="page"
                                     style={{
                                         border: "solid thin black",
