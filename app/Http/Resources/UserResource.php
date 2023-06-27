@@ -24,6 +24,7 @@ class UserResource extends JsonResource
             'image' => $this->image,
             'gender' => $this->gender,
             'bio' => $this->bio,
+            'lock' => $this->lock,
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
         ];
     }

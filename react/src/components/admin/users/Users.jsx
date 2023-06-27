@@ -8,7 +8,7 @@ export default function Users() {
     const [loading, setLoading] = useState(false);
     const { setAlerts } = useStateContext();
 
-     useEffect(() => {
+    useEffect(() => {
         getUsers();
     }, []);
 
@@ -18,7 +18,7 @@ export default function Users() {
         }
         await axiosClient.delete(`/admin/users/${user.id}`).then(async () => {
             // setNotification("User was successfully deleted");
-          setAlerts({
+            setAlerts({
                 type: "info",
                 message: "user was successfully deleted",
                 time: new Date(),
@@ -73,6 +73,7 @@ export default function Users() {
                             <th style={{ paddingRight: "7rem" }}>
                                 Create Date
                             </th>
+                            <th>Lock</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -104,7 +105,8 @@ export default function Users() {
                                     <td>{u.name}</td>
                                     <td>{u.email}</td>
 
-                                    <td> <td> {formatDateTime(u.created_at)}</td></td>
+                                    <td> {formatDateTime(u.created_at)}</td>
+                                    <td>{u.lock == 0 ? "Unlock" : "Locked"}</td>
                                     <td>
                                         <Link
                                             className="btn-edit"

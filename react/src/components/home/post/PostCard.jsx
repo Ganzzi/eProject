@@ -10,11 +10,8 @@ import { useNavigate } from "react-router-dom";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import { BiCommentDetail } from "react-icons/Bi";
 
-
 const PostCard = ({ post, post_creator, getPostData }) => {
-    console.log(post);
-
-    const { user } = useStateContext();
+    const { user, setAlerts } = useStateContext();
     const [comments, setcomments] = useState([]);
     const [isReplying, setIsReplying] = useState(false);
     const [repliedId, setRepliedId] = useState(null);
@@ -30,17 +27,26 @@ const PostCard = ({ post, post_creator, getPostData }) => {
         if (!window.confirm("Are you sure you want to delete this post?")) {
             return;
         }
-        await axiosClient.delete(`/admin/posts/${post.id}`).then(async () => {
-            console.log('deleted');
-            // setAlerts({
 
-            // });
+        setAlerts({
+            type: "warming",
+            message: "post was being deleted",
+            time: new Date(),
+        });
+
+        await axiosClient.delete(`/admin/posts/${post.id}`).then(async () => {
+            console.log("deleted");
+            setAlerts({
+                type: "info",
+                message: "post was successfully deleted",
+                time: new Date(),
+            });
 
             setIsUpdating(false);
 
             await getPostData();
         });
-    }
+    };
 
     useEffect(() => {
         const checkRepliedCmt = () => {
@@ -86,7 +92,7 @@ const PostCard = ({ post, post_creator, getPostData }) => {
         // Perform comment submission logic
         setComment("");
         setRepliedId(null);
-        setIsReplying(false)
+        setIsReplying(false);
         const formData = new FormData();
         formData.append("post_id", post.id);
         formData.append("text", comment);
@@ -111,13 +117,23 @@ const PostCard = ({ post, post_creator, getPostData }) => {
     }, [post, post_creator]);
 
     const handleLikePost = async () => {
-        console.log(post.id);
         await axiosClient
             .post("/likeposts", {
                 post_id: post.id,
             })
             .then(async () => {
                 setisLikeOrUnlike(true);
+
+                setAlerts({
+                    type: "info",
+                    message: `${
+                        isLikedPost
+                            ? "Unliked post successfully"
+                            : "liked post successfully"
+                    }`,
+                    time: new Date(),
+                });
+
                 await getPostData();
                 setIsLikedPost(!isLikedPost);
                 setisLikeOrUnlike(false);
@@ -134,6 +150,11 @@ const PostCard = ({ post, post_creator, getPostData }) => {
             await axiosClient
                 .put(`posts/${post.id}`, postUppdate)
                 .then(async ({ data }) => {
+                    setAlerts({
+                        type: "info",
+                        message: "updated post successfully",
+                        time: new Date(),
+                    });
                     await getPostData();
                     setIsUpdating(false);
                 });
@@ -149,7 +170,7 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                     <div className="d-flex align-items-center">
                         <img
                             src={
-                                "http://127.0.0.1:8001/api/images/" +
+                                "http://127.0.0.1:8000/api/images/" +
                                 post_creator.image
                             }
                             alt="Creator Image"
@@ -176,12 +197,11 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                         {/* update post button */}
                         {user.id === post.creator_id && (
                             <>
-
                                 {isUpdating ? (
                                     <>
-                                        <RiDeleteBinLine size={30}
+                                        <RiDeleteBinLine
+                                            size={30}
                                             onClick={() => DeletePost(post.id)}
-
                                         />
                                         <MdOutlineCancel
                                             size={40}
@@ -197,8 +217,7 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                                             setIsUpdating(true);
                                         }}
                                     />
-                                )
-                                }
+                                )}
                                 {/* <RiDeleteBinLine/> */}
                             </>
                         )}
@@ -281,7 +300,7 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                                             color: "gray",
                                         }}
                                     >
-                                        reply to { }
+                                        reply to {}
                                     </p>
                                     <p
                                         className="absolute-text"
@@ -308,13 +327,11 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                                 value={comment}
                                 onChange={handleCommentChange}
 
-
-                            // onChange={(e) =>{
-                            //     setComment(e.target.value);
-                            //     console.log(description);
-                            // }}
+                                // onChange={(e) =>{
+                                //     setComment(e.target.value);
+                                //     console.log(description);
+                                // }}
                             />
-
                         </div>
                         <button
                             type="submit"
@@ -342,5 +359,5 @@ const PostCard = ({ post, post_creator, getPostData }) => {
             </div>
         </div>
     );
-}
+};
 export default PostCard;

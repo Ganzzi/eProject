@@ -15,27 +15,27 @@ export default function UserForm() {
         image: null,
         password: "",
         password_confirmation: "",
+        lock: null,
     });
-    
+
     const [errors, setErrors] = useState(null);
     const [loading, setLoading] = useState(false);
     const { setAlerts } = useStateContext();
-const [selectedImage,setSlectedImage] = useState();
-const handleImageChange = (e) =>{
-     const file = e.target.files[0];
-    //  console.log(URL.createObjectURL(file));
-     file.preview=URL.createObjectURL(file);
-     setSlectedImage(file);
-    //  file.preview = URL.c
-    // const reader = new FileReader();
-    // reader.onloadend =()=>{
-    //     setSlectedImage(reader.result);
-      
-    // };
-    // if(file){
-    //     reader.readAsDataURL(file);
-    // }
+    const [selectedImage, setSlectedImage] = useState();
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        //  console.log(URL.createObjectURL(file));
+        file.preview = URL.createObjectURL(file);
+        setSlectedImage(file);
+        //  file.preview = URL.c
+        // const reader = new FileReader();
+        // reader.onloadend =()=>{
+        //     setSlectedImage(reader.result);
 
+        // };
+        // if(file){
+        //     reader.readAsDataURL(file);
+        // }
     };
     if (id) {
         useEffect(() => {
@@ -45,7 +45,8 @@ const handleImageChange = (e) =>{
                     .get(`/admin/users/${id}`)
                     .then(({ data }) => {
                         setLoading(false);
-                        setUser(data);
+                        const tempData = { ...data, lock: parseInt(data.lock) };
+                        setUser(tempData);
                     })
                     .catch(() => {
                         setLoading(false);
@@ -106,8 +107,19 @@ const handleImageChange = (e) =>{
         }
     };
 
+    const lockValue = [
+        {
+            name: "Unlock",
+            value: 0,
+        },
+        {
+            name: "Locked",
+            value: 1,
+        },
+    ];
+
     return (
-        <>
+        <div className="d-flex flex-column">
             {user.id && <h1>Update User: {user.name}</h1>}
             {!user.id && <h1>New User</h1>}
             <div className="card animated fadeInDown">
@@ -146,28 +158,44 @@ const handleImageChange = (e) =>{
                             placeholder="Role id"
                         />
                         {selectedImage && (
-
                             <img src={selectedImage.preview} alt="" />
-
                         )}
-                        {/* <input
-                            type="file"
-                            id="file"
-                            
-                            onChange={(ev) =>
-                                setUser({ ...user, image: ev.target.files[0] })
-                            }
-                        /> */}
-                        <input type="file" onChangeCapture={handleImageChange}
-                      
-                      onChange={(ev) =>
-                        setUser({ ...user, image: ev.target.files[0] })
-                    }
+                        {!id && (
+                            <input
+                                type="file"
+                                onChangeCapture={handleImageChange}
+                                onChange={(ev) =>
+                                    setUser({
+                                        ...user,
+                                        image: ev.target.files[0],
+                                    })
+                                }
                             />
-                         {/* <label htmlFor="file"  onChange={handleImageChange}>
-                        //     <HiOutlinePhotograph />
-                        // </label> */}
-                    
+                        )}
+                        <select
+                            style={{
+                                marginTop: 10,
+                                marginBottom: 10,
+                                width: "fit-content",
+                            }}
+                            value={user.lock === 0 ? 0 : 1}
+                            onChange={(ev) =>
+                                setUser({
+                                    ...user,
+                                    lock: parseInt(ev.target.value),
+                                })
+                            }
+                        >
+                            {lockValue.map((lock) => (
+                                <option
+                                    key={lock.name}
+                                    value={lock.value}
+                                    selected={user.lock == lock.value}
+                                >
+                                    {lock.name}
+                                </option>
+                            ))}
+                        </select>
                         <input
                             type="password"
                             onChange={(ev) =>
@@ -192,10 +220,9 @@ const handleImageChange = (e) =>{
                         >
                             Save
                         </button>
-
                     </form>
                 )}
             </div>
-        </>
+        </div>
     );
 }

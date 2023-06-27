@@ -63,6 +63,12 @@ class Auth extends Controller
 
         /** @var \App\Models\User $user */
         $user = FacadesAuth::user();
+        $lock = $user->lock;
+
+        if ($lock == 1) {
+            return response()->json(['message' => 'This account was locked'], 422);
+        }
+
         $token = $user->createToken('main')->plainTextToken;
 
         return response(compact('user', 'token'));

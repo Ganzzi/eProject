@@ -8,31 +8,48 @@ export default function PostForm() {
     let { id } = useParams();
     const [post, setPost] = useState({
         description: "",
+        lock: null,
         // image: null,
     });
-   
+
     const [errors, setErrors] = useState(null);
     const [loading, setLoading] = useState(false);
     const { setAlerts } = useStateContext();
+
     if (id) {
-        useEffect(async() => {
+        console.log(id);
+        useEffect(() => {
             setLoading(true);
-           await axiosClient
-                .get(`/admin/posts/${id}`)
-                .then(({ data }) => {
-                    setLoading(false);
-                    setPost(data);
-                })
-                .catch(() => {
-                    setLoading(false);
-                });
+
+            const getPostData = async () => {
+                await axiosClient
+                    .get(`/admin/posts/${id}`)
+                    .then(({ data }) => {
+                        setLoading(false);
+                        const tempData = { ...data, lock: parseInt(data.lock) };
+                        console.log(tempData);
+                        setPost(tempData);
+                    })
+                    .catch(() => {
+                        setLoading(false);
+                    });
+            };
+
+            getPostData();
         }, []);
     }
-    const onSubmit = async(ev) => {
+
+    const onSubmit = async (ev) => {
         ev.preventDefault();
+
+        console.log(post);
+
         if (post.id) {
-           await axiosClient
-                .put(`/admin/posts/${post.id}`, post)
+            await axiosClient
+                .put(`/admin/posts/${post.id}`, {
+                    description: post.description,
+                    lock: post.lock,
+                })
                 .then(() => {
                     setAlerts({
                         type: "info",
@@ -70,8 +87,19 @@ export default function PostForm() {
         }
     };
 
+    const lockValue = [
+        {
+            name: "Unlock",
+            value: 0,
+        },
+        {
+            name: "Locked",
+            value: 1,
+        },
+    ];
+
     return (
-        <>
+        <div className="d-flex flex-column">
             {post.id && <h1>Update post: {post.description}</h1>}
             {!post.id && <h1>New post</h1>}
             <div className="card animated fadeInDown">
@@ -84,8 +112,9 @@ export default function PostForm() {
                     </div>
                 )}
                 {!loading && (
-                    <form onSubmit={onSubmit}>
-                        <input style={{paddingRight:"30rem"}}
+                    <form onSubmit={onSubmit} className="d-flex flex-column">
+                        <input
+                            style={{ paddingRight: "30rem" }}
                             value={post.description}
                             onChange={(ev) =>
                                 setPost({
@@ -95,6 +124,27 @@ export default function PostForm() {
                             }
                             placeholder="description"
                         />
+                        <select
+                            style={{
+                                marginTop: 10,
+                                marginBottom: 10,
+                                width: "fit-content",
+                            }}
+                            value={post.lock == 0 ? 0 : 1}
+                            onChange={(ev) =>
+                                setPost({ ...post, lock: ev.target.value })
+                            }
+                        >
+                            {lockValue.map((lock) => (
+                                <option
+                                    key={lock.name}
+                                    value={lock.value}
+                                    selected={post.lock == lock.value}
+                                >
+                                    {lock.name}
+                                </option>
+                            ))}
+                        </select>
                         <button
                             className="btn btn-outline-success"
                             style={{ width: "100px" }}
@@ -104,6 +154,6 @@ export default function PostForm() {
                     </form>
                 )}
             </div>
-        </>
+        </div>
     );
 }

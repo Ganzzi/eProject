@@ -69,7 +69,7 @@ export default function dashboard() {
                         >
                             <Link to={"/admin/users"}>
                                 {" "}
-                                <BiUser size={30} color="black" /> user
+                                <BiUser size={30} color="black" /> Users
                             </Link>
                         </div>
                         <br />
@@ -83,7 +83,7 @@ export default function dashboard() {
                         >
                             <Link to={"/admin/chatrooms"}>
                                 <BsFillChatDotsFill size={30} color="black" />
-                                Chat
+                                Chat Rooms
                             </Link>
                         </div>
                         <br />

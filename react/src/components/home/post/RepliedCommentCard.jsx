@@ -6,38 +6,37 @@ import { useStateContext } from "../../../contexts/ContextProvider";
 import axiosClient from "../../../axios-client";
 
 const RepliedCommentCard = ({ cmt, getPostData, onUpdate }) => {
-    const { user } = useStateContext()
+    const { user } = useStateContext();
 
     const [newComment, setNewComment] = useState("");
     const [isUpdating, setIsUpdating] = useState(false);
 
     const handleUpdateComment = async () => {
-
         const commentUppdate = {
             text: newComment,
-        }
+        };
 
         try {
-            await axiosClient.put(`comments/${cmt.id}`, commentUppdate).then(async ({ data }) => {
-                await getPostData();
-                setIsUpdating(false)
-            });
+            await axiosClient
+                .put(`comments/${cmt.id}`, commentUppdate)
+                .then(async ({ data }) => {
+                    await getPostData();
+                    setIsUpdating(false);
+                });
         } catch (error) {
             console.log(error);
         }
     };
 
     const deleteComment = async () => {
-        await axiosClient.delete(`comments/${cmt.id}`).then(async ({ data }) => {
-            console.log('deleted');
+        await axiosClient
+            .delete(`comments/${cmt.id}`)
+            .then(async ({ data }) => {
+                console.log("deleted");
 
-            await getPostData();
-
-        })
-    }
-
-
-
+                await getPostData();
+            });
+    };
 
     return (
         <div className="card" style={{ opacity: "0.7" }}>
@@ -45,7 +44,7 @@ const RepliedCommentCard = ({ cmt, getPostData, onUpdate }) => {
                 <div className="d-flex align-items-center mb-2">
                     <img
                         src={
-                            "http://127.0.0.1:8001/api/images/" + cmt.user_image
+                            "http://127.0.0.1:8000/api/images/" + cmt.user_image
                         }
                         alt="Replied Commentor Image"
                         className="rounded-circle"
@@ -74,9 +73,9 @@ const RepliedCommentCard = ({ cmt, getPostData, onUpdate }) => {
                         <>
                             {isUpdating ? (
                                 <>
-                                    <RiDeleteBinLine size={20}
+                                    <RiDeleteBinLine
+                                        size={20}
                                         onClick={() => deleteComment()}
-
                                     />
                                     <MdOutlineCancel
                                         size={20}
@@ -95,7 +94,6 @@ const RepliedCommentCard = ({ cmt, getPostData, onUpdate }) => {
                             )}
                         </>
                     )}
-
                 </div>
                 {isUpdating ? (
                     <div className="d-flex">
@@ -103,8 +101,7 @@ const RepliedCommentCard = ({ cmt, getPostData, onUpdate }) => {
                             type="text"
                             defaultValue={cmt.text}
                             onChange={(ev) => {
-                                setNewComment(
-                                    ev.target.value);
+                                setNewComment(ev.target.value);
                             }}
                         />
                         <button
@@ -121,7 +118,6 @@ const RepliedCommentCard = ({ cmt, getPostData, onUpdate }) => {
             </div>
         </div>
     );
-
-}
+};
 
 export default RepliedCommentCard;

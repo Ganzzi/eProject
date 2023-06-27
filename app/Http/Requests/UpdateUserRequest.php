@@ -31,7 +31,11 @@ class UpdateUserRequest extends FormRequest
                 'confirmed',
                 Password::min(8)
                     ->letters()
-            ]
+            ],
+            'role_id' => 'required',
+            'bio' => 'required',
+            'gender' => 'required',
+            'lock' => 'required',
         ];
     }
 }

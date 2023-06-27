@@ -12,6 +12,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\PostStoreRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+
 class PostController extends Controller
 {
     /**
@@ -45,46 +46,46 @@ class PostController extends Controller
             ];
         }));
     }
-    
+
     /**
      * Store a newly created resource in storage.
      *
      * @param \App\Http\Requests\PostStoreRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PostStoreRequest $request)
-    {
-        return response()->json(['message' => 'Update success'], 202);
-        $data = $request->validated();
+    // public function store(PostStoreRequest $request)
+    // {
+    //     return response()->json(['message' => 'Update success'], 202);
+    //     $data = $request->validated();
 
-        // Check if an image was uploaded
-        if ($request->hasFile('image')) {
-            // Get the uploaded file from the request
-            $uploadedFile = $request->file('image');
+    //     // Check if an image was uploaded
+    //     if ($request->hasFile('image')) {
+    //         // Get the uploaded file from the request
+    //         $uploadedFile = $request->file('image');
 
-            // Store the uploaded file in a public storage disk
-            $filePath = $uploadedFile->store('public/images');
-        } else {
-            $filePath = null;
-        }
+    //         // Store the uploaded file in a public storage disk
+    //         $filePath = $uploadedFile->store('public/images');
+    //     } else {
+    //         $filePath = null;
+    //     }
 
-        $post = Post::create([
-            'description' => $data['description'],
-            
-            'image' => basename($filePath)]);
+    //     $post = Post::create([
+    //         'description' => $data['description'],
 
-            return response()->json(['message' => 'Update success'], 202);
-    }
+    //         'image' => basename($filePath)
+    //     ]);
+
+    //     return response()->json(['message' => 'Update success'], 202);
+    // }
+
     /**
      * Display the specified resource.
      *  @param \App\Models\Post $post
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
+    public function show($post)
     {
-        // return response('hi');
-        $_post = Post::with('likes', 'comments.likes')->find($post)->first();
-        // return response($_post);
+        $_post = Post::with('likes', 'comments.likes')->find($post);
 
         $user = User::find($_post->creator_id);
 
@@ -96,6 +97,7 @@ class PostController extends Controller
             "creator_id" => $_post->creator_id,
             "description" => $_post->description,
             "image" => $_post->image,
+            "lock" => $_post->lock,
             "created_at" => $_post->created_at,
             "updated_at" => $_post->updated_at,
             'creator_name' => $creator_name,
@@ -105,35 +107,24 @@ class PostController extends Controller
         ]);
     }
 
-    // // /**
-    // //  * Update the specified resource in storage.
-    // //  * * @param \App\Http\Requests\UpdatePostRequest $request
-    // //  * @param \App\Models\Post                     $post
-    // //  * @return \Illuminate\Http\Response
-    // //  */
-    // public function update(UpdatePostRequest $request, Post $post)
-    // {
-    //     // Retrieve the validated form data from the request
-    //     $data = $request->validated();
+    /**
+     * Update the specified resource in storage.
+     * * @param \App\Http\Requests\Request $request
+     * @param \App\Models\Post $post
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Post $post)
+    {
+        // Retrieve the validated form data from the request
+        $data = $request->validate([
+            'description' => 'required|string|max:55',
+            'lock' => 'required'
+        ]);
 
-    //     // Update the post model based on the form data
-    //     if (!empty($data['description'])) {
-    //         $post->description = $data['description'];
-    //     }
+        $post->update($data);
 
-    //     if ($request->hasFile('image')) {
-    //         // Get the uploaded file from the request
-    //         $uploadedFile = $request->file('image');
-    //         // Store the uploaded file in a public storage disk
-    //         $filePath = $uploadedFile->store('public/images');
-    //         // Set the image path on the post model
-    //         $post->image = $filePath;
-    //     }
-
-    //     $post->save();
-
-    //     return response()->json(['message' => 'Update success'], 202);
-    // }
+        return response()->json(['message' => 'Update success'], 202);
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -142,7 +133,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-     
+
         // if (!$post) {
         //     return response()->json(['success' => false, 'message' => 'not found'], 404);
         // }
@@ -155,11 +146,9 @@ class PostController extends Controller
             $comment->delete();
         });
 
-       
+
         $post->delete();
 
         return response()->json(['success' => true, 'message' => 'Post deleted successfully']);
-        
-        
     }
 }

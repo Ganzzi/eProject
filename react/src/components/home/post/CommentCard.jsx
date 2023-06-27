@@ -8,8 +8,7 @@ import { MdOutlineCancel, MdOutlineSettingsSuggest } from "react-icons/md";
 import RepliedCommentCard from "./RepliedCommentCard";
 import { RiDeleteBinLine } from "react-icons/Ri";
 
-const CommentCard = ({ cmt, getPostData, onReply }) =>
-{
+const CommentCard = ({ cmt, getPostData, onReply }) => {
     const { user } = useStateContext();
     const [reply_to, setreply_to] = useState([]);
     const [isLiked, setIsLiked] = useState(false);
@@ -17,33 +16,27 @@ const CommentCard = ({ cmt, getPostData, onReply }) =>
     const [isUpdating, setIsUpdating] = useState(false);
     const [newComment, setNewComment] = useState("");
 
-    const checkIsLiked = () =>
-    {
+    const checkIsLiked = () => {
         // if (cmt?.likes.length != 0) {
         let _isLiked = false;
-        for (let i = 0; i < cmt.likes.length; i++)
-        {
-            if (user.id == cmt.likes[i].liker_id)
-            {
+        for (let i = 0; i < cmt.likes.length; i++) {
+            if (user.id == cmt.likes[i].liker_id) {
                 _isLiked = true;
             }
         }
         setIsLiked(_isLiked ? true : false);
     };
 
-    useEffect(() =>
-    {
+    useEffect(() => {
         checkIsLiked();
     }, [cmt]);
 
-    const handleLikeComment = async (id) =>
-    {
+    const handleLikeComment = async (id) => {
         await axiosClient
             .post(`/likecomments`, {
                 comment_id: id,
             })
-            .then(async ({ data }) =>
-            {
+            .then(async ({ data }) => {
                 setisLikeOrUnlikeSuccess(true);
                 await getPostData();
                 setIsLiked(!isLiked);
@@ -52,36 +45,35 @@ const CommentCard = ({ cmt, getPostData, onReply }) =>
             });
     };
 
-
     const handleUpdateComment = async (id) => {
-
         const commentUppdate = {
             text: newComment,
             // post: comment_commentor.id
-        }
+        };
 
         try {
-            await axiosClient.put(`comments/${cmt.id}`, commentUppdate).then(async ({ data }) => {
-                await getPostData();
-                setIsUpdating(false)
-            });
+            await axiosClient
+                .put(`comments/${cmt.id}`, commentUppdate)
+                .then(async ({ data }) => {
+                    await getPostData();
+                    setIsUpdating(false);
+                });
         } catch (error) {
             console.log(error);
         }
-
     };
 
     const deleteComment = async () => {
-        await axiosClient.delete(`comments/${cmt.id}`).then(async({data}) => {
-            console.log('deleted');
+        await axiosClient
+            .delete(`comments/${cmt.id}`)
+            .then(async ({ data }) => {
+                console.log("deleted");
 
-            await getPostData();
-
-        })
-    }
+                await getPostData();
+            });
+    };
 
     // const handleUpdateComment = async (id) => { };
-
 
     return (
         <div className="card">
@@ -89,7 +81,7 @@ const CommentCard = ({ cmt, getPostData, onReply }) =>
                 <div className="d-flex align-items-center mb-2">
                     <img
                         src={
-                            "http://127.0.0.1:8001/api/images/" + cmt.user_image
+                            "http://127.0.0.1:8000/api/images/" + cmt.user_image
                         }
                         alt="Commentor Image"
                         className="rounded-circle"
@@ -106,8 +98,7 @@ const CommentCard = ({ cmt, getPostData, onReply }) =>
                     <ImReply
                         size={24}
                         color={"gray"}
-                        onClick={() =>
-                        {
+                        onClick={() => {
                             onReply(cmt.id);
                         }}
                     />
@@ -123,23 +114,21 @@ const CommentCard = ({ cmt, getPostData, onReply }) =>
                         <>
                             {isUpdating ? (
                                 <>
-                                <RiDeleteBinLine size={30}
-                              onClick={() => deleteComment()}
-
-                             />
-                                <MdOutlineCancel
-                                    size={20}
-                                    onClick={() =>
-                                    {
-                                        setIsUpdating(false);
-                                    }}
+                                    <RiDeleteBinLine
+                                        size={30}
+                                        onClick={() => deleteComment()}
                                     />
-                                    </>
+                                    <MdOutlineCancel
+                                        size={20}
+                                        onClick={() => {
+                                            setIsUpdating(false);
+                                        }}
+                                    />
+                                </>
                             ) : (
                                 <MdOutlineSettingsSuggest
                                     size={20}
-                                    onClick={() =>
-                                    {
+                                    onClick={() => {
                                         setIsUpdating(true);
                                     }}
                                 />
@@ -152,10 +141,8 @@ const CommentCard = ({ cmt, getPostData, onReply }) =>
                         <input
                             type="text"
                             defaultValue={cmt.text}
-
                             onChange={(ev) => {
-                                setNewComment(
-                                    ev.target.value);
+                                setNewComment(ev.target.value);
                             }}
                         />
                         {/* <button
@@ -168,10 +155,8 @@ const CommentCard = ({ cmt, getPostData, onReply }) =>
                             }}
                         /> */}
                         <button
-                            onClick={() =>
-                            {
+                            onClick={() => {
                                 handleUpdateComment(cmt.id);
-
                             }}
                         >
                             update
@@ -187,8 +172,7 @@ const CommentCard = ({ cmt, getPostData, onReply }) =>
                             <AiFillHeart
                                 size={24}
                                 color={isLiked ? "red" : "gray"}
-                                onClick={async () =>
-                                {
+                                onClick={async () => {
                                     await handleLikeComment(cmt.id);
                                 }}
                             />
@@ -206,14 +190,10 @@ const CommentCard = ({ cmt, getPostData, onReply }) =>
                 <div className="replied-comments">
                     {cmt.replierComments.map((cmt, index) => (
                         <RepliedCommentCard
-
-                        getPostData={getPostData}
-
-                            onUpdate={(id) =>
-                            {
+                            getPostData={getPostData}
+                            onUpdate={(id) => {
                                 handleUpdateComment(id);
                             }}
-
                             cmt={cmt}
                             key={index}
                         />

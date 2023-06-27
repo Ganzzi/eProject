@@ -16,13 +16,13 @@ const Posts = () => {
         followers: [],
         followings: [],
     });
-    const { user, token, setUser, setToken } = useStateContext();
+    const { user, setAlerts } = useStateContext();
     const navigate = useNavigate();
     const [postForm, setPostForm] = useState({
         image: null,
     });
-
     const [description, setdescription] = useState(null);
+    const [selectedImage, setSelectedImage] = useState(null);
 
     const getPostData = async () => {
         await axiosClient.get("/posts").then(({ data }) => {
@@ -66,35 +66,24 @@ const Posts = () => {
         await axiosClient.post("/posts", formData).then(async ({ data }) => {
             setPostForm({
                 image: null,
-            })
-            setdescription('')
-
-            await axiosClient.post("/posts", formData).then(async ({ data }) => {
-
-                // console.log(data);
-                await getPostData();
             });
-        })
+            setdescription("");
 
+            setAlerts({
+                type: "info",
+                message: "post was successfully created",
+                time: new Date(),
+            });
 
-    }
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        //  console.log(URL.createObjectURL(file));
-        file.preview = URL.createObjectURL(file);
-        setSlectedImage(file);
-        //  file.preview = URL.c
-        // const reader = new FileReader();
-        // reader.onloadend =()=>{
-        //     setSlectedImage(reader.result);
+            await getPostData();
 
-        // };
-        // if(file){
-        //     reader.readAsDataURL(file);
-        // }
-
+            // await axiosClient
+            //     .post("/posts", formData)
+            //     .then(async ({ data }) => {
+            //         // console.log(data);
+            //     });
+        });
     };
-
 
     return (
         <div style={{}} className="row">
@@ -118,7 +107,7 @@ const Posts = () => {
                     >
                         <img
                             src={
-                                "http://127.0.0.1:8001/api/images/" + user.image
+                                "http://127.0.0.1:8000/api/images/" + user.image
                             }
                             alt=""
                             style={{
@@ -219,20 +208,10 @@ const Posts = () => {
                         <p>{user.name}</p>
                     </div>
                     <form
-                        className="col-12 d-flex"
-                        // style={{
-                        //     display: "flex",
-                        //     flexDirection: "col",
-                        //     alignItems: "flex-start",
-                        //     marginBottom: "30px",
-                        //     padding: "10px",
-                        // }}
+                        className="col-12 d-flex flex-column align-items-center"
                         onSubmit={handleCreatePost}
                     >
-                        <div className="d-flex col-9"
-
-                        >
-
+                        <div className="d-flex col-9">
                             <input
                                 value={description}
                                 style={{
@@ -249,42 +228,62 @@ const Posts = () => {
                                     setdescription(ev.target.value);
                                 }}
                             />
-                        </div >
-                        <div className="d-fex"
-                            style={{
-                                display: "none",
-                                height: 0,
-                                overflow: "hidden",
-                                width: 0,
-                            }}
-                        >
                             <input
                                 type="file"
                                 id="file"
-                                onChangeCapture={handleImageChange}
                                 onChange={(ev) =>
                                     setPostForm({
                                         ...postForm,
                                         image: ev.target.files[0],
                                     })
                                 }
-                            /></div>
-                        <div>
-                            <label htmlFor="file" >
+                                style={{
+                                    display: "none",
+                                    height: 0,
+                                    overflow: "hidden",
+                                    width: 0,
+                                }}
+                            />
+                            <label htmlFor="file">
                                 <HiOutlinePhotograph
                                     width={100}
                                     height={1000}
                                     size={40}
                                     color="black"
-                                    onChangeCapture={handleImageChange}
-                                    onChange={(ev) =>
-                                        setPosts({ ...posts, image: ev.target.files[0] })
-                                    }
+                                    onChange={(ev) => {
+                                        setPosts({
+                                            ...posts,
+                                            image: ev.target.files[0],
+                                        });
+                                    }}
                                 />
                             </label>
                         </div>
+                        <div>
+                            {postForm.image && (
+                                <>
+                                    <img
+                                        src={URL.createObjectURL(
+                                            postForm.image
+                                        )}
+                                        alt=""
+                                        width={400}
+                                        height={400}
+                                    />
+                                    <button
+                                        className="btn btn-danger"
+                                        onClick={() =>
+                                            setPostForm({
+                                                image: null,
+                                            })
+                                        }
+                                    >
+                                        remove
+                                    </button>
+                                </>
+                            )}
+                        </div>
                         <div className="d-flex ">
-
                             <button
                                 style={{
                                     padding: "25px",
@@ -371,8 +370,6 @@ const Posts = () => {
             </div>
         </div>
     );
-}
-
-
+};
 
 export default Posts;
