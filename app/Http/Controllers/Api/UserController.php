@@ -7,6 +7,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Models\Post;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Http\Request;
 
@@ -61,7 +62,9 @@ class UserController extends Controller
         $name = $request->input('name');
 
         $users = User::where('name', 'like', "%$name%")->get();
+        $posts = Post::where('description', 'like', "%%")->get();
 
-        return response()->json($users);
+
+        return response()->json(['users' => $users, 'posts' => $posts]);
     }
 }

@@ -5,7 +5,8 @@ import { Outlet, Navigate, Link, useNavigate } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client";
 import { BsChatRightText, BsFillBellFill } from "react-icons/Bs";
-import {
+import
+{
     AiOutlineClose,
     AiOutlineLogout,
     AiOutlineMenu,
@@ -15,7 +16,8 @@ import {
 
 import { formatDateTime } from "../utils";
 
-export default function Homescreen() {
+export default function Homescreen ()
+{
     const {
         user,
         token,
@@ -33,18 +35,23 @@ export default function Homescreen() {
     const [searchRequest, setSearchRequest] = useState("");
     const [showSearchResponse, setShowSearchResponse] = useState(false);
     const [searchData, setSearchData] = useState([]);
+    const [searchDataPosts, setSearchDataPosts] = useState([]);
+
     const navigate = useNavigate();
 
-    const handleMenuClick = () => {
+    const handleMenuClick = () =>
+    {
         setShowMenu(!showMenu);
         setshowNotification(false);
     };
 
     const [showAlert, setShowAlert] = useState(true);
 
-    useEffect(() => {
+    useEffect(() =>
+    {
         setShowAlert(true);
-        const timer = setTimeout(() => {
+        const timer = setTimeout(() =>
+        {
             setShowAlert(false);
             setAlerts({
                 type: null,
@@ -53,27 +60,34 @@ export default function Homescreen() {
             });
         }, 5000);
 
-        return () => {
+        return () =>
+        {
             clearTimeout(timer);
         };
     }, [alerts]);
 
-    const handleAlertClose = () => {
+    const handleAlertClose = () =>
+    {
         setShowAlert(false);
     };
 
-    useEffect(() => {
-        if (token) {
+    useEffect(() =>
+    {
+        if (token)
+        {
             axiosClient
                 .get("/user")
-                .then(({ data }) => {
+                .then(({ data }) =>
+                {
                     setUser(data);
                     setUserDataFetched(true);
                 })
-                .catch((err) => {
+                .catch((err) =>
+                {
                     const response = err.response;
 
-                    if (response && response.status === 401) {
+                    if (response && response.status === 401)
+                    {
                         console.error(response.status); // Access the status code
                         console.error(response.data.message);
                         localStorage.removeItem("ACCESS_TOKEN");
@@ -82,23 +96,29 @@ export default function Homescreen() {
         }
     }, [token, setUser]);
 
-    useEffect(() => {
+    useEffect(() =>
+    {
         getNotifications();
 
         // Fetch data every 5 seconds
         const intervalId = setInterval(getNotifications, 5000);
 
         // Clean up the interval on component unmount
-        return () => {
+        return () =>
+        {
             clearInterval(intervalId);
         };
     }, []);
 
-    const getNotifications = async () => {
-        await axiosClient.get("/notifications").then(({ data }) => {
+    const getNotifications = async () =>
+    {
+        await axiosClient.get("/notifications").then(({ data }) =>
+        {
             let count = 0;
-            for (let i = 0; i < data.length; i++) {
-                if (data[i]?.state == "unread") {
+            for (let i = 0; i < data.length; i++)
+            {
+                if (data[i]?.state == "unread")
+                {
                     count++;
                 }
             }
@@ -107,43 +127,53 @@ export default function Homescreen() {
         });
     };
 
-    const handleSeeNotificatitons = async () => {
+    const handleSeeNotificatitons = async () =>
+    {
         await axiosClient
             .post("/update-notification-state")
-            .then(async ({ data }) => {
+            .then(async ({ data }) =>
+            {
                 await getNotifications();
             });
     };
 
-    const handleSearchUsers = async (e) => {
+    const handleSearchUsers = async (e) =>
+    {
         e.preventDefault();
 
         await axiosClient
             .post("/search-user", {
                 name: searchRequest,
             })
-            .then(({ data }) => {
-                setSearchData(data);
+            .then(({ data }) =>
+            {
+                setSearchData(data.users);
+                setSearchDataPosts(data.posts);
                 setShowSearchResponse(true);
             });
     };
 
-    if (!token) {
+    if (!token)
+    {
         return <Navigate to={"/"} />;
-    } else if (token && user.role_id == 1 && userDataFetched) {
+    } else if (token && user.role_id == 1 && userDataFetched)
+    {
         return <Navigate to={"/admin"} />;
     }
 
-    const onLogout = async (ev) => {
+    const onLogout = async (ev) =>
+    {
         ev.preventDefault();
 
         await axiosClient
             .post("/logout")
-            .then(() => {
+            .then(() =>
+            {
                 setToken(null);
                 setUser({});
             })
-            .catch((err) => {
+            .catch((err) =>
+            {
                 console.log(err);
                 setToken(null);
                 setUser({});
@@ -197,7 +227,8 @@ export default function Homescreen() {
                             type="text"
                             id="search-text"
                             placeholder="search.."
-                            onChange={(ev) => {
+                            onChange={(ev) =>
+                            {
                                 setSearchRequest(ev.target.value);
                             }}
                         />
@@ -230,15 +261,20 @@ export default function Homescreen() {
                         <div className=" justify-content-end d-flex">
                             <button
                                 className="btn btn-outline-danger m-2"
-                                onClick={() => {
+                                onClick={() =>
+                                {
                                     setShowSearchResponse(false);
                                 }}
                             >
                                 close
                             </button>
                         </div>
+
+                        <h1>users</h1>
+
                         {searchData?.length != 0 ? (
-                            searchData.map((user, index) => {
+                            searchData.map((user, index) =>
+                            {
                                 return (
                                     <div
                                         style={{
@@ -248,7 +284,8 @@ export default function Homescreen() {
                                             margin: 4,
                                         }}
                                         className="d-flex justify-content-between align-items-center bg-info"
-                                        onClick={() => {
+                                        onClick={() =>
+                                        {
                                             navigate("/profile/" + user.id);
                                             setShowSearchResponse(false);
                                         }}
@@ -281,7 +318,55 @@ export default function Homescreen() {
                                     margin: 4,
                                 }}
                                 className="d-flex justify-content-between align-items-center bg-info"
-                                onClick={() => {}}
+                                onClick={() => { }}
+                            >
+                                <p>none result</p>
+                            </div>
+                        )}
+                        <h1>posts</h1>
+                        {searchDataPosts?.length != 0 ? (
+                            searchDataPosts.map((user, index) =>
+                            {
+                                return (
+                                    <div
+                                        style={{
+                                            backgroundColor: "#B9D3EE",
+                                            padding: 7,
+                                            borderRadius: 10,
+                                            margin: 4,
+                                        }}
+                                        className="d-flex justify-content-between align-items-center bg-info"
+
+                                    >
+                                        <img
+                                            src={
+                                                "http://127.0.0.1:8000/api/images/" +
+                                                user.image
+                                            }
+                                            width={70}
+                                            height={70}
+                                            alt=""
+                                        />
+                                        <p
+                                            style={{
+                                                fontSize: "1.2rem",
+                                            }}
+                                        >
+                                            {user.description}
+                                        </p>
+                                    </div>
+                                );
+                            })
+                        ) : (
+                            <div
+                                style={{
+                                    backgroundColor: "#B9D3EE",
+                                    padding: 7,
+                                    borderRadius: 10,
+                                    margin: 4,
+                                }}
+                                className="d-flex justify-content-between align-items-center bg-info"
+                                onClick={() => { }}
                             >
                                 <p>none result</p>
                             </div>
@@ -308,8 +393,10 @@ export default function Homescreen() {
                             <BsFillBellFill
                                 size={40}
                                 color={showNotification ? "blue" : "black"}
-                                onClick={() => {
-                                    if (showNotification) {
+                                onClick={() =>
+                                {
+                                    if (showNotification)
+                                    {
                                         handleSeeNotificatitons();
                                     }
                                     setshowNotification(!showNotification);
@@ -449,7 +536,8 @@ export default function Homescreen() {
                             >
                                 <AiFillHome
                                     size={40}
-                                    onClick={() => {
+                                    onClick={() =>
+                                    {
                                         navigate("/posts");
                                         setShowMenu(false);
                                     }}
@@ -470,8 +558,10 @@ export default function Homescreen() {
                                         color={
                                             showNotification ? "blue" : "black"
                                         }
-                                        onClick={() => {
-                                            if (showNotification) {
+                                        onClick={() =>
+                                        {
+                                            if (showNotification)
+                                            {
                                                 handleSeeNotificatitons();
                                             }
                                             setshowNotification(
@@ -519,7 +609,8 @@ export default function Homescreen() {
                                 >
                                     <Link
                                         to={"/messages"}
-                                        onClick={() => {
+                                        onClick={() =>
+                                        {
                                             setShowMenu(false);
                                         }}
                                     >
@@ -546,7 +637,8 @@ export default function Homescreen() {
                                 >
                                     <Link
                                         to={"/profile/" + user.id}
-                                        onClick={() => {
+                                        onClick={() =>
+                                        {
                                             setShowMenu(false);
                                         }}
                                     >
@@ -601,15 +693,15 @@ export default function Homescreen() {
                             border: "solid thin black",
                         }}
                     >
-                        {notifications.map((notif, index) => {
+                        {notifications.map((notif, index) =>
+                        {
                             return (
                                 <div
                                     style={{
-                                        backgroundColor: `${
-                                            notif?.state == "unread"
-                                                ? "#9FB6CD"
-                                                : "#CFCFCF"
-                                        }`,
+                                        backgroundColor: `${notif?.state == "unread"
+                                            ? "#9FB6CD"
+                                            : "#CFCFCF"
+                                            }`,
                                         padding: 7,
                                         borderRadius: 10,
                                         margin: 4,
@@ -655,13 +747,12 @@ export default function Homescreen() {
                 <div
                     className="alert-home"
                     style={{
-                        backgroundColor: `${
-                            alerts.type == "info"
-                                ? "#00ccff"
-                                : alerts.type == "warming"
+                        backgroundColor: `${alerts.type == "info"
+                            ? "#00ccff"
+                            : alerts.type == "warming"
                                 ? "#FFCC99"
                                 : alerts.type == "error" && "#CC0000"
-                        }`,
+                            }`,
                     }}
                 >
                     <div className="alert-content">

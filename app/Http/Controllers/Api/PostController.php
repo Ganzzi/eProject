@@ -101,7 +101,6 @@ class PostController extends Controller
         // return response()->json(['posts' => $posts]);
     }
 
-    
     public function filterProhibitedWords($text)
     {
         // Danh sách từ cấm liên quan đến chửi bậy và chửi đảng
