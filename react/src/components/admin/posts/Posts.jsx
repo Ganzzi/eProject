@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 import { useState ,} from "react";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import axiosClient from "../../../axios-client";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { formatDateTime } from "../../../utils";
 
 export default function Posts() {
     const [posts, setPost] = useState([]);
@@ -40,7 +41,7 @@ export default function Posts() {
             .catch(() => {
                 setLoading(false);
             });
-    };
+    };[]
 
     return (
         <div>
@@ -71,7 +72,9 @@ export default function Posts() {
                             <th  style={{paddingRight:"5rem"}}>Creator</th>
                             <th  style={{paddingRight:"5rem"}}>Description</th>
                             <th  style={{paddingRight:"5rem"}}>Comment</th>
+                            <th  style={{paddingRight:"5rem"}}>lock</th>
                             <th  style={{paddingRight:"5rem"}}>image</th>
+                            
                             <th  style={{paddingRight:"5rem"}}>Update at</th>
                             <th>Action</th>
                         </tr>
@@ -93,9 +96,9 @@ export default function Posts() {
                                     <td>{p.creator_id}</td>
 
                                     <td>{p.description}</td>
-
+                                
                                     <td>{p.comments.length}</td>
-
+                                    <td>{p.lock}</td>
                                     <td>
                                         <img
                                             src={
@@ -107,15 +110,19 @@ export default function Posts() {
                                             alt=""
                                         />
                                     </td>
-                                    <td>{p.updated_at}</td>
                                     <td>
-                                        {/* <Link
+                                    
+                            {formatDateTime(p.updated_at)}
+                    
+                                      </td>
+                                    <td>
+                                        <Link
                                             className="btn-edit"
                                             to={"/admin/posts/" + p.id}
                                         >
                                             Edit
                                         </Link>
-                                        &nbsp; */}
+                                        &nbsp;
                                         <button
                                             className="btn-delete"
                                             onClick={() => onDeleteClick(p.id)}

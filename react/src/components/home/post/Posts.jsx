@@ -10,8 +10,7 @@ import { formatDateTime } from "../../../utils";
 
 // import { BorderAll } from "@material-ui/icons";
 
-const Posts = () =>
-{
+const Posts = () => {
     const [posts, setPosts] = useState([]);
     const [follows, setfollows] = useState({
         followers: [],
@@ -25,29 +24,22 @@ const Posts = () =>
 
     const [description, setdescription] = useState(null);
 
-    const getPostData = async () =>
-    {
-        await axiosClient.get("/posts").then(({ data }) =>
-        {
+    const getPostData = async () => {
+        await axiosClient.get("/posts").then(({ data }) => {
             setPosts(data.reverse());
         });
     };
 
-    useEffect(() =>
-    {
+    useEffect(() => {
         getPostData();
     }, []);
 
-    useEffect(() =>
-    {
-        if (user.id)
-        {
-            const getFollows = async () =>
-            {
+    useEffect(() => {
+        if (user.id) {
+            const getFollows = async () => {
                 await axiosClient
                     .get(`/follows/${user.id}`)
-                    .then(({ data }) =>
-                    {
+                    .then(({ data }) => {
                         setfollows({
                             followers: data?.followers,
                             followings: data?.followings,
@@ -59,13 +51,11 @@ const Posts = () =>
         }
     }, [user.id]);
 
-    const getPostDataFromChil = async () =>
-    {
+    const getPostDataFromChil = async () => {
         await getPostData();
     };
 
-    const handleCreatePost = async (e) =>
-    {
+    const handleCreatePost = async (e) => {
         e.preventDefault();
 
         const formData = new FormData();
@@ -73,12 +63,38 @@ const Posts = () =>
         formData.append("creator_id", user.id);
         formData.append("description", description);
 
-        await axiosClient.post("/posts", formData).then(async ({ data }) =>
-        {
-            // console.log(data);
-            await getPostData();
-        });
+        await axiosClient.post("/posts", formData).then(async ({ data }) => {
+            setPostForm({
+                image: null,
+            })
+            setdescription('')
+
+            await axiosClient.post("/posts", formData).then(async ({ data }) => {
+
+                // console.log(data);
+                await getPostData();
+            });
+        })
+
+
+    }
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        //  console.log(URL.createObjectURL(file));
+        file.preview = URL.createObjectURL(file);
+        setSlectedImage(file);
+        //  file.preview = URL.c
+        // const reader = new FileReader();
+        // reader.onloadend =()=>{
+        //     setSlectedImage(reader.result);
+
+        // };
+        // if(file){
+        //     reader.readAsDataURL(file);
+        // }
+
     };
+
 
     return (
         <div style={{}} className="row">
@@ -123,8 +139,7 @@ const Posts = () =>
                                 follows.followers.map((fl) => (
                                     <div
                                         className="d-flex"
-                                        onClick={() =>
-                                        {
+                                        onClick={() => {
                                             navigate(`/profile/${fl.id}`);
                                         }}
                                     >
@@ -150,8 +165,7 @@ const Posts = () =>
                                 follows.followings.map((fl) => (
                                     <div
                                         className="d-flex"
-                                        onClick={() =>
-                                        {
+                                        onClick={() => {
                                             navigate(`/profile/${fl.id}`);
                                         }}
                                     >
@@ -205,18 +219,22 @@ const Posts = () =>
                         <p>{user.name}</p>
                     </div>
                     <form
-                        className="col-9 d-flex"
-                        style={{
-                            display: "flex",
-                            flexDirection: "col",
-                            alignItems: "flex-start",
-                            marginBottom: "30px",
-                            padding: "10px",
-                        }}
+                        className="col-12 d-flex"
+                        // style={{
+                        //     display: "flex",
+                        //     flexDirection: "col",
+                        //     alignItems: "flex-start",
+                        //     marginBottom: "30px",
+                        //     padding: "10px",
+                        // }}
                         onSubmit={handleCreatePost}
                     >
-                        <div className="d-flex col-12">
+                        <div className="d-flex col-9"
+
+                        >
+
                             <input
+                                value={description}
                                 style={{
                                     display: "flex",
                                     width: "100%",
@@ -227,36 +245,49 @@ const Posts = () =>
                                     resize: "none",
                                 }}
                                 placeholder="What's on your mind?"
-                                onChange={(ev) =>
-                                {
+                                onChange={(ev) => {
                                     setdescription(ev.target.value);
                                 }}
                             />
-
+                        </div >
+                        <div className="d-fex"
+                            style={{
+                                display: "none",
+                                height: 0,
+                                overflow: "hidden",
+                                width: 0,
+                            }}
+                        >
                             <input
                                 type="file"
                                 id="file"
+                                onChangeCapture={handleImageChange}
                                 onChange={(ev) =>
                                     setPostForm({
                                         ...postForm,
                                         image: ev.target.files[0],
                                     })
                                 }
-                            />
-                            <label htmlFor="file">
+                            /></div>
+                        <div>
+                            <label htmlFor="file" >
                                 <HiOutlinePhotograph
                                     width={100}
                                     height={1000}
                                     size={40}
                                     color="black"
+                                    onChangeCapture={handleImageChange}
+                                    onChange={(ev) =>
+                                        setPosts({ ...posts, image: ev.target.files[0] })
+                                    }
                                 />
                             </label>
                         </div>
-                        <div className="submitpost">
+                        <div className="d-flex ">
+
                             <button
                                 style={{
-                                    padding: "20px",
-                                    // marginTop: " 0.8rem",
+                                    padding: "25px",
                                     backgroundColor: "pink",
                                     color: "black",
                                     border: "3px",
@@ -280,7 +311,7 @@ const Posts = () =>
                         />
                     ))}
                 </div>
-            </div >
+            </div>
 
             <div className="col-xl-2 justify-content-center align-items-start d-none d-xl-flex row">
                 <div className="col-12 row">
@@ -290,8 +321,7 @@ const Posts = () =>
                             follows.followers.map((fl) => (
                                 <div
                                     className="d-flex"
-                                    onClick={() =>
-                                    {
+                                    onClick={() => {
                                         navigate(`/profile/${fl.id}`);
                                     }}
                                 >
@@ -317,8 +347,7 @@ const Posts = () =>
                             follows.followings.map((fl) => (
                                 <div
                                     className="d-flex"
-                                    onClick={() =>
-                                    {
+                                    onClick={() => {
                                         navigate(`/profile/${fl.id}`);
                                     }}
                                 >
@@ -340,8 +369,10 @@ const Posts = () =>
                     </div>
                 </div>
             </div>
-        </div >
+        </div>
     );
-};
+}
+
+
 
 export default Posts;

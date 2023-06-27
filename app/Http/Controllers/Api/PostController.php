@@ -104,7 +104,7 @@ class PostController extends Controller
     public function filterProhibitedWords($text)
     {
         // Danh sách từ cấm liên quan đến chửi bậy và chửi đảng
-        $prohibitedWords = ['dmm', 'từ_cấm_2', 'từ_cấm_3'];
+        $prohibitedWords = ['kill ', 'fuck', 'Heroin','Sexually','Adult','Erotic','scams','Drugs','Narcotics','Sexual ','Suicide','Bullying','Isolation','arse','tits','bitch','whore','crap','Damn','Fucker','cock','shit'];
 
         foreach ($prohibitedWords as $word) {
             if (stripos($text, $word) !== false) {

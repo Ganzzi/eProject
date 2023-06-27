@@ -24,7 +24,7 @@ class PostStoreRequest extends FormRequest
         return [
             'description' => 'required|string|max:55',
             
-            'image' => 'image',
+            // 'image' => 'image',
            
         ];
 
