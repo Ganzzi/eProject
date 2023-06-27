@@ -4,14 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Post;
 use App\Http\Controllers\Controller;
-use App\Models\LikePost;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Resources\PostResource;
-use Illuminate\Foundation\Http\FormRequest;
-use App\Http\Requests\PostStoreRequest;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -46,37 +40,6 @@ class PostController extends Controller
             ];
         }));
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \App\Http\Requests\PostStoreRequest $request
-     * @return \Illuminate\Http\Response
-     */
-    // public function store(PostStoreRequest $request)
-    // {
-    //     return response()->json(['message' => 'Update success'], 202);
-    //     $data = $request->validated();
-
-    //     // Check if an image was uploaded
-    //     if ($request->hasFile('image')) {
-    //         // Get the uploaded file from the request
-    //         $uploadedFile = $request->file('image');
-
-    //         // Store the uploaded file in a public storage disk
-    //         $filePath = $uploadedFile->store('public/images');
-    //     } else {
-    //         $filePath = null;
-    //     }
-
-    //     $post = Post::create([
-    //         'description' => $data['description'],
-
-    //         'image' => basename($filePath)
-    //     ]);
-
-    //     return response()->json(['message' => 'Update success'], 202);
-    // }
 
     /**
      * Display the specified resource.
@@ -133,11 +96,6 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-
-        // if (!$post) {
-        //     return response()->json(['success' => false, 'message' => 'not found'], 404);
-        // }
-
         $post->likes()->delete();
 
         // Delete chats and associated like chats

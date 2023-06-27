@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\User;
 
 use App\Models\Notification;
 use App\Http\Controllers\Controller;
@@ -24,6 +24,11 @@ class NotificationController extends Controller
         return response($notifications);
     }
 
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param $receiverId, $type, $text
+     */
     public function store($receiverId, $type, $text)
     {
         $notification = new Notification();
@@ -48,7 +53,10 @@ class NotificationController extends Controller
         return response('deleted');
     }
 
-    public function updateNotificationState(Request $request)
+    /**
+     * Update all unread notifications belong to a specific user to be read
+     */
+    public function updateNotificationState()
     {
         $receiverId = auth()->user()->id;
 

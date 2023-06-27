@@ -1,23 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { AiFillHeart, AiOutlineComment } from "react-icons/ai";
-import { ImReply } from "react-icons/im";
-import { formatDateTime } from "../../../utils";
-import axiosClient from "../../../axios-client";
-import { useStateContext } from "../../../contexts/ContextProvider";
-import { MdOutlineCancel, MdOutlineSettingsSuggest } from "react-icons/md";
-import RepliedCommentCard from "./RepliedCommentCard";
 import { RiDeleteBinLine } from "react-icons/Ri";
+import { ImReply } from "react-icons/im";
+import { MdOutlineCancel, MdOutlineSettingsSuggest } from "react-icons/md";
+
+import { useStateContext } from "../../../contexts/ContextProvider";
+import RepliedCommentCard from "./RepliedCommentCard";
+import axiosClient from "../../../axios-client";
+import { formatDateTime } from "../../../utils";
 
 const CommentCard = ({ cmt, getPostData, onReply }) => {
     const { user, setAlerts } = useStateContext();
-    const [reply_to, setreply_to] = useState([]);
     const [isLiked, setIsLiked] = useState(false);
-    const [isLikeOrUnlikeSuccess, setisLikeOrUnlikeSuccess] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
     const [newComment, setNewComment] = useState("");
 
     const checkIsLiked = () => {
-        // if (cmt?.likes.length != 0) {
         let _isLiked = false;
         for (let i = 0; i < cmt.likes.length; i++) {
             if (user.id == cmt.likes[i].liker_id) {
@@ -37,7 +35,6 @@ const CommentCard = ({ cmt, getPostData, onReply }) => {
                 comment_id: id,
             })
             .then(async ({ data }) => {
-                setisLikeOrUnlikeSuccess(true);
                 setAlerts({
                     type: "info",
                     message: `${
@@ -49,8 +46,6 @@ const CommentCard = ({ cmt, getPostData, onReply }) => {
                 });
                 await getPostData();
                 setIsLiked(!isLiked);
-                setisLikeOrUnlikeSuccess(false);
-                // checkIsLiked();
             });
     };
 

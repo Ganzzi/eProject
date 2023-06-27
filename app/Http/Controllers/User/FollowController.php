@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\User;
 
 use App\Models\Follow;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Api\ActivityLogController;
-use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\User\ActivityLogController;
+use App\Http\Controllers\User\NotificationController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,37 +13,8 @@ use Illuminate\Support\Facades\Auth;
 class FollowController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display the specified resource.
      */
-    // public function index()
-    // {
-    //     $user_id = Auth::user()->id;
-
-    //     //    user id: 1 following_id: 1
-    //     $followers = Follow::where('following_id', $user_id)->get();
-
-    //     $followings = Follow::where('follower_id', $user_id)->get();
-
-    //     return response()->json([
-    //         'followers' => $followers->map(function ($fl) {
-    //             $user = User::find($fl->follower_id);
-    //             return [
-    //                 'image' => $user->image,
-    //                 'name' => $user->name,
-    //                 'id' => $user->id,
-    //             ];
-    //         }),
-    //         'followings' => $followings->map(function ($fl) {
-    //             $user = User::find($fl->following_id);
-    //             return [
-    //                 'image' => $user->image,
-    //                 'name' => $user->name,
-    //                 'id' => $user->id,
-    //             ];
-    //         }),
-    //     ]);
-    // }
-
     public function show($follow)
     {
         $user_id = User::find($follow)->id;
@@ -74,7 +45,7 @@ class FollowController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource or delete an existing one in storage.
      */
     public function store(Request $request)
     {
@@ -151,18 +122,4 @@ class FollowController extends Controller
         //     return response()->json(['message' => 'followed']);
         // }
     }
-
-    // /**
-    //  * Remove the specified resource from storage.
-    //  * @param \App\Models\Follow $follow
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function destroy(Follow $follow)
-    // {
-    //     $follow->delete();
-
-    //     return response()->json([
-    //         'message' => 'Follow deleted successfully'
-    //     ]);
-    // }
 }

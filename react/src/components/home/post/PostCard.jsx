@@ -3,12 +3,13 @@ import CommentCard from "./CommentCard";
 import { AiFillHeart } from "react-icons/ai";
 import { TiDeleteOutline } from "react-icons/Ti";
 import { RiDeleteBinLine } from "react-icons/Ri";
-import { MdOutlineCancel, MdOutlineSettingsSuggest } from "react-icons/md";
-import { formatDateTime } from "../../../utils";
-import axiosClient from "../../../axios-client";
-import { useNavigate } from "react-router-dom";
-import { useStateContext } from "../../../contexts/ContextProvider";
 import { BiCommentDetail } from "react-icons/Bi";
+import { MdOutlineCancel, MdOutlineSettingsSuggest } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
+
+import axiosClient from "../../../axios-client";
+import { formatDateTime } from "../../../utils";
+import { useStateContext } from "../../../contexts/ContextProvider";
 
 const PostCard = ({ post, post_creator, getPostData }) => {
     const { user, setAlerts } = useStateContext();
@@ -16,7 +17,6 @@ const PostCard = ({ post, post_creator, getPostData }) => {
     const [isReplying, setIsReplying] = useState(false);
     const [repliedId, setRepliedId] = useState(null);
     const [isLikedPost, setIsLikedPost] = useState(false);
-    const [isLikeOrUnlike, setisLikeOrUnlike] = useState(false);
 
     const [isUpdating, setIsUpdating] = useState(false);
     const [newPostForm, setNewPostForm] = useState({
@@ -106,8 +106,6 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                 post_id: post.id,
             })
             .then(async () => {
-                setisLikeOrUnlike(true);
-
                 setAlerts({
                     type: "info",
                     message: `${
@@ -120,7 +118,6 @@ const PostCard = ({ post, post_creator, getPostData }) => {
 
                 await getPostData();
                 setIsLikedPost(!isLikedPost);
-                setisLikeOrUnlike(false);
             });
     };
 
@@ -309,7 +306,7 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                                             color: "gray",
                                         }}
                                     >
-                                        reply to {}
+                                        replying
                                     </p>
                                     <p
                                         className="absolute-text"

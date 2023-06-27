@@ -15,15 +15,6 @@ axiosClient.interceptors.response.use(
     return res;
   },
   (err) => {
-    try {
-      const { response } = err;
-      if (response === 401) {
-        localStorage.removeItem("ACCESS_TOKEN");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-
     throw err;
   }
 );

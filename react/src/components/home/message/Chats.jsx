@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import axiosClient from "../../../axios-client";
 import { MdOutlineDelete, MdReply } from "react-icons/md";
-import { AiFillLike, AiOutlinePaperClip } from "react-icons/ai";
+import { AiFillLike } from "react-icons/ai";
 import React from "react";
-// import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
+
+import axiosClient from "../../../axios-client";
 
 const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
     const [chatData, setChatData] = useState([]);

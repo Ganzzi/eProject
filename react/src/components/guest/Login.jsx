@@ -7,10 +7,10 @@ import { useState } from "react";
 export default function Login() {
     const emailRef = createRef();
     const passwordRef = createRef();
-    const { setUser, setToken } = useStateContext();
+    const { setToken } = useStateContext();
     const [message, setMessage] = useState(null);
 
-    const onSubmit = (ev) => {
+    const onSubmit = async (ev) => {
         ev.preventDefault();
 
         const payload = {
@@ -20,11 +20,9 @@ export default function Login() {
 
         setMessage(null);
 
-        axiosClient
+        await axiosClient
             .post("/login", payload)
             .then(({ data }) => {
-                console.log(data.user);
-                // setUser(data.user);
                 setToken(data.token);
             })
             .catch((err) => {

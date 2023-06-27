@@ -14,7 +14,7 @@ export default function Signup() {
 
     const { setUser, setToken } = useStateContext();
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
 
         const formData = new FormData();
@@ -27,7 +27,7 @@ export default function Signup() {
             passwordConfirmationRef.current.value
         );
 
-        axiosClient
+        await axiosClient
             .post("/signup", formData)
             .then(({ data }) => {
                 setToken(data.token);
@@ -73,9 +73,6 @@ export default function Signup() {
                         onChange={(ev) => setImage(ev.target.files[0])}
                         placeholder="image"
                     />
-                    {/* <label htmlFor="file-signup">
-                        <HiOutlinePhotograph size={40} color="black" />
-                    </label> */}
                     <button className="btn btn-block btn-primary" type="submit">
                         Signup
                     </button>

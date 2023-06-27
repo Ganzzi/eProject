@@ -41,27 +41,9 @@ export default function Posts() {
                 setLoading(false);
             });
     };
-    [];
 
     return (
         <div>
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                }}
-            >
-                <h1
-                    style={{
-                        fontFamily: "fantasy",
-                        justifycontent: "space-between",
-                    }}
-                ></h1>
-                {/* <Link className="btn-add" to="/admin/posts/new">
-                    Add new
-                </Link> */}
-            </div>
             <div className="card animated fadeInDown" style={{ left: "2rem" }}>
                 <table>
                     <thead>

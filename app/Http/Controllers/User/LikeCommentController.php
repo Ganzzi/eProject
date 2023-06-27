@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\User;
 
 use App\Models\LikeComment;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Api\ActivityLogController;
-use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\User\ActivityLogController;
+use App\Http\Controllers\User\NotificationController;
 use Illuminate\Http\Request;
 
 class LikeCommentController extends Controller
 {
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource or delete an existing one in storage.
      */
     public function store(Request $request)
     {

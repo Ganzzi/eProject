@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\User;
 
 use App\Models\Chat;
 use App\Models\ChatRoom;
@@ -88,8 +88,6 @@ class ChatRoomController extends Controller
     public function show($chatRoom)
     {
         $room = ChatRoom::with('users', 'chats.likes')->find($chatRoom);
-
-        // return response($room);
 
         return response()->json([
             'chat_room_id' => $room->id,

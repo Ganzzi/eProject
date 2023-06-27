@@ -1,14 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreUserRequest;
-use App\Http\Requests\UpdateUserRequest;
-use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Models\Post;
-use Illuminate\Support\Facades\Password;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -52,7 +48,11 @@ class UserController extends Controller
         return response()->json($_user);
     }
 
-
+    /**
+     * Display specified user and post recource
+     * * @param \App\Http\Requests\Request $request
+     * @return \Illuminate\Http\Response $users, $posts
+     */
     public function searchByName(Request $request)
     {
         $request->validate([
@@ -62,7 +62,7 @@ class UserController extends Controller
         $name = $request->input('name');
 
         $users = User::where('name', 'like', "%$name%")->get();
-        $posts = Post::where('description', 'like', "%%")->get();
+        $posts = Post::where('description', 'like', "%$name%")->where('lock', '0')->get();
 
 
         return response()->json(['users' => $users, 'posts' => $posts]);

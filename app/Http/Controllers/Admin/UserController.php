@@ -7,8 +7,6 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -91,42 +89,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        // $user->role()->delete();
-        // $user->notifications()->delete();
-        // $user->activitylogs()->delete();
-        // $user->follows()->delete();
-        // $user->chatRooms()->detach();
-        // $user->likeChats()->delete();
-        // $user->chats()->delete();
-        // $user->likePosts()->delete();
-        // $user->likeComments()->delete();
-        // $user->comments()->delete();
-        // $user->posts()->delete();
-
         $user->delete();
 
         return response("", 204);
     }
-
-    // public function sendResetPassword(Request $request)
-    // {
-    //     $request->validate([
-    //         'email' => 'required|email',
-    //     ]);
-
-    //     $response = $this->broker()->sendResetLink(
-    //         $request->only('email')
-    //     );
-
-    //     if ($response == Password::RESET_LINK_SENT) {
-    //         return response()->json(['message' => 'Password reset email sent.']);
-    //     } else {
-    //         return response()->json(['message' => 'Unable to send reset link.']);
-    //     }
-    // }
-
-    // private function broker()
-    // {
-    //     return Password::broker();
-    // }
 }

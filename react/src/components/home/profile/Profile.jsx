@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useStateContext } from "../../../contexts/ContextProvider";
-import { useNavigate, useNavigation, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
+import { useStateContext } from "../../../contexts/ContextProvider";
 import PostCard from "../post/PostCard";
 import axiosClient from "../../../axios-client";
 import UpdateProfileModal from "./UpdateProfileModal";
@@ -9,7 +9,7 @@ import ActivityLogModal from "./ActivityLogModal";
 import { formatDateTime } from "../../../utils";
 
 const Profile = () => {
-    const { user, token, setUser, setToken } = useStateContext();
+    const { user, setUser, setAlerts } = useStateContext();
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -95,13 +95,33 @@ const Profile = () => {
 
     const handleUpdateProfile = async (formData) => {
         try {
+            console.log(formData);
             await axiosClient
                 .post(`/update-profile/${id}`, formData)
-                .then(({ data }) => {});
+                .then(async () => {
+                    setShowModal(false);
 
-            await axiosClient.get("/user").then(({ data }) => {
-                setUser(data);
-            });
+                    setAlerts({
+                        type: "info",
+                        message: `updated succesfully`,
+                        time: new Date(),
+                    });
+
+                    await axiosClient.get("/user").then(({ data }) => {
+                        setUser(data);
+                    });
+                })
+                .catch((err) => {
+                    const response = err.response;
+
+                    if (response && response.status === 422) {
+                        setAlerts({
+                            type: "error",
+                            message: response.data.message,
+                            time: new Date(),
+                        });
+                    }
+                });
 
             setShowModal(false);
         } catch (error) {
@@ -116,6 +136,15 @@ const Profile = () => {
                 following_id: id,
             })
             .then(async () => {
+                setAlerts({
+                    type: "info",
+                    message: `${
+                        isFollowing
+                            ? "Unfollowed successfully"
+                            : "Followed  successfully"
+                    }`,
+                    time: new Date(),
+                });
                 await axiosClient.get(`/follows/${id}`).then(({ data }) => {
                     setProfileContent({
                         ...profileContent,
@@ -134,8 +163,6 @@ const Profile = () => {
                 });
             });
     };
-
-    // console.log(profileContent);
 
     return (
         <div className="container">

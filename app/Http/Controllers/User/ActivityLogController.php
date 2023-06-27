@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\User;
 
 use App\Models\ActivityLog;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ActivityLogController extends Controller
@@ -25,6 +24,11 @@ class ActivityLogController extends Controller
         return response($activities);
     }
 
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param $userId, $type, $describe
+     */
     public function store($userId, $type, $describe)
     {
         $activityLog = new ActivityLog();

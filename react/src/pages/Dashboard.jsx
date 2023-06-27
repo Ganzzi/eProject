@@ -10,6 +10,7 @@ export default function dashboard() {
         useStateContext();
     const [userDataFetched, setUserDataFetched] = useState(false);
 
+    // useEffect to get data base on token
     useEffect(() => {
         if (token) {
             axiosClient.get("/user").then(({ data }) => {
@@ -19,12 +20,14 @@ export default function dashboard() {
         }
     }, [token]);
 
+    // protected navigation
     if (!token) {
         return <Navigate to={"/"} />;
     } else if (token && user.role_id != 1 && userDataFetched) {
         return <Navigate to={"/posts"} />;
     }
 
+    // function to logout
     const onLogout = (ev) => {
         ev.preventDefault();
 
@@ -36,6 +39,7 @@ export default function dashboard() {
 
     return (
         <div id="dashboardLayout">
+            {/* Aside place */}
             <aside>
                 <div
                     style={{
@@ -56,7 +60,6 @@ export default function dashboard() {
                     )}
                     ADMIN
                 </div>
-                <div></div>
                 <br />
                 {
                     <div class="w3-row">
@@ -104,7 +107,10 @@ export default function dashboard() {
                     </div>
                 }
             </aside>
-            <div className="container" style={{}}>
+
+            {/* Information place */}
+            <div className="container">
+                {/* header */}
                 <div id="head">
                     <header className="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
                         <a className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
@@ -144,6 +150,7 @@ export default function dashboard() {
                     </header>
                 </div>
 
+                {/* main content */}
                 <main id="father">{user.role_id == 1 && <Outlet />}</main>
 
                 {/* Alert */}

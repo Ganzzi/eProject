@@ -7,6 +7,7 @@ export default function GuestLayout() {
     const { user, token, setUser } = useStateContext();
     const [userDataFetched, setUserDataFetched] = useState(false);
 
+    // useEffect to get data base on token
     useEffect(() => {
         if (token) {
             axiosClient
@@ -27,6 +28,7 @@ export default function GuestLayout() {
         }
     }, [token]);
 
+    // protected navigation
     if (token && userDataFetched) {
         if (user.role_id == 1) {
             return <Navigate to={"/admin"} />;

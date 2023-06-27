@@ -1,8 +1,19 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+
 import axiosClient from "../../../axios-client.js";
 import { useStateContext } from "../../../contexts/ContextProvider.jsx";
-// import { HiOutlinePhotograph } from "react-icons/Hi";
+
+const lockValue = [
+    {
+        name: "Unlock",
+        value: 0,
+    },
+    {
+        name: "Locked",
+        value: 1,
+    },
+];
 
 export default function UserForm() {
     const navigate = useNavigate();
@@ -24,19 +35,10 @@ export default function UserForm() {
     const [selectedImage, setSlectedImage] = useState();
     const handleImageChange = (e) => {
         const file = e.target.files[0];
-        //  console.log(URL.createObjectURL(file));
         file.preview = URL.createObjectURL(file);
         setSlectedImage(file);
-        //  file.preview = URL.c
-        // const reader = new FileReader();
-        // reader.onloadend =()=>{
-        //     setSlectedImage(reader.result);
-
-        // };
-        // if(file){
-        //     reader.readAsDataURL(file);
-        // }
     };
+
     if (id) {
         useEffect(() => {
             setLoading(true);
@@ -106,17 +108,6 @@ export default function UserForm() {
                 });
         }
     };
-
-    const lockValue = [
-        {
-            name: "Unlock",
-            value: 0,
-        },
-        {
-            name: "Locked",
-            value: 1,
-        },
-    ];
 
     return (
         <div className="d-flex flex-column">

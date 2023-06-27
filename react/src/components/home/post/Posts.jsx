@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
-import axiosClient from "../../../axios-client";
-import { useStateContext } from "../../../contexts/ContextProvider";
-
-// import { BorderAll } from "@material-ui/icons";
-import { HiOutlinePhotograph } from "react-icons/Hi";
-import PostCard from "./PostCard";
 import { useNavigate } from "react-router-dom";
-import { formatDateTime } from "../../../utils";
+import { HiOutlinePhotograph } from "react-icons/Hi";
 
-// import { BorderAll } from "@material-ui/icons";
+import { useStateContext } from "../../../contexts/ContextProvider";
+import PostCard from "./PostCard";
+import axiosClient from "../../../axios-client";
+import { formatDateTime } from "../../../utils";
 
 const Posts = () => {
     const [posts, setPosts] = useState([]);
@@ -22,7 +19,6 @@ const Posts = () => {
         image: null,
     });
     const [description, setdescription] = useState(null);
-    const [selectedImage, setSelectedImage] = useState(null);
 
     const getPostData = async () => {
         await axiosClient.get("/posts").then(({ data }) => {

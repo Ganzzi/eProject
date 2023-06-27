@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import axiosClient from "../../../axios-client.js";
 import { Link } from "react-router-dom";
+
+import axiosClient from "../../../axios-client.js";
 import { useStateContext } from "../../../contexts/ContextProvider.jsx";
 import { formatDateTime } from "../../../utils";
+
 export default function Users() {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -17,7 +19,6 @@ export default function Users() {
             return;
         }
         await axiosClient.delete(`/admin/users/${user.id}`).then(async () => {
-            // setNotification("User was successfully deleted");
             setAlerts({
                 type: "info",
                 message: "user was successfully deleted",
@@ -110,19 +111,25 @@ export default function Users() {
                                     <td> {formatDateTime(u.created_at)}</td>
                                     <td>{u.lock == 0 ? "Unlock" : "Locked"}</td>
                                     <td>
-                                        <Link
-                                            className="btn-edit"
-                                            to={"/admin/users/" + u.id}
-                                        >
-                                            Edit
-                                        </Link>
-                                        &nbsp;
-                                        <button
-                                            className="btn-delete"
-                                            onClick={() => onDeleteClick(u)}
-                                        >
-                                            Delete
-                                        </button>
+                                        {u.role_id != 1 && (
+                                            <>
+                                                <Link
+                                                    className="btn-edit"
+                                                    to={"/admin/users/" + u.id}
+                                                >
+                                                    Edit
+                                                </Link>
+                                                &nbsp;
+                                                <button
+                                                    className="btn-delete"
+                                                    onClick={() =>
+                                                        onDeleteClick(u)
+                                                    }
+                                                >
+                                                    Delete
+                                                </button>
+                                            </>
+                                        )}
                                     </td>
                                 </tr>
                             ))}

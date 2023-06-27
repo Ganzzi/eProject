@@ -44,6 +44,7 @@ export default function Homescreen() {
 
     const [showAlert, setShowAlert] = useState(true);
 
+    // useEffect to show alert in home page
     useEffect(() => {
         setShowAlert(true);
         const timer = setTimeout(() => {
@@ -60,10 +61,7 @@ export default function Homescreen() {
         };
     }, [alerts]);
 
-    const handleAlertClose = () => {
-        setShowAlert(false);
-    };
-
+    // useEffect to get data base on token
     useEffect(() => {
         if (token) {
             axiosClient
@@ -84,6 +82,7 @@ export default function Homescreen() {
         }
     }, [token, setUser]);
 
+    // useEffect to get notification every 5s
     useEffect(() => {
         getNotifications();
 
@@ -96,6 +95,7 @@ export default function Homescreen() {
         };
     }, []);
 
+    // function to get notifications
     const getNotifications = async () => {
         await axiosClient.get("/notifications").then(({ data }) => {
             let count = 0;
@@ -109,6 +109,7 @@ export default function Homescreen() {
         });
     };
 
+    // function to update notifications's state from unread to read
     const handleSeeNotificatitons = async () => {
         await axiosClient
             .post("/update-notification-state")
@@ -117,6 +118,7 @@ export default function Homescreen() {
             });
     };
 
+    // function to get user result when search
     const handleSearchUsers = async (e) => {
         e.preventDefault();
 
@@ -131,12 +133,14 @@ export default function Homescreen() {
             });
     };
 
+    // protected navigation
     if (!token) {
         return <Navigate to={"/"} />;
     } else if (token && user.role_id == 1 && userDataFetched) {
         return <Navigate to={"/admin"} />;
     }
 
+    // function to logout
     const onLogout = async (ev) => {
         ev.preventDefault();
 
@@ -706,7 +710,7 @@ export default function Homescreen() {
                 )}
             </div>
 
-            {/* Children Component */}
+            {/* Main content */}
             {user.role_id != 1 && <Outlet />}
 
             {/* Alert */}
@@ -731,7 +735,9 @@ export default function Homescreen() {
                     </div>
                     <button
                         className="alert-close-btn"
-                        onClick={handleAlertClose}
+                        onClick={() => {
+                            setShowAlert(false);
+                        }}
                     >
                         Close
                     </button>

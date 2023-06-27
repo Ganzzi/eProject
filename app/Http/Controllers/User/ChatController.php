@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\User;
 
 use App\Models\Chat;
 use App\Http\Controllers\Controller;
@@ -33,8 +33,6 @@ class ChatController extends Controller
             $chat->reply_to = $replyToChat->id;
         }
 
-        // return response()->json('dmm2');
-
         $chat->save();
 
         return response()->json(['message' => 'Chat created successfully']);
@@ -47,7 +45,6 @@ class ChatController extends Controller
     {
         $_chat = Chat::find($chat);
 
-        // Kiểm tra xem người dùng có quyền xóa tin nhắn không
         $user = Auth::user();
         if ($_chat->sender_id !== $user->id) {
             return response()->json(['message' => 'Unauthorized.'], 403);

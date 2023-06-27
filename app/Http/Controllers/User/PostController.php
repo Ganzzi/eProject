@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\User;
 
 use App\Models\Post;
 use App\Http\Controllers\Controller;
@@ -8,8 +8,8 @@ use App\Models\LikePost;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Api\NotificationController;
-use App\Http\Controllers\Api\ActivityLogController;
+use App\Http\Controllers\User\NotificationController;
+use App\Http\Controllers\User\ActivityLogController;
 
 class PostController extends Controller
 {
@@ -58,6 +58,9 @@ class PostController extends Controller
         }));
     }
 
+    /**
+     * Display specific posts belong to a user
+     */
     public function getPostProfile($userid)
     {
         $posts = Post::with('likes', 'comments.likes')->where('creator_id', $userid)->where('lock', 0)->get();
@@ -97,22 +100,6 @@ class PostController extends Controller
                 }),
             ];
         }));
-
-        // return response()->json(['posts' => $posts]);
-    }
-
-    public function filterProhibitedWords($text)
-    {
-        // Danh sách từ cấm liên quan đến chửi bậy và chửi đảng
-        $prohibitedWords = ['kill', 'fuck', 'Heroin', 'Sexually', 'Adult', 'Erotic', 'scams', 'Drugs', 'Narcotics', 'Sexual ', 'Suicide', 'Bullying', 'Isolation', 'arse', 'tits', 'bitch', 'whore', 'crap', 'Damn', 'Fucker', 'cock', 'shit'];
-
-        foreach ($prohibitedWords as $word) {
-            if (stripos($text, $word) !== false) {
-                return false; // Văn bản chứa từ cấm
-            }
-        }
-
-        return true; // Văn bản không chứa từ cấm
     }
 
     /**
@@ -164,8 +151,6 @@ class PostController extends Controller
         return response()->json(['post' => $post, 'message' => 'You have created a new post']);
     }
 
-
-
     /**
      * Update the specified resource in storage.
      * * @param \App\Http\Requests\Request $request
@@ -209,5 +194,24 @@ class PostController extends Controller
         $post->delete();
 
         return response("", 204);
+    }
+
+    /**
+     * Check prohibited words
+     * @param $text
+     * @return boolean
+     */
+    public function filterProhibitedWords($text)
+    {
+        // List of prohibited words
+        $prohibitedWords = ['kill', 'fuck', 'Heroin', 'Sexually', 'Adult', 'Erotic', 'scams', 'Drugs', 'Narcotics', 'Sexual ', 'Suicide', 'Bullying', 'Isolation', 'arse', 'tits', 'bitch', 'whore', 'crap', 'Damn', 'Fucker', 'cock', 'shit'];
+
+        foreach ($prohibitedWords as $word) {
+            if (stripos($text, $word) !== false) {
+                return false; // Văn bản chứa từ cấm
+            }
+        }
+
+        return true; // Văn bản không chứa từ cấm
     }
 }

@@ -1,3 +1,4 @@
+// function to format date time
 export const formatDateTime = (dateTimeString) => {
   const options = {
     year: "numeric",

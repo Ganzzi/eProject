@@ -18,8 +18,6 @@ return new class extends Migration
             $table->unsignedBigInteger('liker_id');
             $table->foreign('liker_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
-
-            // $table->primary(['comment_id', 'liker_id']);
         });
     }
 

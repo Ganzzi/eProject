@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\User;
 
 use App\Models\LikeChat;
 use App\Http\Controllers\Controller;
@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class LikeChatController extends Controller
 {
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource or delete an existing one in storage.
      */
     public function store(Request $request)
     {

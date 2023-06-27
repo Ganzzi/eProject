@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
+
 import { useStateContext } from "../../../contexts/ContextProvider";
 import axiosClient from "../../../axios-client";
-// import { Link } from "react-router-dom";
 import { formatDateTime } from "../../../utils";
+
 export default function ChatRooms() {
     const [ChatRooms, setChatrooms] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -13,25 +14,27 @@ export default function ChatRooms() {
         getChatroom();
     }, []);
 
-    const onDeleteClick =async (ChatRooms_id) => {
+    const onDeleteClick = async (ChatRooms_id) => {
         if (
             !window.confirm("Are you sure you want to delete this chatrooms?")
         ) {
             return;
         }
-       await axiosClient.delete(`/admin/chatrooms/${ChatRooms_id}`).then(async() => {
-            setAlerts({
-                type: "info",
-                message: "chatrooms was successfully deleted",
-                time: new Date(),
+        await axiosClient
+            .delete(`/admin/chatrooms/${ChatRooms_id}`)
+            .then(async () => {
+                setAlerts({
+                    type: "info",
+                    message: "chatrooms was successfully deleted",
+                    time: new Date(),
+                });
+                await getChatroom();
             });
-           await getChatroom();
-        });
     };
 
-    const getChatroom = async() => {
+    const getChatroom = async () => {
         setLoading(true);
-       await axiosClient
+        await axiosClient
             .get("/admin/chatrooms")
             .then(({ data }) => {
                 setLoading(false);
@@ -42,26 +45,9 @@ export default function ChatRooms() {
                 setLoading(false);
             });
     };
-   
+
     return (
         <div>
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                }}
-            >
-                <h1
-                    style={{
-                        fontFamily: "fantasy",
-                        justifycontent: "space-between",
-                    }}
-                ></h1>
-                {/* <Link className="btn-add" to="/admin/chatrooms/new">
-                    Add new
-                </Link> */}
-            </div>
             <div className="card animated fadeInDown" style={{ left: "3rem" }}>
                 <table>
                     <thead>

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+
 import axiosClient from "../../../axios-client";
 import { useStateContext } from "../../../contexts/ContextProvider";
-import { useLocation } from "react-router-dom";
-// import { ListGroup } from "react-bootstrap";
 import Chats from "./Chats";
 
 const Message = () => {

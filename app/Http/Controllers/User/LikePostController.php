@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\User;
 
 use App\Models\LikePost;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Api\NotificationController;
-use App\Http\Controllers\Api\ActivityLogController;
+use App\Http\Controllers\User\NotificationController;
+use App\Http\Controllers\User\ActivityLogController;
 use Illuminate\Http\Request;
 
 class LikePostController extends Controller
 {
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource or delete an existing one in storage.
      */
     public function store(Request $request)
     {
@@ -40,7 +40,7 @@ class LikePostController extends Controller
             $receiverId = $like->post->creator_id;
             $type = 'Like post';
             $text = 'Someone liked your post.';
-    
+
             $notificationController = new NotificationController();
             $notificationController->store($receiverId, $type, $text);
 
@@ -48,7 +48,7 @@ class LikePostController extends Controller
             $userId = $like->liker_id;
             $type = 'Like post';
             $describe = "You have liked someone else's post.";
-    
+
             $activityLogController = new ActivityLogController();
             $activityLogController->store($userId, $type, $describe);
 

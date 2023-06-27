@@ -1,15 +1,26 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+
 import axiosClient from "../../../axios-client.js";
 import { useStateContext } from "../../../contexts/ContextProvider.jsx";
-// import { HiOutlinePhotograph } from "react-icons/Hi";
+
+const lockValue = [
+    {
+        name: "Unlock",
+        value: 0,
+    },
+    {
+        name: "Locked",
+        value: 1,
+    },
+];
+
 export default function PostForm() {
     const navigate = useNavigate();
     let { id } = useParams();
     const [post, setPost] = useState({
         description: "",
         lock: null,
-        // image: null,
     });
 
     const [errors, setErrors] = useState(null);
@@ -67,7 +78,6 @@ export default function PostForm() {
         } else {
             const formdata = new FormData();
             formdata.append("description", post.description);
-            // formdata.append("image", post.image);
             axiosClient
                 .post("/admin/posts", formdata)
                 .then(() => {
@@ -86,17 +96,6 @@ export default function PostForm() {
                 });
         }
     };
-
-    const lockValue = [
-        {
-            name: "Unlock",
-            value: 0,
-        },
-        {
-            name: "Locked",
-            value: 1,
-        },
-    ];
 
     return (
         <div className="d-flex flex-column">
