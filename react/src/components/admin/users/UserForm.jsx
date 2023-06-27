@@ -16,6 +16,7 @@ export default function UserForm() {
         password: "",
         password_confirmation: "",
     });
+    
     const [errors, setErrors] = useState(null);
     const [loading, setLoading] = useState(false);
     const { setAlerts } = useStateContext();
@@ -35,7 +36,7 @@ const handleImageChange = (e) =>{
     //     reader.readAsDataURL(file);
     // }
 
-};
+    };
     if (id) {
         useEffect(() => {
             setLoading(true);
@@ -144,11 +145,11 @@ const handleImageChange = (e) =>{
                             }
                             placeholder="Role id"
                         />
-{selectedImage &&(
-    
-        <img src={selectedImage.preview} alt="" />
-    
-)}
+                        {selectedImage && (
+
+                            <img src={selectedImage.preview} alt="" />
+
+                        )}
                         {/* <input
                             type="file"
                             id="file"
@@ -191,7 +192,7 @@ const handleImageChange = (e) =>{
                         >
                             Save
                         </button>
-                       
+
                     </form>
                 )}
             </div>

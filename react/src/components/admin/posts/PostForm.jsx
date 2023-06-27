@@ -2,21 +2,22 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axiosClient from "../../../axios-client.js";
 import { useStateContext } from "../../../contexts/ContextProvider.jsx";
-import { HiOutlinePhotograph } from "react-icons/Hi";
+// import { HiOutlinePhotograph } from "react-icons/Hi";
 export default function PostForm() {
     const navigate = useNavigate();
     let { id } = useParams();
     const [post, setPost] = useState({
         description: "",
-        image: null,
+        // image: null,
     });
+   
     const [errors, setErrors] = useState(null);
     const [loading, setLoading] = useState(false);
-    const { setNotification } = useStateContext();
+    const { setAlerts } = useStateContext();
     if (id) {
-        useEffect(() => {
+        useEffect(async() => {
             setLoading(true);
-            axiosClient
+           await axiosClient
                 .get(`/admin/posts/${id}`)
                 .then(({ data }) => {
                     setLoading(false);
@@ -27,13 +28,17 @@ export default function PostForm() {
                 });
         }, []);
     }
-    const onSubmit = (ev) => {
+    const onSubmit = async(ev) => {
         ev.preventDefault();
         if (post.id) {
-            axiosClient
+           await axiosClient
                 .put(`/admin/posts/${post.id}`, post)
                 .then(() => {
-                    setNotification("post was successfully updated");
+                    setAlerts({
+                        type: "info",
+                        message: "user was successfully updated",
+                        time: new Date(),
+                    });
                     navigate("/admin/posts");
                 })
                 .catch((err) => {
@@ -45,11 +50,15 @@ export default function PostForm() {
         } else {
             const formdata = new FormData();
             formdata.append("description", post.description);
-            formdata.append("image", post.image);
+            // formdata.append("image", post.image);
             axiosClient
                 .post("/admin/posts", formdata)
                 .then(() => {
-                    setNotification("post was successfully created");
+                    setAlerts({
+                        type: "info",
+                        message: "user was successfully updated",
+                        time: new Date(),
+                    });
                     navigate("/admin/posts");
                 })
                 .catch((err) => {
@@ -76,7 +85,7 @@ export default function PostForm() {
                 )}
                 {!loading && (
                     <form onSubmit={onSubmit}>
-                        <input
+                        <input style={{paddingRight:"30rem"}}
                             value={post.description}
                             onChange={(ev) =>
                                 setPost({
@@ -86,20 +95,6 @@ export default function PostForm() {
                             }
                             placeholder="description"
                         />
-                        <br></br>
-                        <input
-                            type="file"
-                            id="file"
-                            onChange={(ev) =>
-                                setPost({ ...post, image: ev.target.files[0] })
-                            }
-                        />
-                        <label htmlFor="file">
-                            <HiOutlinePhotograph />
-                        </label>
-
-                        <br></br>
-
                         <button
                             className="btn btn-outline-success"
                             style={{ width: "100px" }}

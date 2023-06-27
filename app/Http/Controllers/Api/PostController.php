@@ -19,7 +19,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with('likes', 'comments.likes')->get();
+        $posts = Post::with('likes', 'comments.likes')->where('lock', 0)->get();
 
         return response()->json($posts->map(function ($_post) {
 
@@ -60,9 +60,7 @@ class PostController extends Controller
 
     public function getPostProfile($userid)
     {
-        // return response()->json('dmm');
-
-        $posts = Post::with('likes', 'comments.likes')->where('creator_id', $userid)->get();
+        $posts = Post::with('likes', 'comments.likes')->where('creator_id', $userid)->where('lock', 0)->get();
 
         return response()->json($posts->map(function ($_post) {
 
@@ -103,6 +101,21 @@ class PostController extends Controller
         // return response()->json(['posts' => $posts]);
     }
 
+    
+    public function filterProhibitedWords($text)
+    {
+        // Danh sách từ cấm liên quan đến chửi bậy và chửi đảng
+        $prohibitedWords = ['kill ', 'fuck', 'Heroin','Sexually','Adult','Erotic','scams','Drugs','Narcotics','Sexual ','Suicide','Bullying','Isolation','arse','tits','bitch','whore','crap','Damn','Fucker','cock','shit'];
+
+        foreach ($prohibitedWords as $word) {
+            if (stripos($text, $word) !== false) {
+                return false; // Văn bản chứa từ cấm
+            }
+        }
+
+        return true; // Văn bản không chứa từ cấm
+    }
+
     /**
      * Store a newly created resource in storage.
      * 
@@ -116,6 +129,12 @@ class PostController extends Controller
             'image' => 'nullable|image',
             'description' => 'nullable|string|max:100',
         ]);
+
+        $check = $this->filterProhibitedWords($data['description']);
+
+        if (!$check) {
+            return response()->json('loi');
+        }
 
         $filePath = isset($data['image']) ? basename($data['image']->store('public/images')) : null;
 
@@ -145,6 +164,8 @@ class PostController extends Controller
 
         return response()->json(['post' => $post, 'message' => 'You have created a new post']);
     }
+
+
 
     /**
      * Update the specified resource in storage.
