@@ -5,30 +5,37 @@ import { MdOutlineCancel, MdOutlineSettingsSuggest } from "react-icons/md";
 import { useStateContext } from "../../../contexts/ContextProvider";
 import axiosClient from "../../../axios-client";
 
-const RepliedCommentCard = ({ cmt, getPostData, onUpdate }) => {
+const RepliedCommentCard = ({ cmt, getPostData, onUpdate }) =>
+{
     const { user } = useStateContext()
 
     const [newComment, setNewComment] = useState("");
     const [isUpdating, setIsUpdating] = useState(false);
 
-    const handleUpdateComment = async () => {
+    const handleUpdateComment = async () =>
+    {
 
         const commentUppdate = {
             text: newComment,
         }
 
-        try {
-            await axiosClient.put(`comments/${cmt.id}`, commentUppdate).then(async ({ data }) => {
+        try
+        {
+            await axiosClient.put(`comments/${cmt.id}`, commentUppdate).then(async ({ data }) =>
+            {
                 await getPostData();
                 setIsUpdating(false)
             });
-        } catch (error) {
+        } catch (error)
+        {
             console.log(error);
         }
     };
 
-    const deleteComment = async () => {
-        await axiosClient.delete(`comments/${cmt.id}`).then(async ({ data }) => {
+    const deleteComment = async () =>
+    {
+        await axiosClient.delete(`comments/${cmt.id}`).then(async ({ data }) =>
+        {
             console.log('deleted');
 
             await getPostData();
@@ -80,7 +87,8 @@ const RepliedCommentCard = ({ cmt, getPostData, onUpdate }) => {
                                     />
                                     <MdOutlineCancel
                                         size={20}
-                                        onClick={() => {
+                                        onClick={() =>
+                                        {
                                             setIsUpdating(false);
                                         }}
                                     />
@@ -88,7 +96,8 @@ const RepliedCommentCard = ({ cmt, getPostData, onUpdate }) => {
                             ) : (
                                 <MdOutlineSettingsSuggest
                                     size={20}
-                                    onClick={() => {
+                                    onClick={() =>
+                                    {
                                         setIsUpdating(true);
                                     }}
                                 />
@@ -102,13 +111,15 @@ const RepliedCommentCard = ({ cmt, getPostData, onUpdate }) => {
                         <input
                             type="text"
                             defaultValue={cmt.text}
-                            onChange={(ev) => {
+                            onChange={(ev) =>
+                            {
                                 setNewComment(
                                     ev.target.value);
                             }}
                         />
                         <button
-                            onClick={() => {
+                            onClick={() =>
+                            {
                                 handleUpdateComment();
                             }}
                         >

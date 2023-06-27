@@ -105,6 +105,34 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
         })
     }
 
+    const handleReplyClick = (chat) =>
+    {
+        if (newChat.reply_to === chat.chat_id)
+        {
+            // Nếu đang reply vào chat đã chọn, hủy bỏ reply
+            setnewChat({
+                ...newChat,
+                reply_to: null,
+            });
+            setRepliedText("");
+        } else
+        {
+            // Đặt giá trị reply_to và hiển thị repliedText
+            setnewChat({
+                ...newChat,
+                reply_to: chat.chat_id,
+            });
+
+            for (let i = 0; i < chatData.length; i++)
+            {
+                if (chatData[i].chat_id === chat.chat_id)
+                {
+                    setRepliedText(chatData[i].text);
+                }
+            }
+        }
+    };
+
     useEffect(() =>
     {
         setnewChat({
@@ -193,7 +221,7 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
                                             handleLikeChat(chat.chat_id);
                                         }}
                                     />
-                                    <MdReply
+                                    {/* <MdReply
                                         size={30}
                                         color={
                                             newChat.reply_to == chat.chat_id
@@ -224,7 +252,20 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
                                                 }
                                             }
                                         }}
+                                    /> */}
+
+                                    {/* <div> */}
+                                    {/* Hiển thị nút reply */}
+                                    <MdReply
+                                        size={30}
+                                        color={newChat.reply_to === chat.chat_id ? "red" : "black"}
+                                        onClick={() => handleReplyClick(chat)}
                                     />
+
+                                    {/* Hiển thị repliedText khi đang reply */}
+                                    {/* {newChat.reply_to === chat.chat_id && <div>{repliedText}</div>} */}
+                                    {/* </div> */}
+
                                     <MdOutlineDelete size={30} color={'red'} onClick={async () =>
                                     {
                                         await handleDeleteChat(chat.chat_id);
@@ -258,7 +299,7 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
                                             handleLikeChat(chat.chat_id);
                                         }}
                                     />
-                                    <MdReply
+                                    {/* <MdReply
                                         size={30}
                                         color={
                                             newChat.reply_to == chat.chat_id
@@ -289,7 +330,22 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
                                                 }
                                             }
                                         }}
-                                    />
+                                    /> */}
+
+                                    {/* return ( */}
+                                    <div>
+                                        {/* Hiển thị nút reply */}
+                                        <MdReply
+                                            size={30}
+                                            color={newChat.reply_to === chat.chat_id ? "red" : "black"}
+                                            onClick={() => handleReplyClick(chat)}
+                                        />
+
+                                        {/* Hiển thị repliedText khi đang reply */}
+                                        {newChat.reply_to === chat.chat_id && <div>{repliedText}</div>}
+                                    </div>
+                                    {/* ); */}
+
                                 </div>
                             )}
                         </div>
