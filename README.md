@@ -34,9 +34,9 @@ To run this project locally, please follow these steps:
 9.  `composer update `
 10. rename .env.example to .env
 11. `php artisan key:generate `
-12. set database credentials in .env file: socialmediadb2
+12. set database credentials in .env file: sharespace
 13. `php artisan serve `
-14. open phpmyadmin (XAMPP) and create new database name: socialmediadb2
+14. open phpmyadmin (XAMPP) and create new database name: sharespace
 15.
 
 ```
