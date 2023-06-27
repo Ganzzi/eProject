@@ -94,8 +94,10 @@ export default function Users() {
                                     <td>
                                         <img
                                             src={
-                                                "http://127.0.0.1:8000/api/images/" +
-                                                u.image
+                                                `${
+                                                    import.meta.env
+                                                        .VITE_BASE_URL
+                                                }/api/images/` + u.image
                                             }
                                             width={50}
                                             height={50}

@@ -14,7 +14,7 @@ class NotificationsSeeder extends Seeder
     public function run(): void
     {
         Notification::create([
-            'receiver_id' => 1,
+            'receiver_id' => 2,
             'type' => 'Message',
             'text' => 'You have a new message',
             'state' => 'unread',

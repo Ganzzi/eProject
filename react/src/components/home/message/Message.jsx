@@ -112,7 +112,10 @@ const Message = () => {
                                             <div className="">
                                                 <img
                                                     src={
-                                                        "http://127.0.0.1:8000/api/images/" +
+                                                        `${
+                                                            import.meta.env
+                                                                .VITE_BASE_URL
+                                                        }/api/images/` +
                                                         participant.image
                                                     }
                                                     width={80}

@@ -86,22 +86,6 @@ const PostCard = ({ post, post_creator, getPostData }) => {
         setComment(e.target.value);
     };
 
-    const handleCommentSubmit = async (e) => {
-        console.log(repliedId);
-        e.preventDefault();
-        // Perform comment submission logic
-        setComment("");
-        setRepliedId(null);
-        setIsReplying(false);
-        const formData = new FormData();
-        formData.append("post_id", post.id);
-        formData.append("text", comment);
-        formData.append("reply_to", repliedId);
-
-        await axiosClient.post("/comments", formData).then(async ({ data }) => {
-            await getPostData();
-        });
-    };
     const checkIsLikedPost = () => {
         let _isLikedPost = false;
         for (let i = 0; i < post.likes.length; i++) {
@@ -163,6 +147,28 @@ const PostCard = ({ post, post_creator, getPostData }) => {
         }
     };
 
+    const handleCommentSubmit = async (e) => {
+        console.log(repliedId);
+        e.preventDefault();
+        // Perform comment submission logic
+        setComment("");
+        setRepliedId(null);
+        setIsReplying(false);
+        const formData = new FormData();
+        formData.append("post_id", post.id);
+        formData.append("text", comment);
+        formData.append("reply_to", repliedId);
+
+        await axiosClient.post("/comments", formData).then(async ({ data }) => {
+            setAlerts({
+                type: "info",
+                message: "created comment successfully",
+                time: new Date(),
+            });
+            await getPostData();
+        });
+    };
+
     return (
         <div className="card">
             <div className="card-body">
@@ -170,7 +176,7 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                     <div className="d-flex align-items-center">
                         <img
                             src={
-                                "http://127.0.0.1:8000/api/images/" +
+                                `${import.meta.env.VITE_BASE_URL}/api/images/` +
                                 post_creator.image
                             }
                             alt="Creator Image"
@@ -247,7 +253,10 @@ const PostCard = ({ post, post_creator, getPostData }) => {
                     <p className="card-text">{post.description}</p>
                 )}
                 <img
-                    src={"http://127.0.0.1:8000/api/images/" + post.image}
+                    src={
+                        `${import.meta.env.VITE_BASE_URL}/api/images/` +
+                        post.image
+                    }
                     alt="Post Image"
                     className="card-img-top"
                 />

@@ -106,8 +106,10 @@ export default function Posts() {
                                     <td>
                                         <img
                                             src={
-                                                "http://127.0.0.1:8000/api/images/" +
-                                                p.image
+                                                `${
+                                                    import.meta.env
+                                                        .VITE_BASE_URL
+                                                }/api/images/` + p.image
                                             }
                                             width={50}
                                             height={50}

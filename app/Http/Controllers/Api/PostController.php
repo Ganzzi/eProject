@@ -101,11 +101,10 @@ class PostController extends Controller
         // return response()->json(['posts' => $posts]);
     }
 
-    
     public function filterProhibitedWords($text)
     {
         // Danh sách từ cấm liên quan đến chửi bậy và chửi đảng
-        $prohibitedWords = ['kill ', 'fuck', 'Heroin','Sexually','Adult','Erotic','scams','Drugs','Narcotics','Sexual ','Suicide','Bullying','Isolation','arse','tits','bitch','whore','crap','Damn','Fucker','cock','shit'];
+        $prohibitedWords = ['kill', 'fuck', 'Heroin', 'Sexually', 'Adult', 'Erotic', 'scams', 'Drugs', 'Narcotics', 'Sexual ', 'Suicide', 'Bullying', 'Isolation', 'arse', 'tits', 'bitch', 'whore', 'crap', 'Damn', 'Fucker', 'cock', 'shit'];
 
         foreach ($prohibitedWords as $word) {
             if (stripos($text, $word) !== false) {
@@ -133,7 +132,7 @@ class PostController extends Controller
         $check = $this->filterProhibitedWords($data['description']);
 
         if (!$check) {
-            return response()->json('loi');
+            return response()->json(['message' => 'You post include unacceptable word'], 422);
         }
 
         $filePath = isset($data['image']) ? basename($data['image']->store('public/images')) : null;

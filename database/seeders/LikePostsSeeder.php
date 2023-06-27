@@ -14,13 +14,25 @@ class LikePostsSeeder extends Seeder
     public function run(): void
     {
         LikePost::create([
-            'liker_id' => 1,
+            'liker_id' => 3,
             'post_id' => 1,
             // Add more columns and values as needed...
         ]);
 
         LikePost::create([
             'liker_id' => 2,
+            'post_id' => 2,
+            // Add more columns and values as needed...
+        ]);
+
+        LikePost::create([
+            'liker_id' => 3,
+            'post_id' => 1,
+            // Add more columns and values as needed...
+        ]);
+
+        LikePost::create([
+            'liker_id' => 3,
             'post_id' => 2,
             // Add more columns and values as needed...
         ]);

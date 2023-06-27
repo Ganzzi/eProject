@@ -9,7 +9,7 @@ import RepliedCommentCard from "./RepliedCommentCard";
 import { RiDeleteBinLine } from "react-icons/Ri";
 
 const CommentCard = ({ cmt, getPostData, onReply }) => {
-    const { user } = useStateContext();
+    const { user, setAlerts } = useStateContext();
     const [reply_to, setreply_to] = useState([]);
     const [isLiked, setIsLiked] = useState(false);
     const [isLikeOrUnlikeSuccess, setisLikeOrUnlikeSuccess] = useState(false);
@@ -38,6 +38,15 @@ const CommentCard = ({ cmt, getPostData, onReply }) => {
             })
             .then(async ({ data }) => {
                 setisLikeOrUnlikeSuccess(true);
+                setAlerts({
+                    type: "info",
+                    message: `${
+                        isLiked
+                            ? "unliked comment successfully"
+                            : "liked comment successfully"
+                    }`,
+                    time: new Date(),
+                });
                 await getPostData();
                 setIsLiked(!isLiked);
                 setisLikeOrUnlikeSuccess(false);
@@ -48,13 +57,17 @@ const CommentCard = ({ cmt, getPostData, onReply }) => {
     const handleUpdateComment = async (id) => {
         const commentUppdate = {
             text: newComment,
-            // post: comment_commentor.id
         };
 
         try {
             await axiosClient
                 .put(`comments/${cmt.id}`, commentUppdate)
                 .then(async ({ data }) => {
+                    setAlerts({
+                        type: "info",
+                        message: "updated comment successfully",
+                        time: new Date(),
+                    });
                     await getPostData();
                     setIsUpdating(false);
                 });
@@ -67,13 +80,15 @@ const CommentCard = ({ cmt, getPostData, onReply }) => {
         await axiosClient
             .delete(`comments/${cmt.id}`)
             .then(async ({ data }) => {
-                console.log("deleted");
+                setAlerts({
+                    type: "info",
+                    message: "deleted comment successfully",
+                    time: new Date(),
+                });
 
                 await getPostData();
             });
     };
-
-    // const handleUpdateComment = async (id) => { };
 
     return (
         <div className="card">
@@ -81,7 +96,8 @@ const CommentCard = ({ cmt, getPostData, onReply }) => {
                 <div className="d-flex align-items-center mb-2">
                     <img
                         src={
-                            "http://127.0.0.1:8000/api/images/" + cmt.user_image
+                            `${import.meta.env.VITE_BASE_URL}/api/images/` +
+                            cmt.user_image
                         }
                         alt="Commentor Image"
                         className="rounded-circle"

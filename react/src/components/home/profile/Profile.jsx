@@ -142,7 +142,7 @@ const Profile = () => {
             <div className="text-center mt-4">
                 <img
                     src={
-                        "http://127.0.0.1:8000/api/images/" +
+                        `${import.meta.env.VITE_BASE_URL}/api/images/` +
                         profileContent.image
                     }
                     alt="User Image"
@@ -238,8 +238,10 @@ const Profile = () => {
                                         >
                                             <img
                                                 src={
-                                                    "http://127.0.0.1:8000/api/images/" +
-                                                    fl.image
+                                                    `${
+                                                        import.meta.env
+                                                            .VITE_BASE_URL
+                                                    }/api/images/` + fl.image
                                                 }
                                                 alt="Creator Image"
                                                 className="rounded-circle"
@@ -255,7 +257,7 @@ const Profile = () => {
                             <h3>
                                 {profileContent.followings?.length} Following
                             </h3>
-                            <div className="d-flex">
+                            <div className="d-flex flex-column">
                                 {profileContent.followings &&
                                     profileContent.followings.map((fl) => (
                                         <div
@@ -266,8 +268,10 @@ const Profile = () => {
                                         >
                                             <img
                                                 src={
-                                                    "http://127.0.0.1:8000/api/images/" +
-                                                    fl.image
+                                                    `${
+                                                        import.meta.env
+                                                            .VITE_BASE_URL
+                                                    }/api/images/` + fl.image
                                                 }
                                                 alt="Creator Image"
                                                 className="rounded-circle"

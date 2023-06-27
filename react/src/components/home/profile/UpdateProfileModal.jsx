@@ -59,8 +59,9 @@ const UpdateProfileModal = ({ closeModal, profileContent, onUpdate }) => {
                             ) : (
                                 <img
                                     src={
-                                        "http://127.0.0.1:8000/api/images/" +
-                                        profileContent.image
+                                        `${
+                                            import.meta.env.VITE_BASE_URL
+                                        }/api/images/` + profileContent.image
                                     }
                                     className="my-2"
                                     alt=""

@@ -47,7 +47,8 @@ export default function dashboard() {
                     {user?.image && (
                         <img
                             src={
-                                "http://127.0.0.1:8000/api/images/" + user.image
+                                `${import.meta.env.VITE_BASE_URL}/api/images/` +
+                                user.image
                             }
                             alt=""
                             style={{ width: "80px", height: "80px" }}

@@ -16,7 +16,6 @@ return new class extends Migration
             $table->unsignedBigInteger('chat_room_id');
             $table->foreign('chat_room_id')->references('id')->on('chat_rooms')->onDelete('cascade');
             $table->string('text');
-            $table->string('image')->nullable();
 
             $table->unsignedBigInteger('reply_to')->nullable();
             $table->foreign('reply_to')->references('id')->on('chats')->onDelete('cascade');

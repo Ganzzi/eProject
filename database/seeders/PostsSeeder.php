@@ -22,13 +22,13 @@ class PostsSeeder extends Seeder
         Post::create([
             'creator_id' => 3,
             'description' => 'Check out this amazing photo',
-            'image' => 'aTPYfafitbzEQxIiZN1pPQnW2WphCUCUKLRaIOIb.jpg',
+            'image' => '0veBJgYvPYmmnTBWUULwe1kG9O8zvZLb4B1OfbKa.png',
         ]);
 
         Post::create([
             'creator_id' => 4,
-            'description' => 'Good food',
-            'image' => 'fvwAexLDBkbrdHELdLHifEa3q5BAlhxuDy1t8VCj.jpg',
+            'description' => 'It is looking good',
+            'image' => '5LiKMK8q0CaujvYKag0mgSxwiae0ppGyMUcPB79t.png',
         ]);
     }
 }

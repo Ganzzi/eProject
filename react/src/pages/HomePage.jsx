@@ -33,6 +33,8 @@ export default function Homescreen() {
     const [searchRequest, setSearchRequest] = useState("");
     const [showSearchResponse, setShowSearchResponse] = useState(false);
     const [searchData, setSearchData] = useState([]);
+    const [searchDataPosts, setSearchDataPosts] = useState([]);
+
     const navigate = useNavigate();
 
     const handleMenuClick = () => {
@@ -123,7 +125,8 @@ export default function Homescreen() {
                 name: searchRequest,
             })
             .then(({ data }) => {
-                setSearchData(data);
+                setSearchData(data.users);
+                setSearchDataPosts(data.posts);
                 setShowSearchResponse(true);
             });
     };
@@ -237,6 +240,9 @@ export default function Homescreen() {
                                 close
                             </button>
                         </div>
+
+                        <h1>users</h1>
+
                         {searchData?.length != 0 ? (
                             searchData.map((user, index) => {
                                 return (
@@ -255,8 +261,10 @@ export default function Homescreen() {
                                     >
                                         <img
                                             src={
-                                                "http://127.0.0.1:8000/api/images/" +
-                                                user.image
+                                                `${
+                                                    import.meta.env
+                                                        .VITE_BASE_URL
+                                                }/api/images/` + user.image
                                             }
                                             width={70}
                                             height={70}
@@ -268,6 +276,54 @@ export default function Homescreen() {
                                             }}
                                         >
                                             {user.name}
+                                        </p>
+                                    </div>
+                                );
+                            })
+                        ) : (
+                            <div
+                                style={{
+                                    backgroundColor: "#B9D3EE",
+                                    padding: 7,
+                                    borderRadius: 10,
+                                    margin: 4,
+                                }}
+                                className="d-flex justify-content-between align-items-center bg-info"
+                                onClick={() => {}}
+                            >
+                                <p>none result</p>
+                            </div>
+                        )}
+                        <h1>posts</h1>
+                        {searchDataPosts?.length != 0 ? (
+                            searchDataPosts.map((user, index) => {
+                                return (
+                                    <div
+                                        style={{
+                                            backgroundColor: "#B9D3EE",
+                                            padding: 7,
+                                            borderRadius: 10,
+                                            margin: 4,
+                                        }}
+                                        className="d-flex justify-content-between align-items-center bg-info"
+                                    >
+                                        <img
+                                            src={
+                                                `${
+                                                    import.meta.env
+                                                        .VITE_BASE_URL
+                                                }/api/images/` + user.image
+                                            }
+                                            width={70}
+                                            height={70}
+                                            alt=""
+                                        />
+                                        <p
+                                            style={{
+                                                fontSize: "1.2rem",
+                                            }}
+                                        >
+                                            {user.description}
                                         </p>
                                     </div>
                                 );
@@ -363,8 +419,9 @@ export default function Homescreen() {
                             <Link to={"/profile/" + user.id}>
                                 <img
                                     src={
-                                        "http://127.0.0.1:8000/api/images/" +
-                                        user.image
+                                        `${
+                                            import.meta.env.VITE_BASE_URL
+                                        }/api/images/` + user.image
                                     }
                                     alt=""
                                     style={{
@@ -552,8 +609,10 @@ export default function Homescreen() {
                                     >
                                         <img
                                             src={
-                                                "http://127.0.0.1:8000/api/images/" +
-                                                user.image
+                                                `${
+                                                    import.meta.env
+                                                        .VITE_BASE_URL
+                                                }/api/images/` + user.image
                                             }
                                             alt=""
                                             style={{

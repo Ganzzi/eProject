@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axiosClient from "../../../axios-client";
-import { MdReply } from "react-icons/md";
+import { MdOutlineDelete, MdReply } from "react-icons/md";
 import { AiFillLike, AiOutlinePaperClip } from "react-icons/ai";
 import React from "react";
 // import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
@@ -8,7 +8,6 @@ import React from "react";
 const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
     const [chatData, setChatData] = useState([]);
     const [newChat, setnewChat] = useState({
-        image: null,
         text: "",
         reply_to: null,
     });
@@ -33,7 +32,6 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
             await axiosClient
                 .post("/chats", {
                     chat_room_id: room_id,
-                    image: newChat.image,
                     text: newChat.text,
                     reply_to: newChat.reply_to,
                 })
@@ -44,7 +42,6 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
             await axiosClient
                 .post("/chats", {
                     chat_room_id: chatRoomId,
-                    image: newChat.image,
                     text: newChat.text,
                     reply_to: newChat.reply_to,
                 })
@@ -54,7 +51,6 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
         }
 
         setnewChat({
-            image: null,
             text: "",
             reply_to: null,
         });
@@ -83,9 +79,38 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
         }
     };
 
+    const handleDeleteChat = async (id) => {
+        await axiosClient.delete(`/chats/${id}`).then(async () => {
+            console.log("deleted");
+            await fetchData();
+        });
+    };
+
+    const handleReplyClick = (chat) => {
+        if (newChat.reply_to === chat.chat_id) {
+            // Nếu đang reply vào chat đã chọn, hủy bỏ reply
+            setnewChat({
+                ...newChat,
+                reply_to: null,
+            });
+            setRepliedText("");
+        } else {
+            // Đặt giá trị reply_to và hiển thị repliedText
+            setnewChat({
+                ...newChat,
+                reply_to: chat.chat_id,
+            });
+
+            for (let i = 0; i < chatData.length; i++) {
+                if (chatData[i].chat_id === chat.chat_id) {
+                    setRepliedText(chatData[i].text);
+                }
+            }
+        }
+    };
+
     useEffect(() => {
         setnewChat({
-            image: null,
             text: "",
             reply_to: null,
         });
@@ -109,7 +134,7 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
                     <img
                         className="user-image"
                         src={
-                            "http://127.0.0.1:8000/api/images/" +
+                            `${import.meta.env.VITE_BASE_URL}/api/images/` +
                             messagingTo.image
                         }
                         width={40}
@@ -140,8 +165,9 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
                                 <img
                                     className="user-image"
                                     src={
-                                        "http://127.0.0.1:8000/api/images/" +
-                                        messagingTo.image
+                                        `${
+                                            import.meta.env.VITE_BASE_URL
+                                        }/api/images/` + messagingTo.image
                                     }
                                     width={30}
                                     height={30}
@@ -168,33 +194,26 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
                                             handleLikeChat(chat.chat_id);
                                         }}
                                     />
+
+                                    {/* <div> */}
+                                    {/* Hiển thị nút reply */}
                                     <MdReply
                                         size={30}
                                         color={
-                                            newChat.reply_to == chat.chat_id
+                                            newChat.reply_to === chat.chat_id
                                                 ? "red"
                                                 : "black"
                                         }
-                                        onClick={() => {
-                                            setnewChat({
-                                                ...newChat,
-                                                reply_to: chat.chat_id,
-                                            });
+                                        onClick={() => handleReplyClick(chat)}
+                                    />
 
-                                            for (
-                                                let i = 0;
-                                                i < chatData.length;
-                                                i++
-                                            ) {
-                                                if (
-                                                    chatData[i].chat_id ==
-                                                    chat.chat_id
-                                                ) {
-                                                    setRepliedText(
-                                                        chatData[i].text
-                                                    );
-                                                }
-                                            }
+                                    <MdOutlineDelete
+                                        size={30}
+                                        color={"red"}
+                                        onClick={async () => {
+                                            await handleDeleteChat(
+                                                chat.chat_id
+                                            );
                                         }}
                                     />
                                 </div>
@@ -225,35 +244,22 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
                                             handleLikeChat(chat.chat_id);
                                         }}
                                     />
-                                    <MdReply
-                                        size={30}
-                                        color={
-                                            newChat.reply_to == chat.chat_id
-                                                ? "red"
-                                                : "black"
-                                        }
-                                        onClick={() => {
-                                            setnewChat({
-                                                ...newChat,
-                                                reply_to: chat.chat_id,
-                                            });
 
-                                            for (
-                                                let i = 0;
-                                                i < chatData.length;
-                                                i++
-                                            ) {
-                                                if (
-                                                    chatData[i].chat_id ==
-                                                    chat.chat_id
-                                                ) {
-                                                    setRepliedText(
-                                                        chatData[i].text
-                                                    );
-                                                }
+                                    <div>
+                                        {/* Hiển thị nút reply */}
+                                        <MdReply
+                                            size={30}
+                                            color={
+                                                newChat.reply_to ===
+                                                chat.chat_id
+                                                    ? "red"
+                                                    : "black"
                                             }
-                                        }}
-                                    />
+                                            onClick={() =>
+                                                handleReplyClick(chat)
+                                            }
+                                        />
+                                    </div>
                                 </div>
                             )}
                         </div>
@@ -269,20 +275,28 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
                 }}
             >
                 {newChat.reply_to && (
-                    <p
+                    <div
+                        className="position-absolute start-40 d-flex flex-row"
                         style={{
-                            position: "absolute",
-                            left: 20,
                             top: -30,
+                            alignItems: "center",
                         }}
                     >
                         reply to {repliedText}
-                    </p>
+                        <button
+                            className="btn btn-danger mx-2"
+                            onClick={() =>
+                                setnewChat({ ...newChat, reply_to: null })
+                            }
+                        >
+                            X
+                        </button>
+                    </div>
                 )}
 
                 <form action="" className="d-flex" onSubmit={handleCreateChat}>
                     <div className="message-input-container">
-                        <div className="file-upload-container">
+                        {/* <div className="file-upload-container">
                             <input
                                 type="file"
                                 id="file-input"
@@ -297,7 +311,7 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
                             <label htmlFor="file-input">
                                 <AiOutlinePaperClip size={24} />
                             </label>
-                        </div>
+                        </div> */}
                         <input
                             type="text"
                             placeholder="Type a message..."

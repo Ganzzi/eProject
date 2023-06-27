@@ -63,26 +63,39 @@ const Posts = () => {
         formData.append("creator_id", user.id);
         formData.append("description", description);
 
-        await axiosClient.post("/posts", formData).then(async ({ data }) => {
-            setPostForm({
-                image: null,
+        await axiosClient
+            .post("/posts", formData)
+            .then(async ({ data }) => {
+                setPostForm({
+                    image: null,
+                });
+                setdescription("");
+
+                setAlerts({
+                    type: "info",
+                    message: "post was successfully created",
+                    time: new Date(),
+                });
+
+                await getPostData();
+
+                // await axiosClient
+                //     .post("/posts", formData)
+                //     .then(async ({ data }) => {
+                //         // console.log(data);
+                //     });
+            })
+            .catch((err) => {
+                const response = err.response;
+
+                if (response && response.status === 422) {
+                    setAlerts({
+                        type: "error",
+                        message: response.data.message,
+                        time: new Date(),
+                    });
+                }
             });
-            setdescription("");
-
-            setAlerts({
-                type: "info",
-                message: "post was successfully created",
-                time: new Date(),
-            });
-
-            await getPostData();
-
-            // await axiosClient
-            //     .post("/posts", formData)
-            //     .then(async ({ data }) => {
-            //         // console.log(data);
-            //     });
-        });
     };
 
     return (
@@ -107,7 +120,8 @@ const Posts = () => {
                     >
                         <img
                             src={
-                                "http://127.0.0.1:8000/api/images/" + user.image
+                                `${import.meta.env.VITE_BASE_URL}/api/images/` +
+                                user.image
                             }
                             alt=""
                             style={{
@@ -134,8 +148,10 @@ const Posts = () => {
                                     >
                                         <img
                                             src={
-                                                "http://127.0.0.1:8000/api/images/" +
-                                                fl.image
+                                                `${
+                                                    import.meta.env
+                                                        .VITE_BASE_URL
+                                                }/api/images/` + fl.image
                                             }
                                             alt="Creator Image"
                                             className="rounded-circle"
@@ -160,8 +176,10 @@ const Posts = () => {
                                     >
                                         <img
                                             src={
-                                                "http://127.0.0.1:8000/api/images/" +
-                                                fl.image
+                                                `${
+                                                    import.meta.env
+                                                        .VITE_BASE_URL
+                                                }/api/images/` + fl.image
                                             }
                                             alt="Creator Image"
                                             className="rounded-circle"
@@ -197,7 +215,8 @@ const Posts = () => {
                     >
                         <img
                             src={
-                                "http://127.0.0.1:8000/api/images/" + user.image
+                                `${import.meta.env.VITE_BASE_URL}/api/images/` +
+                                user.image
                             }
                             alt=""
                             style={{
@@ -283,19 +302,21 @@ const Posts = () => {
                                 </>
                             )}
                         </div>
-                        <div className="d-flex ">
-                            <button
-                                style={{
-                                    padding: "25px",
-                                    backgroundColor: "pink",
-                                    color: "black",
-                                    border: "3px",
-                                }}
-                                type="submit"
-                            >
-                                Post
-                            </button>
-                        </div>
+                        {description && postForm.image && (
+                            <div className="d-flex my-2">
+                                <button
+                                    style={{
+                                        padding: "25px",
+                                        backgroundColor: "pink",
+                                        color: "black",
+                                        border: "3px",
+                                    }}
+                                    type="submit"
+                                >
+                                    Post
+                                </button>
+                            </div>
+                        )}
                     </form>
                 </div>
                 <div className="col">
@@ -326,8 +347,9 @@ const Posts = () => {
                                 >
                                     <img
                                         src={
-                                            "http://127.0.0.1:8000/api/images/" +
-                                            fl.image
+                                            `${
+                                                import.meta.env.VITE_BASE_URL
+                                            }/api/images/` + fl.image
                                         }
                                         alt="Creator Image"
                                         className="rounded-circle"
@@ -352,8 +374,9 @@ const Posts = () => {
                                 >
                                     <img
                                         src={
-                                            "http://127.0.0.1:8000/api/images/" +
-                                            fl.image
+                                            `${
+                                                import.meta.env.VITE_BASE_URL
+                                            }/api/images/` + fl.image
                                         }
                                         alt="Creator Image"
                                         className="rounded-circle"

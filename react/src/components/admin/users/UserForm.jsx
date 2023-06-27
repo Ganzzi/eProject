@@ -158,7 +158,12 @@ export default function UserForm() {
                             placeholder="Role id"
                         />
                         {selectedImage && (
-                            <img src={selectedImage.preview} alt="" />
+                            <img
+                                src={selectedImage.preview}
+                                alt=""
+                                width={80}
+                                height={80}
+                            />
                         )}
                         {!id && (
                             <input

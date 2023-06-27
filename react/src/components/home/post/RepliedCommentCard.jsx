@@ -6,7 +6,7 @@ import { useStateContext } from "../../../contexts/ContextProvider";
 import axiosClient from "../../../axios-client";
 
 const RepliedCommentCard = ({ cmt, getPostData, onUpdate }) => {
-    const { user } = useStateContext();
+    const { user, setAlerts } = useStateContext();
 
     const [newComment, setNewComment] = useState("");
     const [isUpdating, setIsUpdating] = useState(false);
@@ -20,6 +20,11 @@ const RepliedCommentCard = ({ cmt, getPostData, onUpdate }) => {
             await axiosClient
                 .put(`comments/${cmt.id}`, commentUppdate)
                 .then(async ({ data }) => {
+                    setAlerts({
+                        type: "info",
+                        message: "updated comment successfully",
+                        time: new Date(),
+                    });
                     await getPostData();
                     setIsUpdating(false);
                 });
@@ -32,7 +37,11 @@ const RepliedCommentCard = ({ cmt, getPostData, onUpdate }) => {
         await axiosClient
             .delete(`comments/${cmt.id}`)
             .then(async ({ data }) => {
-                console.log("deleted");
+                setAlerts({
+                    type: "info",
+                    message: "deleted comment successfully",
+                    time: new Date(),
+                });
 
                 await getPostData();
             });
@@ -44,7 +53,8 @@ const RepliedCommentCard = ({ cmt, getPostData, onUpdate }) => {
                 <div className="d-flex align-items-center mb-2">
                     <img
                         src={
-                            "http://127.0.0.1:8000/api/images/" + cmt.user_image
+                            `${import.meta.env.VITE_BASE_URL}/api/images/` +
+                            cmt.user_image
                         }
                         alt="Replied Commentor Image"
                         className="rounded-circle"

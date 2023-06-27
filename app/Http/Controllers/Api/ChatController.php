@@ -17,18 +17,14 @@ class ChatController extends Controller
     {
         $validatedData = $request->validate([
             'chat_room_id' => 'required|numeric',
-            'image' => 'nullable|image',
             'text' => 'required|string',
             'reply_to' => 'nullable|exists:chats,id',
         ]);
 
         $user = Auth::user();
 
-        $filePath = isset($validatedData['image']) ? basename($validatedData['image']->store('public/images')) : null;
-
         $chat = new Chat();
         $chat->chat_room_id = $validatedData['chat_room_id'];
-        $chat->image = $filePath;
         $chat->text = $validatedData['text'];
         $chat->sender_id = $user->id;
 
