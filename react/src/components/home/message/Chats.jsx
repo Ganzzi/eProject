@@ -5,7 +5,8 @@ import React from "react";
 
 import axiosClient from "../../../axios-client";
 
-const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
+const Chats = ({ messagingTo, chatRoomId, currentUser }) =>
+{
     const [chatData, setChatData] = useState([]);
     const [newChat, setnewChat] = useState({
         text: "",
@@ -13,10 +14,12 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
     });
     const [repliedText, setRepliedText] = useState("");
 
-    const handleCreateChat = async (ev) => {
+    const handleCreateChat = async (ev) =>
+    {
         ev.preventDefault();
 
-        if (chatRoomId == null) {
+        if (chatRoomId == null)
+        {
             const data = {
                 user_id: currentUser.id,
                 user_id2: messagingTo.id,
@@ -25,7 +28,8 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
 
             await axiosClient
                 .post("/chatrooms", data)
-                .then(async ({ data }) => {
+                .then(async ({ data }) =>
+                {
                     room_id = data.chat_room_id;
                 });
 
@@ -35,17 +39,20 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
                     text: newChat.text,
                     reply_to: newChat.reply_to,
                 })
-                .then(async ({ data }) => {
+                .then(async ({ data }) =>
+                {
                     // console.log(data);
                 });
-        } else {
+        } else
+        {
             await axiosClient
                 .post("/chats", {
                     chat_room_id: chatRoomId,
                     text: newChat.text,
                     reply_to: newChat.reply_to,
                 })
-                .then(async ({ data }) => {
+                .then(async ({ data }) =>
+                {
                     // console.log(data);
                 });
         }
@@ -58,58 +65,78 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
         await fetchData();
     };
 
-    const handleLikeChat = async (id) => {
+    const handleLikeChat = async (id) =>
+    {
         await axiosClient
             .post(`likechats`, {
                 chat_id: id,
             })
-            .then(async ({ data }) => {
+            .then(async ({ data }) =>
+            {
                 await fetchData();
             });
     };
 
-    const fetchData = async () => {
-        if (chatRoomId) {
+    const fetchData = async () =>
+    {
+        if (chatRoomId)
+        {
             // Fetch chat data
             await axiosClient
                 .get(`/chatrooms/${chatRoomId}`)
-                .then(({ data }) => {
+                .then(({ data }) =>
+                {
                     setChatData(data?.chats);
                 });
         }
     };
 
-    const handleDeleteChat = async (id) => {
-        await axiosClient.delete(`/chats/${id}`).then(async () => {
+    const handleDeleteChat = async (id) =>
+    {
+        await axiosClient.delete(`/chats/${id}`).then(async () =>
+        {
             console.log("deleted");
             await fetchData();
         });
     };
 
-    const handleReplyClick = (chat) => {
-        if (newChat.reply_to === chat.chat_id) {
+    const handleReplyClick = (chat) =>
+    {
+        if (newChat.reply_to === chat.chat_id)
+        {
             // Nếu đang reply vào chat đã chọn, hủy bỏ reply
             setnewChat({
                 ...newChat,
                 reply_to: null,
             });
             setRepliedText("");
-        } else {
+        } else
+        {
             // Đặt giá trị reply_to và hiển thị repliedText
             setnewChat({
                 ...newChat,
                 reply_to: chat.chat_id,
             });
 
-            for (let i = 0; i < chatData.length; i++) {
-                if (chatData[i].chat_id === chat.chat_id) {
+            for (let i = 0; i < chatData.length; i++)
+            {
+                if (chatData[i].chat_id === chat.chat_id)
+                {
                     setRepliedText(chatData[i].text);
                 }
             }
         }
     };
 
-    useEffect(() => {
+    // Helper function to get the text of the replied message
+    const getRepliedMessageText = (replyToChatId) =>
+    {
+        const repliedMessage = chatData.find((chat) => chat.chat_id === replyToChatId);
+        return repliedMessage ? repliedMessage.text : '';
+    };
+
+    useEffect(() =>
+    {
         setnewChat({
             text: "",
             reply_to: null,
@@ -121,7 +148,8 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
         const intervalId = setInterval(fetchData, 5000);
 
         // Clean up the interval on component unmount
-        return () => {
+        return () =>
+        {
             clearInterval(intervalId);
         };
     }, [chatRoomId]);
@@ -147,26 +175,25 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
 
             {/* chat content */}
             <div className="chat-content">
-                {chatData.map((chat) => {
+                {chatData.map((chat) =>
+                {
                     const isLikedByCurrentUser = chat.likes.some(
                         (like) => like.liker === currentUser.id
                     );
                     return (
                         <div
                             key={chat.chat_id}
-                            className={`chat-image ${
-                                chat.sender_id === currentUser.id
-                                    ? "chat-right"
-                                    : "chat-left"
-                            }`}
+                            className={`chat-image ${chat.sender_id === currentUser.id
+                                ? "chat-right"
+                                : "chat-left"
+                                }`}
                         >
                             {/* neu ng gui ko phai minh thi hien hinh anh */}
                             {chat.sender_id !== currentUser.id && (
                                 <img
                                     className="user-image"
                                     src={
-                                        `${
-                                            import.meta.env.VITE_BASE_URL
+                                        `${import.meta.env.VITE_BASE_URL
                                         }/api/images/` + messagingTo.image
                                     }
                                     width={30}
@@ -190,7 +217,8 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
                                                 ? "red"
                                                 : "black"
                                         }
-                                        onClick={() => {
+                                        onClick={() =>
+                                        {
                                             handleLikeChat(chat.chat_id);
                                         }}
                                     />
@@ -210,12 +238,22 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
                                     <MdOutlineDelete
                                         size={30}
                                         color={"red"}
-                                        onClick={async () => {
+                                        onClick={async () =>
+                                        {
                                             await handleDeleteChat(
                                                 chat.chat_id
                                             );
                                         }}
                                     />
+                                </div>
+                            )}
+
+                            {/* Display replied message */}
+                            {chat.reply_to && (
+                                <div className="replied-message">
+                                    <p className="replied-message-text">
+                                        {getRepliedMessageText(chat.reply_to)}
+                                    </p>
                                 </div>
                             )}
 
@@ -240,7 +278,8 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
                                                 ? "red"
                                                 : "black"
                                         }
-                                        onClick={() => {
+                                        onClick={() =>
+                                        {
                                             handleLikeChat(chat.chat_id);
                                         }}
                                     />
@@ -251,7 +290,7 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
                                             size={30}
                                             color={
                                                 newChat.reply_to ===
-                                                chat.chat_id
+                                                    chat.chat_id
                                                     ? "red"
                                                     : "black"
                                             }
@@ -317,7 +356,8 @@ const Chats = ({ messagingTo, chatRoomId, currentUser }) => {
                             placeholder="Type a message..."
                             className="input-type-message"
                             value={newChat.text}
-                            onChange={(ev) => {
+                            onChange={(ev) =>
+                            {
                                 setnewChat({
                                     ...newChat,
                                     text: ev.target.value,
