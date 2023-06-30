@@ -27,7 +27,7 @@ class StoreUserRequest extends FormRequest
             'email' => 'required|email|unique:users,email',
             'password' => [
                 'required',
-                Password::min(8)
+                Password::min(7)
                     ->letters()
             ],
             'image' => 'image',

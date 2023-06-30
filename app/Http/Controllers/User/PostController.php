@@ -112,8 +112,8 @@ class PostController extends Controller
     {
         $data = $request->validate([
             'creator_id' => 'required',
-            'image' => 'nullable|image',
-            'description' => 'nullable|string|max:100',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'description' => 'required|string|max:500|min:2',
         ]);
 
         $check = $this->filterProhibitedWords($data['description']);

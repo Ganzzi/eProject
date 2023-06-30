@@ -80,7 +80,7 @@ class PostController extends Controller
     {
         // Retrieve the validated form data from the request
         $data = $request->validate([
-            'description' => 'required|string|max:55',
+            'description' => 'required|string|max:500',
             'lock' => 'required'
         ]);
 

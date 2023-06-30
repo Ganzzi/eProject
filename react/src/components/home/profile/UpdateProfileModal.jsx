@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 const UpdateProfileModal = ({ closeModal, profileContent, onUpdate }) => {
+    const [hasChanges, setHasChanges] = useState(false);
     const [profile, setProfile] = useState({
         name: profileContent.name,
         email: null,
@@ -95,6 +96,7 @@ const UpdateProfileModal = ({ closeModal, profileContent, onUpdate }) => {
                                         ...profile,
                                         image: e.target.files[0],
                                     });
+                                    setHasChanges(true);
                                 }}
                                 hidden
                             />
@@ -109,9 +111,13 @@ const UpdateProfileModal = ({ closeModal, profileContent, onUpdate }) => {
                             className="form-control"
                             id="name"
                             value={profile.name}
-                            onChange={(e) =>
-                                setProfile({ ...profile, name: e.target.value })
-                            }
+                            onChange={(e) => {
+                                setProfile({
+                                    ...profile,
+                                    name: e.target.value,
+                                });
+                                setHasChanges(true);
+                            }}
                             required
                         />
                     </div>
@@ -124,12 +130,13 @@ const UpdateProfileModal = ({ closeModal, profileContent, onUpdate }) => {
                             className="form-control"
                             id="email"
                             defaultValue={profileContent.email}
-                            onChange={(e) =>
+                            onChange={(e) => {
                                 setProfile({
                                     ...profile,
                                     email: e.target.value,
-                                })
-                            }
+                                });
+                                setHasChanges(true);
+                            }}
                         />
                     </div>
                     <div className="mb-1">
@@ -140,9 +147,10 @@ const UpdateProfileModal = ({ closeModal, profileContent, onUpdate }) => {
                             className="form-control"
                             id="bio"
                             value={profile.bio}
-                            onChange={(e) =>
-                                setProfile({ ...profile, bio: e.target.value })
-                            }
+                            onChange={(e) => {
+                                setProfile({ ...profile, bio: e.target.value });
+                                setHasChanges(true);
+                            }}
                             required
                         ></textarea>
                     </div>
@@ -154,14 +162,14 @@ const UpdateProfileModal = ({ closeModal, profileContent, onUpdate }) => {
                             className="form-control"
                             id="gender"
                             value={profile.gender}
-                            onChange={(e) =>
+                            onChange={(e) => {
                                 setProfile({
                                     ...profile,
                                     gender: e.target.value,
-                                })
-                            }
+                                });
+                                setHasChanges(true);
+                            }}
                         >
-                            <option value="">Select Gender</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
                         </select>
@@ -173,7 +181,11 @@ const UpdateProfileModal = ({ closeModal, profileContent, onUpdate }) => {
                             margin: 10,
                         }}
                     >
-                        <button type="submit" className="btn btn-primary">
+                        <button
+                            type="submit"
+                            className="btn btn-primary"
+                            disabled={!hasChanges}
+                        >
                             Update Profile
                         </button>
                     </div>
