@@ -52,7 +52,7 @@ class Auth extends Controller
 
         if (!FacadesAuth::attempt($credentials)) {
             return response()->json([
-                'message' => 'incorrect email or password',
+                'errors' => 'incorrect email or password',
             ], 422);
         }
 

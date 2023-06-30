@@ -20,7 +20,7 @@ class CommentController extends Controller
         // Validate the request data
         $validatedData = $request->validate([
             'post_id' => 'required|numeric',
-            'text' => 'required|string',
+            'text' => 'required|string|max:500',
             'reply_to' => 'nullable',
         ]);
 

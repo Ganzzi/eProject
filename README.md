@@ -6,6 +6,11 @@ Batch no.: T1.2208.A0
 CENTER NAME: ACE-HCMC-2-FPT
 
 Project title: ShareSpace
+Description: This is a social media web app that have 3 roles:
+
+-   guest: signup new account
+-   admin: manage user, post, chatroom
+-   user: chat, post and many more cool features you'll want to explore :)
 
 ----------- Group 5 -----------
 
@@ -36,8 +41,8 @@ To run this project locally, please follow these steps:
 11. `php artisan key:generate `
 12. set database credentials in .env file: sharespace
 13. `php artisan serve `
-14. open phpmyadmin (XAMPP) and create new database name: sharespace
-15.
+14. open phpmyadmin (XAMPP) and create new database name: socialmediadb2
+15. Run these commands:
 
 ```
 php artisan migrate:reset

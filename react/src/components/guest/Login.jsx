@@ -30,7 +30,7 @@ export default function Login() {
 
                 console.log(err);
                 if (response && response.status === 422) {
-                    setMessage(response.data.message);
+                    setMessage(response.data.errors);
                 }
             });
     };
@@ -43,7 +43,13 @@ export default function Login() {
 
                     {message && (
                         <div className="alert">
-                            <p>{message}</p>
+                            {typeof message == "object" ? (
+                                Object.keys(message).map((key) => (
+                                    <p key={key}>{message[key][0]}</p>
+                                ))
+                            ) : (
+                                <p>{message}</p>
+                            )}
                         </div>
                     )}
 

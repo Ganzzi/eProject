@@ -29,7 +29,7 @@ class UpdateUserRequest extends FormRequest
             'email' => 'required|email|unique:users,email,' . $this->id,
             'password' => [
                 'confirmed',
-                Password::min(8)
+                Password::min(7)
                     ->letters()
             ],
             'role_id' => 'required',

@@ -48,6 +48,7 @@ class UsersSeeder extends Seeder
             'image' => 'ZAUaJRZugpCligkWqoPC00PivNKZYBcoFaqubj5n.jpg',
             'bio' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
             'gender' => 'male',
+            'lock' => true,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
