@@ -6,6 +6,8 @@ Batch no.: T1.2208.A0
 CENTER NAME: ACE-HCMC-2-FPT
 
 Project title: ShareSpace
+Video demo: https://drive.google.com/file/d/1YFu5R_w0WerxNDb9MfE0iFc262KWDe2e/view?usp=sharing
+
 Description: This is a social media web app that have 3 roles:
 
 -   guest: signup new account
